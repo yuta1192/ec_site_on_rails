@@ -1,0 +1,2 @@
+class FreePage < ApplicationRecord
+end
