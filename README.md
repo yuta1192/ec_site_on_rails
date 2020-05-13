@@ -22,3 +22,10 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+1,クライアント側作成
+2,管理者側作成
+3,aws移行
+4,docker移行
+5,circleci導入
+6,フロント（js,react)使用
