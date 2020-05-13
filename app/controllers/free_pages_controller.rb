@@ -1,0 +1,2 @@
+class FreePagesController < ApplicationController
+end
