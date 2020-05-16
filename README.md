@@ -29,3 +29,6 @@ Things you may want to cover:
 4,docker移行
 5,circleci導入
 6,フロント（js,react)使用
+
+
+todo:loginページ-パスワード再設定（未作成）
