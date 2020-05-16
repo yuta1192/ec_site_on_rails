@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_13_131209) do
+ActiveRecord::Schema.define(version: 2020_05_16_032906) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "company_name"
@@ -107,6 +107,11 @@ ActiveRecord::Schema.define(version: 2020_05_13_131209) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "sessions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "sitemaps", force: :cascade do |t|
     t.string "map_name"
     t.datetime "created_at", null: false
@@ -117,9 +122,10 @@ ActiveRecord::Schema.define(version: 2020_05_13_131209) do
     t.string "name"
     t.string "e_mail"
     t.integer "cart_id"
-    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "password_digest"
+    t.string "remember_token"
     t.index ["cart_id"], name: "index_users_on_cart_id"
   end
 

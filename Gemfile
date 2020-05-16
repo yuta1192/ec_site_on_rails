@@ -36,11 +36,16 @@ gem 'jbuilder', '~> 2.5'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 # パスワードハッシュ化
-gem 'bcrypt', '3.1.11'
+gem 'bcrypt'
+# slim化
+gem 'slim'
+gem 'html2slim'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry-rails'
+  gem 'pry-byebug'
 end
 
 group :development do
