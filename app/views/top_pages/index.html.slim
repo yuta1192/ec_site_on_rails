@@ -1,1 +1,78 @@
 p top_page
+
+h1 左側
+div
+h2 商品検索
+
+= form_with model: Product, url: search_path do |f|
+  = f.label 'カテゴリ'
+  = f.collection_select :category, @categories, :category, :category, include_blank: '全カテゴリ'
+  .div
+  = f.label 'キーワード'
+  = f.text_field :key_word
+  .div
+  = f.submit '検索'
+
+div
+h2 商品カテゴリー
+- @categories.each do |category|
+  = link_to category.category, search_path
+  div
+
+h2 クイックオーダー
+= link_to "クイックオーダー", quick_order_path
+div
+h2 バナー
+h2 バナー
+div
+h2 営業日(未完成 今月と翌月 土日は赤色に)
+
+- today = Date.today
+table
+  caption= today.strftime('%Y年%m月')
+  tr
+    th 日
+    th 月
+    th 火
+    th 水
+    th 木
+    th 金
+    th 土
+  tr
+    - month = today.strftime('%m')
+    - d = today.at_beginning_of_month.at_beginning_of_week(:sunday)
+    - 1.upto(5).each do|i|
+      tr
+        - (d..d.end_of_week(:sunday)).each do|c|
+          th= (c.strftime('%m') == month)? c.strftime('%d'): "  "
+      - d = d + 1.week
+
+p この日（赤色）は休業日です。
+div
+
+h2 ランキング(redisで作る予定)
+p ランキング
+p 左に画像image
+p 第●位(10位まで)
+p 商品名
+
+div
+h1 右側
+h2 ロゴ
+h2 新入荷
+- Product.last(3).reverse.each.with_index(1) do |product, i|
+  p 第#{i}位
+  p 画像イメージ
+  = link_to product.name, product_path(product)
+  = product.detail
+  = product.price
+  = product.member_price
+
+h2 新着情報
+- Information.all.each do |info|
+  = info.created_at.strftime('%Y年%m月%d日')
+  div
+  = info.detail
+  p ファイル添付はまだ
+
+h2 バーナー
