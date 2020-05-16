@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   resources :products
   post 'search', to: 'products#search'
   get 'quick_order', to: 'products#quick_order'
+  resources :free_pages, only: [:index]
 end
