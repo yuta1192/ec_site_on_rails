@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   post 'search', to: 'products#search'
   get 'quick_order', to: 'products#quick_order'
   resources :free_pages, only: [:index]
+  resources :inqueries, only: [:index]
+  resources :contacts, only: [:index]
 end
