@@ -1,0 +1,24 @@
+h2 よくあるご質問
+p お客様から寄せられる質問とその回答を掲載しています。
+
+= form_with model: Inquery, url: inqueries_path do |f|
+  = f.label 'タイトル'
+  = f.collection_select :question, @questions, :question, :question, include_blank: '全タイトル'
+  .div
+  = f.label 'キーワード'
+  = f.text_field :key_word
+  p ※キーワードを複数入れる場合は「 」（空白）を間に入れてください。
+  .div
+  = f.submit '検索'
+
+h2 ＦＡＱの質問のタイトル
+- @questions.each do |question|
+  = question.question
+  div
+
+h2 ＦＡＱの質問のタイトル
+- @inqueries.each do |inquery|
+  = inquery.question
+  div
+  = inquery.answer
+  div
