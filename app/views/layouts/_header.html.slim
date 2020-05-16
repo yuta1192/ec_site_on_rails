@@ -1,5 +1,9 @@
 p ロゴを入れる
-p トップ｜自由ページ｜よくある質問｜サイトマップ
+
+= link_to 'トップ', root_path
+p |
+= link_to '自由ページ', free_pages_path
+p ｜よくある質問｜サイトマップ
 p 会員ページ｜
 = link_to 'ログアウト', logout_path, method: :post
 p｜カート
