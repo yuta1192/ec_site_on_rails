@@ -4,4 +4,7 @@ Rails.application.routes.draw do
   post 'login', to: 'sessions#login'
   post 'logout', to: 'sessions#logout'
   resources :users
+  resources :products
+  post 'search', to: 'products#search'
+  get 'quick_order', to: 'products#quick_order'
 end
