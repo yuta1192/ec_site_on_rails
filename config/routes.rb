@@ -11,4 +11,5 @@ Rails.application.routes.draw do
   resources :inqueries, only: [:index]
   resources :contacts
   get 'complite', to: 'contacts#complite'
+  get 'sitemap', to: 'sitemaps#sitemap'
 end

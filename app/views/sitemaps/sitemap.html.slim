@@ -1,0 +1,6 @@
+h1 サイトマップ
+
+- @sitemap.each do |sitemap|
+  h2 = sitemap.map_name
+  - sitemap.items.each do |item|
+    div = item.item
