@@ -1,1 +1,23 @@
 p 注文履歴（それぞれのユーザーの）
+
+= form_with model: OrderHistory, url: search_user_order_histories_path, method: :get, local: true do |f|
+  = f.label '購入期間'
+  = raw sprintf(f.date_select(:start_date,use_month_numbers: true,start_year:2020,end_year:(Time.now.year - 10),default:Date.new(2020, 1, 1),date_separator:'%s'),'年 ', '月 ') + '日'
+  = raw sprintf(f.date_select(:end_date,use_month_numbers: true,start_year:2020,end_year:(Time.now.year - 10),default:Date.new(2020, 1, 1),date_separator:'%s'),'年 ', '月 ') + '日'
+  div
+  = f.label '注文番号'
+  = f.text_field :order_number
+  div
+  = f.label '商品番号'
+  = f.text_field :product_number
+  div
+  = f.label '商品名'
+  = f.text_field :product_name
+  div
+  = f.label 'カテゴリ'
+  = f.collection_select :category, @categories, :category, :category, include_blank: '選択してください'
+  div
+  = f.label 'メモ'
+  = f.text_field :memo
+  div
+  = f.submit '検索'

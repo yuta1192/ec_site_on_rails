@@ -1,0 +1,20 @@
+p serach_paramsで表示させる
+
+h2 ひとかたまり上
+p 注文履歴 検索結果 〇〇件
+p 期間指定 #{@params[:order_history]["start_date(1i)"]}年#{@params[:order_history]["start_date(2i)"]}月#{@params[:order_history]["start_date(3i)"]}日〜#{@params[:order_history]["end_date(1i)"]}年#{@params[:order_history]["end_date(2i)"]}月#{@params[:order_history]["end_date(3i)"]}日までの注文履歴
+p 注文番号 #{@params[:order_history][:order_number]}
+p 商品番号 #{@params[:order_history][:product_number]}
+p 商品名 #{@params[:order_history][:product_name]}
+p カテゴリ #{@params[:order_history][:category]}
+p メモ #{@params[:order_history][:memo]}
+
+h2 ひとかたまり下 ここはデータ作ったらにしよう
+p 注文日時
+p 注文番号
+p お届け先
+p 出荷状況
+p 出荷予定日
+p 出荷日
+p 商品名
+p 詳細
