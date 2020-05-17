@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   post 'login', to: 'sessions#login'
   post 'logout', to: 'sessions#logout'
   resources :users do
-    resources :order_histories
+    resources :order_histories do
+      get 'search', on: :collection
+    end
     resources :my_lists
     resources :addresses
     member do
