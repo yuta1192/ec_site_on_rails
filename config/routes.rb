@@ -3,7 +3,14 @@ Rails.application.routes.draw do
   get 'login', to: 'sessions#index'
   post 'login', to: 'sessions#login'
   post 'logout', to: 'sessions#logout'
-  resources :users
+  resources :users do
+    resources :order_histories
+    resources :my_lists
+    resources :addresses
+    member do
+      get 'password_reset'
+    end
+  end
   resources :products
   post 'search', to: 'products#search'
   get 'quick_order', to: 'products#quick_order'
@@ -12,4 +19,5 @@ Rails.application.routes.draw do
   resources :contacts
   get 'complite', to: 'contacts#complite'
   get 'sitemap', to: 'sitemaps#sitemap'
+  get 'mypage', to: 'mypages#mypage'
 end

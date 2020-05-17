@@ -1,0 +1,19 @@
+p マイページ
+
+h2 会員メニュー
+p 左
+= "#{@current_user.name}様"
+= link_to 'マイページトップ', mypage_path
+= link_to 'マイリスト', user_my_lists_path(@current_user)
+= link_to '注文履歴', user_order_histories_path(@current_user)
+= link_to 'アドレス帳', user_addresses_path(@current_user)
+= link_to 'パスワード変更', password_reset_user_path(@current_user)
+= link_to 'ログアウト', logout_path, method: :post
+
+h2 マイページ
+p 右
+= link_to 'マイリスト', user_my_lists_path(@current_user)
+= link_to '注文履歴', user_order_histories_path(@current_user)
+= link_to 'アドレス帳', user_addresses_path(@current_user)
+= link_to 'パスワード変更', password_reset_user_path(@current_user)
+= link_to 'ログアウト', logout_path, method: :post
