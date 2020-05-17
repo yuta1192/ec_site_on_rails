@@ -1,0 +1,12 @@
+p お問い合わせフォーム
+
+p お客さまからのご質問をお問い合わせフォームにて受け付けております。
+p 必要事項をご記入の上、「入力内容の確認画面へ」を押してください。
+
+h2 お問い合わせ内容を入力してください。
+
+= form_with model: @contact, url: contacts_path do |f|
+  = f.text_field :contact
+  = f.hidden_field :user_id, value: @current_user.id
+  div
+  = f.submit '送信'
