@@ -14,8 +14,20 @@ class UsersController < ApplicationController
     end
   end
 
+  def password_edit
+  end
+
   def password_reset
-    
+    @user = @current_user
+    if @user.authenticate(params[:password]) && (params[:new_password] == params[:password_confirmation]) && (params[:new_password] != nil)
+      if @user.update_attributes(password: params[:new_password])
+        redirect_to mypage_path
+      else
+        render 'password_edit'
+      end
+    else
+      render 'password_edit'
+    end
   end
 
   private
