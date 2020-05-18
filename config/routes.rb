@@ -10,7 +10,8 @@ Rails.application.routes.draw do
     resources :my_lists
     resources :addresses
     member do
-      get 'password_reset'
+      get 'password_edit'
+      patch 'password_reset'
     end
   end
   resources :products

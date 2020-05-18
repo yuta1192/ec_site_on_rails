@@ -7,7 +7,7 @@ p 左
 = link_to 'マイリスト', user_my_lists_path(@current_user)
 = link_to '注文履歴', user_order_histories_path(@current_user)
 = link_to 'アドレス帳', user_addresses_path(@current_user)
-= link_to 'パスワード変更', password_reset_user_path(@current_user)
+= link_to 'パスワード変更', password_edit_user_path(@current_user)
 = link_to 'ログアウト', logout_path, method: :post
 
 h2 マイページ
@@ -15,5 +15,5 @@ p 右
 = link_to 'マイリスト', user_my_lists_path(@current_user)
 = link_to '注文履歴', user_order_histories_path(@current_user)
 = link_to 'アドレス帳', user_addresses_path(@current_user)
-= link_to 'パスワード変更', password_reset_user_path(@current_user)
+= link_to 'パスワード変更', password_edit_user_path(@current_user)
 = link_to 'ログアウト', logout_path, method: :post
