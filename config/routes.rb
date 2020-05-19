@@ -14,9 +14,12 @@ Rails.application.routes.draw do
       patch 'password_reset'
     end
   end
-  resources :products
-  post 'search', to: 'products#search'
-  get 'quick_order', to: 'products#quick_order'
+  resources :products do
+    collection do
+      get 'search', to: 'products#search'
+      get 'quick_order', to: 'products#quick_order'
+    end
+  end
   resources :free_pages, only: [:index]
   resources :inqueries, only: [:index]
   resources :contacts

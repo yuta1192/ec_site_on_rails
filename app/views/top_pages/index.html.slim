@@ -4,23 +4,23 @@ h1 左側
 div
 h2 商品検索
 
-= form_with model: Product, url: search_path do |f|
+= form_with model: Product, url: search_products_path , method: :get, local: true do |f|
   = f.label 'カテゴリ'
   = f.collection_select :category, @categories, :category, :category, include_blank: '全カテゴリ'
   .div
   = f.label 'キーワード'
-  = f.text_field :key_word
+  = f.text_field :name
   .div
   = f.submit '検索'
 
 div
 h2 商品カテゴリー
 - @categories.each do |category|
-  = link_to category.category, search_path
+  = link_to category.category, search_products_path
   div
 
 h2 クイックオーダー
-= link_to "クイックオーダー", quick_order_path
+= link_to "クイックオーダー", quick_order_products_path
 div
 h2 バナー
 h2 バナー
