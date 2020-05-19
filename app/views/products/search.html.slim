@@ -1,1 +1,38 @@
 p search
+
+h1 左側
+div
+h2 商品検索
+
+= form_with model: Product, url: search_products_path , method: :get, local: true do |f|
+  = f.label 'カテゴリ'
+  = f.collection_select :category, @categories, :category, :category, include_blank: '全カテゴリ'
+  .div
+  = f.label 'キーワード'
+  = f.text_field :name, value: ""
+  .div
+  = f.submit '検索'
+
+h1 右側
+div
+p 項目
+p -小項目（リンク）
+p 表示方法(リスト形式と大画像)
+p 表示件数（３０、６０）
+p 並び替え　高い、安い、新着
+
+p カートに入れるボタン
+p マイリストに入れるボタン
+
+= @products.each do |product|
+  p チェックボックス
+  p 商品の画像
+  = product.name
+  div
+  = "参考価格#{product.price}/(税込)#{product.price}"
+  = "会員価格#{product.price}"
+  p 送料は別途
+  p 数量
+
+p マイリストに入れるボタン
+p カートに入れるボタン
