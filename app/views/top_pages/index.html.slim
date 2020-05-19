@@ -6,17 +6,17 @@ h2 商品検索
 
 = form_with model: Product, url: search_products_path , method: :get, local: true do |f|
   = f.label 'カテゴリ'
-  = f.collection_select :category, @categories, :category, :category, include_blank: '全カテゴリ'
+  = f.collection_select :category, @product_categories, :category, :category, include_blank: '全カテゴリ'
   .div
   = f.label 'キーワード'
-  = f.text_field :name
+  = f.text_field :name, value: ""
   .div
   = f.submit '検索'
 
 div
 h2 商品カテゴリー
-- @categories.each do |category|
-  = link_to category.category, search_products_path
+- @product_categories.each do |category|
+  = link_to category.category, controller: "products", action: "search", product: {category: category.category}
   div
 
 h2 クイックオーダー

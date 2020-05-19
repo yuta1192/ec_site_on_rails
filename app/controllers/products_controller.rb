@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   def search
-    @categories = Product.select(:category).distinct
+    @product_categories = Product.select(:category).distinct
     @search_params = products_search_params
     @products = Product.search(@search_params)
   end
