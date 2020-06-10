@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_17_055617) do
+ActiveRecord::Schema.define(version: 2020_06_09_231627) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "company_name"
@@ -32,13 +32,27 @@ ActiveRecord::Schema.define(version: 2020_05_17_055617) do
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
+  create_table "cart_items", force: :cascade do |t|
+    t.integer "quantity"
+    t.integer "product_id"
+    t.integer "cart_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cart_id"], name: "index_cart_items_on_cart_id"
+    t.index ["product_id"], name: "index_cart_items_on_product_id"
+  end
+
+  create_table "cart_products", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "carts", force: :cascade do |t|
     t.string "cart_number"
-    t.integer "cart_id"
     t.integer "order_history_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["cart_id"], name: "index_carts_on_cart_id"
+    t.integer "user_id"
     t.index ["order_history_id"], name: "index_carts_on_order_history_id"
   end
 
@@ -90,10 +104,10 @@ ActiveRecord::Schema.define(version: 2020_05_17_055617) do
     t.text "memo"
     t.integer "status"
     t.integer "user_id"
-    t.integer "cart_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["cart_id"], name: "index_order_histories_on_cart_id"
+    t.string "cart_number"
+    t.integer "cart_product_id"
     t.index ["user_id"], name: "index_order_histories_on_user_id"
   end
 

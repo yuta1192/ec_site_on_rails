@@ -11,7 +11,9 @@ div
 = link_to '会員ページ', mypage_path
 p ｜
 = link_to 'ログアウト', logout_path, method: :post
-p｜カート
+
+p ｜
+= link_to 'カートを見る', edit_user_cart_path(@current_user, @current_user.cart_id)
 
 p ここまでがヘッダとする
 p ------------------------------------

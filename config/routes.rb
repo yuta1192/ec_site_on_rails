@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     end
     resources :my_lists
     resources :addresses
+    resources :carts
     member do
       get 'password_edit'
       patch 'password_reset'

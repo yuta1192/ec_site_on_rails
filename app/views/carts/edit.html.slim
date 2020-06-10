@@ -1,0 +1,19 @@
+p カートページ
+
+p Step1 カートの確認
+
+p カートには、以下の商品が入っています。
+p 商品の数量を変更する場合は、数量を変更し「変更」ボタンを押してください。
+
+h2 カートの内容
+p 画像　品番	品名	単価（税抜）	数量	金額（税抜）	取消
+= form_with model: Cart, url: user_cart_path, method: :put do |f|
+  - @cart_items.each do |cart_item|
+    p 画像
+    = cart_item.product.product_number
+    = link_to cart_item.product.name, product_path(cart_item.product)
+    = cart_item.product.price
+    = f.number_field cart_item.quantity, value: cart_item.quantity
+    = f.submit '変更'
+    = cart_item.product.price * cart_item.quantity
+    = link_to '取消', user_cart_path(@current_user, @current_user.cart_id), method: :delete
