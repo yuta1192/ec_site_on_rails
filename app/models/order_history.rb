@@ -1,5 +1,4 @@
 class OrderHistory < ApplicationRecord
   belongs_to :user
-  belongs_to :cart
-  has_many :product
+  has_one :purchase_history
 end
