@@ -9,7 +9,10 @@ Rails.application.routes.draw do
     end
     resources :my_lists
     resources :addresses
-    resources :carts
+    resources :carts do
+      get 'purchase_confirm', on: :member
+      get 'complite'
+    end
     member do
       get 'password_edit'
       patch 'password_reset'

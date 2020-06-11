@@ -1,0 +1,67 @@
+p Step2 情報入力
+
+h2 お客様情報
+p 会社名 #{@current_user.company_name}
+p 部署名 #{@current_user.department_name}
+p 担当者名 #{@current_user.contact_name}
+p 電話番号 #{@current_user.phone_number}
+
+h2 お届け先情報(ここjavascript)
+p お届け先	お客様情報と同じ住所に配送する
+p 1件の異なる住所に配送する
+
+h2 お届け先情報の追加
+p お届け先リスト
+= form_with url: purchase_confirm_user_cart_path, method: :get, local: true do |f|
+  = f.select :company_name, @addresses_name
+  div
+  = f.label '会社名'
+  = f.text_field :company_name
+  div
+  = f.label '部署名'
+  = f.text_field :department_name
+  div
+  = f.label 'お名前[全角]'
+  = f.text_field :name_sei
+  = f.text_field :name_mei
+  div
+  = f.label 'お名前フリガナ[全角カタカナ]'
+  = f.text_field :name_sei_kana
+  = f.text_field :name_mei_kana
+  div
+  = f.label '郵便番号'
+  = f.number_field :zip_code
+  div
+  = f.label '都道府県'
+  = f.number_field :prefectures
+  div
+  = f.label '市区郡町村'
+  = f.text_field :municipation
+  div
+  = f.label '町域、丁目、番地'
+  = f.text_field :address_1
+  div
+  = f.label 'ビル・マンション名、部屋番号など'
+  = f.text_field :address_2
+  div
+  = f.label '電話番号[半角数字]'
+  = f.number_field :tel
+  div
+  = f.label '携帯番号[半角数字]'
+  = f.number_field :phone_number
+  div
+
+  h2 お支払い方法
+  p 締め払い
+  p 御社規定に従います
+
+  h2 お届け希望日
+  = f.label 'お届け希望日'
+  = f.select :date, @date_select
+
+  h2 備考・連絡事項等
+  = f.text_field :remakes
+
+  div
+  = link_to 'step1に戻る', edit_user_cart_path(@current_user, @current_user.cart_id)
+  = f.submit '次へ進む'

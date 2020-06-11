@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_09_231627) do
+ActiveRecord::Schema.define(version: 2020_06_10_232502) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "company_name"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 2020_06_09_231627) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_select_flag", default: false, null: false
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
@@ -126,6 +127,13 @@ ActiveRecord::Schema.define(version: 2020_06_09_231627) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "purchase_histories", force: :cascade do |t|
+    t.integer "cart_id"
+    t.string "cart_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -145,6 +153,10 @@ ActiveRecord::Schema.define(version: 2020_06_09_231627) do
     t.datetime "updated_at", null: false
     t.string "password_digest"
     t.string "remember_token"
+    t.string "company_name"
+    t.string "department_name"
+    t.string "contact_name"
+    t.integer "phone_number"
     t.index ["cart_id"], name: "index_users_on_cart_id"
   end
 
