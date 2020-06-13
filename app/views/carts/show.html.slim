@@ -12,44 +12,45 @@ p 1件の異なる住所に配送する
 
 h2 お届け先情報の追加
 p お届け先リスト
-= form_with url: purchase_confirm_user_cart_path, method: :get, local: true do |f|
-  = f.select :company_name, @addresses_name
-  div
-  = f.label '会社名'
-  = f.text_field :company_name
-  div
-  = f.label '部署名'
-  = f.text_field :department_name
-  div
-  = f.label 'お名前[全角]'
-  = f.text_field :name_sei
-  = f.text_field :name_mei
-  div
-  = f.label 'お名前フリガナ[全角カタカナ]'
-  = f.text_field :name_sei_kana
-  = f.text_field :name_mei_kana
-  div
-  = f.label '郵便番号'
-  = f.number_field :zip_code
-  div
-  = f.label '都道府県'
-  = f.number_field :prefectures
-  div
-  = f.label '市区郡町村'
-  = f.text_field :municipation
-  div
-  = f.label '町域、丁目、番地'
-  = f.text_field :address_1
-  div
-  = f.label 'ビル・マンション名、部屋番号など'
-  = f.text_field :address_2
-  div
-  = f.label '電話番号[半角数字]'
-  = f.number_field :tel
-  div
-  = f.label '携帯番号[半角数字]'
-  = f.number_field :phone_number
-  div
+= form_with url: confirm_user_cart_path, method: :post, local: true do |f|
+  = f.select :companies, @addresses_name
+  = f.fields_for :address do |ff|
+    div
+    = ff.label '会社名'
+    = ff.text_field :company_name
+    div
+    = ff.label '部署名'
+    = ff.text_field :department_name
+    div
+    = ff.label 'お名前[全角]'
+    = ff.text_field :name_sei
+    = ff.text_field :name_mei
+    div
+    = ff.label 'お名前フリガナ[全角カタカナ]'
+    = ff.text_field :name_sei_kana
+    = ff.text_field :name_mei_kana
+    div
+    = ff.label '郵便番号'
+    = ff.number_field :zip_code
+    div
+    = ff.label '都道府県'
+    = ff.number_field :prefectures
+    div
+    = ff.label '市区郡町村'
+    = ff.text_field :municipation
+    div
+    = ff.label '町域、丁目、番地'
+    = ff.text_field :address_1
+    div
+    = ff.label 'ビル・マンション名、部屋番号など'
+    = ff.text_field :address_2
+    div
+    = ff.label '電話番号[半角数字]'
+    = ff.number_field :tel
+    div
+    = ff.label '携帯番号[半角数字]'
+    = ff.number_field :phone_number
+    div
 
   h2 お支払い方法
   p 締め払い

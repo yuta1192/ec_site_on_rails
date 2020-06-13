@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     resources :my_lists
     resources :addresses
     resources :carts do
-      get 'purchase_confirm', on: :member
+      post 'confirm', on: :member
       get 'complite'
     end
     member do
