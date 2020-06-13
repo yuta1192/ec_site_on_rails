@@ -21,16 +21,29 @@ p 部署名 #{@current_user.department_name}
 p 担当者名 #{@current_user.contact_name}
 p 電話番号 #{@current_user.phone_number}
 
-
 h2 お届け先情報
-p if もし変更がない場合は
-p お届け先	お客様情報と同じ住所に配送する
-p else 変更がある場合は
-p お届け先情報を入れていく
+- if params[:companies]
+  p else 変更がある場合は
+  p お届け先情報を入れていく
+
+  p 会社名	#{@address_attribute[:company_name]}
+  p お名前	#{@address_attribute[:name_sei]} #{@address_attribute[:name_mei]}
+  p 住所	#{@address_attribute[:zip_code]}
+  p      #{@address_attribute[:prefectures]} #{@address_attribute[:municipation]} #{@address_attribute[:address_1]} #{@address_attribute[:address_2]}
+  p 電話番号	#{@address_attribute[:tel]}
+  p 携帯番号	#{@address_attribute[:phone_number]}
+
+- else
+  p if もし変更がない場合は
+  p お届け先	お客様情報と同じ住所に配送する
 
 h2 お届け希望日時指定・備考
-p お届け希望日	指定なし
-p 備考
+- if params[:date] == "99"
+  p お届け希望日 指定なし
+- else
+  p お届け希望日 #{@date}
+
+p 備考 #{params[:remakes]}
 
 p 以上の内容でよろしければ、下の「この内容で注文する」ボタンを押してください。
 
