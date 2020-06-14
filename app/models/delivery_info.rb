@@ -1,0 +1,2 @@
+class DeliveryInfo < ApplicationRecord
+end

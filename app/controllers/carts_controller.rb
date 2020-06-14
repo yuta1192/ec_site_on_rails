@@ -46,7 +46,7 @@ class CartsController < ApplicationController
     @total_price = total_price
     @address_attribute = params[:address] if params[:companies]
     @date_array = date_select_box.select {|k,v| v == params[:date].to_i} if params[:date] != "99"
-    @date = @date_array.flatten.first
+    @date = @date_array.flatten.first if @date != nil
   end
 
   def complite
@@ -54,15 +54,23 @@ class CartsController < ApplicationController
 
   def create
     @cart_info = @current_user.cart
-    purchase_history = PurchaseHistory.new(cart_id: @cart_info.id, cart_number: @cart_info.cart_number)
-    return show unless purchase_history.save!
-    # order_numberはランダムで作成
-    order_history_number = SecureRandom
-    # memo: 備考, status: 考えてないけど、購入した段階（enumで作る、最初は1かな)
-    order_history = OrderHistory.new(order_number: order_history_number, memo: , status: 1, user_id: @current_user.id, cart_number: @cart_info.cart_number, purchase_history_id: purchase_history.id)
-    return show unless order_history.save!
-    redirect_to complite
-    #todo "Purchase_historyの作成 Order_historyの作成"
+    # ここ作るとき全部正常に作られる必要があるからトランザクションでいく
+    ActiveRecord::Base.transaction do
+      # パラメータからDeliveryInfoの作成
+      delivery_info = DeliveryInfo.new(company_name: params[:addresses][:company_name], user_name: params[:addresses][:user_name], zip_code: params[:addresses][:zip_code], address: params[:addresses][:address] ,tel: params[:addresses][:tel], phone_number: params[:addresses][:phone_number], delivery_day: params[:date])
+      delivery_info.save!
+      # purchase_history作成
+      purchase_history = PurchaseHistory.new(cart_id: @cart_info.id, cart_number: @cart_info.cart_number)
+      purchase_history.save!
+      # order_numberはランダムで作成
+      order_history_number = SecureRandom.alphanumeric()
+      # memo: 備考, status: 考えてないけど、購入した段階（enumで作る、最初は1かな)
+      order_history = OrderHistory.new(order_number: order_history_number, memo: params[:remakes], status: 1, user_id: @current_user.id, cart_number: @cart_info.cart_number, purchase_history_id: purchase_history.id)
+      order_history.save!
+    rescue => e
+      #todo バリデーションエラーの時返すものを書く
+    end
+    redirect_to user_cart_complite_path(@current_user, @cart_info)
   end
 
   def destroy
