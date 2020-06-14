@@ -20,7 +20,7 @@ p カートページ
         = ff.number_field "product_quantity[#{cart_item.id}][#{cart_item.quantity}]", value: cart_item.quantity
         = ff.submit '変更', name: "cart_item_id[#{cart_item.id}]"
       = cart_item.product.price * cart_item.quantity
-      = link_to '取消', user_cart_path(@current_user, @current_user.cart_id), method: :delete
+      = link_to '取消', user_cart_path(@current_user, cart_item_id: cart_item.id), method: :delete
     p 商品金額（税抜）#{@total_price}円
     p 送料 ※step3でご確認ください
     p 消費税 1000円

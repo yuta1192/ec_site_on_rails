@@ -22,6 +22,8 @@ Rails.application.routes.draw do
     collection do
       get 'search', to: 'products#search'
       get 'quick_order', to: 'products#quick_order'
+      post 'quick_order', to: 'products#quick_order'
+      post 'show_create', to: 'products#show_create'
     end
   end
   resources :free_pages, only: [:index]
