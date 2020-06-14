@@ -21,18 +21,23 @@ p 表示方法(リスト形式と大画像)
 p 表示件数（３０、６０）
 p 並び替え　高い、安い、新着
 
-p カートに入れるボタン
-p マイリストに入れるボタン
-
-= @products.each do |product|
-  p チェックボックス
-  p 商品の画像
-  = product.name
-  div
-  = "参考価格#{product.price}/(税込)#{product.price}"
-  = "会員価格#{product.price}"
-  p 送料は別途
-  p 数量
-
-p マイリストに入れるボタン
-p カートに入れるボタン
+p 画像	商品名	価格	送料	数量
+= form_with url: products_path, method: :post, local: true do |f|
+  - @products.each.with_index(1) do |product, id|
+    = f.fields_for :check_product do |ff|
+      = ff.check_box "[id_#{id}]check", {}, "true", "false"
+      = ff.hidden_field "[id_#{id}]product_id", value: product.id
+      p 商品の画像
+      = product.name
+      div
+      = "参考価格#{product.price}/(税込)#{product.price}"
+      = "会員価格#{product.price}"
+      - if product.postage_flg == true
+        p 送料は別途
+      - else
+        p 無料
+      = ff.label "数量"
+      = ff.number_field "[id_#{id}]quantity"
+      div
+  = f.submit "マイリストに入れるボタン", name: "mylist"
+  = f.submit "カートに入れるボタン"

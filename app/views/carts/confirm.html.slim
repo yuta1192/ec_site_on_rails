@@ -21,31 +21,54 @@ p 部署名 #{@current_user.department_name}
 p 担当者名 #{@current_user.contact_name}
 p 電話番号 #{@current_user.phone_number}
 
-h2 お届け先情報
-- if params[:companies]
-  p else 変更がある場合は
-  p お届け先情報を入れていく
+= form_with url: user_carts_path, method: :post, local: true do |f|
+  h2 お届け先情報
+  - if params[:companies]
+    p else 変更がある場合は
+    p お届け先情報を入れていく
+    = f.fields_for :addresses do |ff|
+      = ff.label "会社名 #{@address_attribute[:company_name]}"
+      = ff.hidden_field :company_name, value: @address_attribute[:company_name]
+      div
 
-  p 会社名	#{@address_attribute[:company_name]}
-  p お名前	#{@address_attribute[:name_sei]} #{@address_attribute[:name_mei]}
-  p 住所	#{@address_attribute[:zip_code]}
-  p      #{@address_attribute[:prefectures]} #{@address_attribute[:municipation]} #{@address_attribute[:address_1]} #{@address_attribute[:address_2]}
-  p 電話番号	#{@address_attribute[:tel]}
-  p 携帯番号	#{@address_attribute[:phone_number]}
+      = ff.label "お名前 #{@address_attribute[:name_sei]} #{@address_attribute[:name_mei]}"
+      = ff.hidden_field :user_name, value: "#{@address_attribute[:name_sei]}#{@address_attribute[:name_mei]}"
+      div
 
-- else
-  p if もし変更がない場合は
-  p お届け先	お客様情報と同じ住所に配送する
+      = ff.label "郵便番号 #{@address_attribute[:zip_code]}"
+      = ff.hidden_field :zip_code, value: @address_attribute[:zip_code]
+      div
 
-h2 お届け希望日時指定・備考
-- if params[:date] == "99"
-  p お届け希望日 指定なし
-- else
-  p お届け希望日 #{@date}
+      = ff.label "住所 #{@address_attribute[:prefectures]} #{@address_attribute[:municipation]} #{@address_attribute[:address_1]} #{@address_attribute[:address_2]}"
+      = ff.hidden_field :address, value: "#{@address_attribute[:prefectures]} #{@address_attribute[:municipation]} #{@address_attribute[:address_1]}  #{@address_attribute[:address_2]}"
+      div
 
-p 備考 #{params[:remakes]}
+      = ff.label "電話番号 #{@address_attribute[:tel]}"
+      = ff.hidden_field :tel, value: @address_attribute[:tel]
+      div
 
-p 以上の内容でよろしければ、下の「この内容で注文する」ボタンを押してください。
+      = ff.label "携帯番号 #{@address_attribute[:phone_number]}"
+      = ff.hidden_field :phone_number, value: @address_attribute[:phone_number]
+      div
 
-= link_to '訂正する', edit_user_cart_path(@current_user, @current_user.cart_id)
-= link_to 'この内容で注文する', user_cart_complite_path(@current_user, @current_user.cart_id)
+  - else
+    p if もし変更がない場合は
+    p お届け先	お客様情報と同じ住所に配送する
+
+  h2 お届け希望日時指定・備考
+  - if params[:date] == "99"
+    = f.label "お届け希望日 指定なし"
+    = f.hidden_field :date, value: nil
+    div
+  - else
+    = f.label "お届け希望日 #{@date}"
+    = f.hidden_field :date, value: @date
+    div
+
+  = f.label "備考 #{params[:remakes]}"
+  = f.hidden_field :remakes, value: params[:remakes]
+
+  p 以上の内容でよろしければ、下の「この内容で注文する」ボタンを押してください。
+
+  = link_to '訂正する', edit_user_cart_path(@current_user, @current_user.cart_id)
+  = f.submit 'この内容で注文する'

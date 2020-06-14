@@ -1,1 +1,24 @@
 p 商品詳細
+
+h2 = @product.name
+
+
+p 参考価格：#{@product.price}円/税込#{@product.price + 100}円
+p 会員価格：#{@product.member_price}円
+
+p 左に画像
+
+p 右に
+p 商品番号	#{@product.product_number}
+- if @product.postage_flg == "true"
+  p 送料 送料は別途かかります
+- else
+  p 送料 無料
+p お届け予定日	配送設定デモ(それ用のリンク作ってパクれ)
+
+p 商品のご注文
+p 価格	在庫数	数量	カートに入れる
+= form_with url: show_create_products_path(product_id: @product.id), method: :post, local: true do |f|
+  p #{@product.price}円 #{@product.stock}
+  = f.number_field :quantity
+  = f.submit "カートに入れる"

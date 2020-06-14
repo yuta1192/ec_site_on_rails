@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_10_232502) do
+ActiveRecord::Schema.define(version: 2020_06_14_054122) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "company_name"
@@ -39,6 +39,8 @@ ActiveRecord::Schema.define(version: 2020_06_10_232502) do
     t.integer "cart_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "cart_number"
+    t.integer "order_history_id"
     t.index ["cart_id"], name: "index_cart_items_on_cart_id"
     t.index ["product_id"], name: "index_cart_items_on_product_id"
   end
@@ -63,6 +65,20 @@ ActiveRecord::Schema.define(version: 2020_06_10_232502) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_contacts_on_user_id"
+  end
+
+  create_table "delivery_infos", force: :cascade do |t|
+    t.string "company_name"
+    t.string "user_name"
+    t.string "address"
+    t.string "tel"
+    t.string "phone_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "zip_code"
+    t.date "delivery_day"
+    t.integer "purchase_history_id"
+    t.integer "order_history_id"
   end
 
   create_table "free_pages", force: :cascade do |t|
@@ -98,6 +114,8 @@ ActiveRecord::Schema.define(version: 2020_06_10_232502) do
   create_table "my_lists", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.integer "product_id"
   end
 
   create_table "order_histories", force: :cascade do |t|
@@ -108,7 +126,6 @@ ActiveRecord::Schema.define(version: 2020_06_10_232502) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "cart_number"
-    t.integer "cart_product_id"
     t.index ["user_id"], name: "index_order_histories_on_user_id"
   end
 
@@ -132,6 +149,7 @@ ActiveRecord::Schema.define(version: 2020_06_10_232502) do
     t.string "cart_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "order_history_id"
   end
 
   create_table "sessions", force: :cascade do |t|

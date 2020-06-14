@@ -1,11 +1,94 @@
 class ProductsController < ApplicationController
   def search
     @product_categories = Product.select(:category).distinct
-    @search_params = products_search_params
-    @products = Product.search(@search_params)
+    @products = Product.search(products_search_params[:name]).category_search(products_search_params[:category])
+  end
+
+  def show
+    @product = Product.find(params[:id])
+  end
+
+  def show_create
+    unless OrderHistory.where(cart_number: @current_user.cart.cart_number).present?
+      order_history_number = SecureRandom.alphanumeric()
+      order_history = OrderHistory.new(order_number: order_history_number, user_id: @current_user.id, cart_number: @current_user.cart.cart_number)
+      order_history.save!
+    end
+    order_history_id = OrderHistory.find_by(cart_number: @current_user.cart.cart_number).id
+    cart_item = CartItem.new(product_id: params[:product_id], quantity: params[:quantity], cart_id: @current_user.cart.id, cart_number: @current_user.cart.cart_number, order_history_id: order_history_id)
+    if cart_item.save!
+      redirect_to edit_user_cart_path(@current_user, @current_user.cart.id)
+    else
+      render product_path
+    end
+  end
+
+  def create
+    @products = params[:check_product].keys
+    check_product = []
+    @products.each do |id|
+      check_product << [product_id: params[:check_product][id][:product_id], quantity: params[:check_product][id][:quantity]] if params[:check_product][id][:check] == "true"
+    end
+    if check_product
+      if params[:mylist].present?
+        check_product.flatten!
+        check_product.each do |product|
+          unless MyList.where(user_id: @current_user.id, product_id: product[:product_id])
+            my_list = MyList.new(user_id: @current_user.id, product_id: product[:product_id])
+            my_list.save!
+          end
+        end
+        redirect_to user_my_lists_path(@current_user)
+      else
+        # order_numberはランダムで作成, cart_item
+        unless OrderHistory.where(cart_number: @current_user.cart.cart_number).present?
+          order_history_number = SecureRandom.alphanumeric()
+          order_history = OrderHistory.new(order_number: order_history_number, user_id: @current_user.id, cart_number: @current_user.cart.cart_number)
+          order_history.save!
+        end
+        check_product.flatten!
+        check_product.each do |product|
+          unless CartItem.where(product_id: product[:product_id], cart_number: @current_user.cart.cart_number)
+            cart_item = CartItem.new(quantity: product[:quantity], product_id: product[:product_id], cart_id: @current_user.cart_id, cart_number: @current_user.cart.cart_number, order_history_id: order_history.id)
+            cart_item.save!
+          end
+        end
+        redirect_to edit_user_cart_path(@current_user, @current_user.cart_id)
+      end
+    else
+      render search
+      flash[:error] = "error"
+    end
   end
 
   def quick_order
+    if params[:cart]
+      unless OrderHistory.where(cart_number: @current_user.cart.cart_number).present?
+        order_history_number = SecureRandom.alphanumeric()
+        order_history = OrderHistory.new(order_number: order_history_number, user_id: @current_user.id, cart_number: @current_user.cart.cart_number)
+        order_history.save!
+      end
+      order = params[:order].keys
+      product_code = []
+      order.each do |id|
+        product_code << [product_code: params[:order][id][:product_code],quantity: params[:order][id][:quantity]] if (params[:order][id][:product_code] && params[:order][id][:quantity]).present?
+      end
+      render quick_order_products_path unless product_code.present?
+      product_code.flatten!
+      order_history_id = OrderHistory.where(cart_number: @current_user.cart.cart_number)
+      product_code.each do |pc|
+        if Product.where(product_number: pc[:product_code]).present?
+          product = Product.where(product_number: pc[:product_code])
+          unless CartItem.where(product_id: product.id, cart_number: @current_user.cart.cart_number)
+            cart_item = CartItem.new(quantity: pc[:quantity], product_id: product.id, cart_id: @current_user.cart_id, cart_number: @current_user.cart.cart_number, order_history_id: order_history_id)
+            cart_item.save!
+          end
+          redirect_to edit_user_cart_path(@current_user, @current_user.cart_id)
+        else
+          return redirect_to quick_order_products_path
+        end
+      end
+    end
   end
 
   private
