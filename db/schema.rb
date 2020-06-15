@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_14_054122) do
+ActiveRecord::Schema.define(version: 2020_06_15_231127) do
+
+  create_table "Information", force: :cascade do |t|
+    t.text "detail"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "release_flg", default: true, null: false
+    t.date "published_start"
+    t.date "published_end"
+    t.string "attachment_file1"
+    t.string "attachment_file2"
+    t.string "attachment_file3"
+    t.string "attachment_file4"
+    t.string "attachment_file5"
+    t.string "title"
+  end
 
   create_table "addresses", force: :cascade do |t|
     t.string "company_name"
@@ -31,6 +46,13 @@ ActiveRecord::Schema.define(version: 2020_06_14_054122) do
     t.datetime "updated_at", null: false
     t.boolean "is_select_flag", default: false, null: false
     t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
+
+  create_table "banners", force: :cascade do |t|
+    t.integer "banner_type"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "cart_items", force: :cascade do |t|
@@ -89,9 +111,13 @@ ActiveRecord::Schema.define(version: 2020_06_14_054122) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "information", force: :cascade do |t|
-    t.text "detail"
+  create_table "images", force: :cascade do |t|
     t.string "image"
+    t.string "url"
+    t.string "name"
+    t.boolean "is_banner_flg", default: false, null: false
+    t.integer "banner_type"
+    t.text "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

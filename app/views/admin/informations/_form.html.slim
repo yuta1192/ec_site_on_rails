@@ -1,0 +1,17 @@
+= f.label "日付（必須）"
+= f.date_field :date
+div
+= f.label "掲載期間"
+= f.date_field :start_yyyymmdd
+= f.text_field :start_hhmm
+|
+  ～
+= f.date_field :end_yyyymmdd
+= f.text_field :end_hhmm
+p ※「yyyymmdd」の形式で入力してください。（yyyy＝年／mm＝月／dd＝日）　例）20080808
+p ※「hhmm」の形式で入力してください。（hh＝時／mm＝分）　例）0930
+p ※時間未入力の場合は、0時0分が設定されます。
+= f.label "内容（必須）"
+= f.text_field :detail
+div
+= f.label "添付ファイル（5つまで）"

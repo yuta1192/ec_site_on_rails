@@ -32,4 +32,9 @@ Rails.application.routes.draw do
   get 'complite', to: 'contacts#complite'
   get 'sitemap', to: 'sitemaps#sitemap'
   get 'mypage', to: 'mypages#mypage'
+
+  namespace :admin do
+    resources :informations
+    resources :images
+  end
 end
