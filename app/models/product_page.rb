@@ -1,0 +1,2 @@
+class ProductPage < ApplicationRecord
+end
