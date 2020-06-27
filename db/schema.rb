@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_16_232516) do
+ActiveRecord::Schema.define(version: 2020_06_18_234536) do
 
   create_table "Images", force: :cascade do |t|
     t.string "image"
@@ -114,11 +114,15 @@ ActiveRecord::Schema.define(version: 2020_06_16_232516) do
   end
 
   create_table "free_pages", force: :cascade do |t|
-    t.string "title"
-    t.string "second_title"
-    t.text "sentence"
+    t.string "page_title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "h1_tag"
+    t.string "url"
+    t.integer "place"
+    t.boolean "is_release_flg", default: false, null: false
+    t.boolean "is_login_flg", default: false, null: false
+    t.integer "display_order"
   end
 
   create_table "inqueries", force: :cascade do |t|
@@ -152,6 +156,14 @@ ActiveRecord::Schema.define(version: 2020_06_16_232516) do
     t.datetime "updated_at", null: false
     t.string "cart_number"
     t.index ["user_id"], name: "index_order_histories_on_user_id"
+  end
+
+  create_table "page_contents", force: :cascade do |t|
+    t.string "title"
+    t.text "sentence"
+    t.integer "free_page_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "product_pages", force: :cascade do |t|

@@ -42,5 +42,6 @@ Rails.application.routes.draw do
     get 'product_page_edit', to: 'product_pages#edit'
     post 'product_page_create', to: 'product_pages#create'
     resources :free_pages
+    resources :page_contents, only: [:destroy, :create]
   end
 end
