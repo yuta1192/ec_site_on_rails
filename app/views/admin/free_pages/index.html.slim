@@ -1,0 +1,25 @@
+p ページ管理
+p フロントサイトに表示するページを自由に追加・編集が可能です。
+p ページ名称	URL	リンク表示場所	表示順 [?]	公開	編集	削除
+- @free_pages.each do |fp|
+  = fp.page_title
+  = fp.url
+  - if fp.place == 0
+    p まだ場所なし
+  - elsif fp.place == 1
+    p ヘッダー
+  - elsif fp.place == 2
+    p フッター
+  - elsif fp.place == 3
+    p ヘッダー フッター
+  = fp.place
+  = fp.display_order
+  - if fp.is_release_flg == true
+    公開
+  - else
+    非公開
+  = link_to '編集', edit_admin_free_page_path(fp)
+  = link_to '削除', admin_free_page_path(fp)
+  div
+
+= link_to '新規登録', new_admin_free_page_path

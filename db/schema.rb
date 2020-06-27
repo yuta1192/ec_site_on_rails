@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_15_231127) do
+ActiveRecord::Schema.define(version: 2020_06_18_234536) do
+
+  create_table "Images", force: :cascade do |t|
+    t.string "image"
+    t.string "url"
+    t.string "name"
+    t.boolean "is_banner_flg", default: false, null: false
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "banner_id"
+  end
 
   create_table "Information", force: :cascade do |t|
     t.text "detail"
@@ -49,7 +60,6 @@ ActiveRecord::Schema.define(version: 2020_06_15_231127) do
   end
 
   create_table "banners", force: :cascade do |t|
-    t.integer "banner_type"
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -104,22 +114,15 @@ ActiveRecord::Schema.define(version: 2020_06_15_231127) do
   end
 
   create_table "free_pages", force: :cascade do |t|
-    t.string "title"
-    t.string "second_title"
-    t.text "sentence"
+    t.string "page_title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "images", force: :cascade do |t|
-    t.string "image"
+    t.string "h1_tag"
     t.string "url"
-    t.string "name"
-    t.boolean "is_banner_flg", default: false, null: false
-    t.integer "banner_type"
-    t.text "comment"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer "place"
+    t.boolean "is_release_flg", default: false, null: false
+    t.boolean "is_login_flg", default: false, null: false
+    t.integer "display_order"
   end
 
   create_table "inqueries", force: :cascade do |t|
@@ -153,6 +156,21 @@ ActiveRecord::Schema.define(version: 2020_06_15_231127) do
     t.datetime "updated_at", null: false
     t.string "cart_number"
     t.index ["user_id"], name: "index_order_histories_on_user_id"
+  end
+
+  create_table "page_contents", force: :cascade do |t|
+    t.string "title"
+    t.text "sentence"
+    t.integer "free_page_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "product_pages", force: :cascade do |t|
+    t.text "up_page_text"
+    t.text "bottom_page_text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "products", force: :cascade do |t|

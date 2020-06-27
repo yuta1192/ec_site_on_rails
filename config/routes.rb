@@ -36,5 +36,12 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :informations
     resources :images
+    get 'banner_index', to: 'images#banner_index'
+    post 'banner_create', to: 'images#banner_create'
+    patch 'banner_update', to: 'images#banner_update'
+    get 'product_page_edit', to: 'product_pages#edit'
+    post 'product_page_create', to: 'product_pages#create'
+    resources :free_pages
+    resources :page_contents, only: [:destroy, :create]
   end
 end

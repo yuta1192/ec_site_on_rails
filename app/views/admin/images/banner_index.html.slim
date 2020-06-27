@@ -1,0 +1,37 @@
+p バナー・リンク管理
+p サイトに表示されるバナーやリンクを管理します。
+p 新しく表示位置を追加するときは、表示位置を「新規登録」にし、表示位置名称を入力し、「追加」ボタンを押してください。ただし表示するにはテンプレート側の設定も必要です。
+p 画像を登録する場合は、あらかじめ「画像管理」にて画像をアップロードしてください。
+p 全ての編集が終わりましたら、「サイト更新」ボタンを押し、情報を更新してください。「一時削除」、「一時保存」だけでは、データは更新されません。
+
+/ セレクトボックス選択で画面を変える（多分ajaxとか？）
+= form_with model: Banner, url: admin_banner_update_path, method: :patch do |f|
+  = f.label "表示位置"
+  = f.collection_select :banner_id, Banner.all, :id, :name
+  div
+  / こっちも上が変われば変わる
+  = f.label "表示位置名称"
+  = f.text_field :banner_name
+  div
+  = f.submit '変更'
+
+= form_with model: Image, url: admin_banner_update_path, method: :get do |f|
+  = f.label 'バナー・リンク一覧'
+  = f.collection_select :image_name, @images, :id, :name
+  div
+
+/ 上で選ばれたものが表示されるように変更する
+= form_with model: Image, url: admin_banner_update_path, method: :post do |f|
+  p 内容
+  = f.label '名称（必須）'
+  = f.text_field :name
+  div
+  = f.label 'リンク対象（必須）'
+  = f.text_field :image
+  = f.text_field :image_url
+  div
+  = f.label 'リンク先URL'
+  = f.text_field :url
+  div
+  = f.label 'コメント'
+  = f.text_field :comment
