@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_18_234536) do
+ActiveRecord::Schema.define(version: 2020_06_28_045639) do
 
   create_table "Images", force: :cascade do |t|
     t.string "image"
@@ -35,6 +35,12 @@ ActiveRecord::Schema.define(version: 2020_06_18_234536) do
     t.string "attachment_file3"
     t.string "attachment_file4"
     t.string "attachment_file5"
+    t.string "title"
+  end
+
+  create_table "Inqueries", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "title"
   end
 
@@ -125,13 +131,6 @@ ActiveRecord::Schema.define(version: 2020_06_18_234536) do
     t.integer "display_order"
   end
 
-  create_table "inqueries", force: :cascade do |t|
-    t.text "question"
-    t.text "answer"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "items", force: :cascade do |t|
     t.string "item"
     t.integer "sitemap_id"
@@ -194,6 +193,15 @@ ActiveRecord::Schema.define(version: 2020_06_18_234536) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "order_history_id"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.text "question"
+    t.text "answer"
+    t.integer "display_order_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "inquery_id"
   end
 
   create_table "sessions", force: :cascade do |t|

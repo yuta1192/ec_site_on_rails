@@ -1,0 +1,43 @@
+p よくある質問
+p よくある質問ページに表示されるQ＆Aを登録します。
+p はじめにタイトルを設定します。リストの［新規登録］が選択されている状態で、タイトル編集欄にQ＆Aのタイトルを入力し「タイトル保存」ボタンを押します。
+p タイトルがリストに一時保存されます。
+p 次に保存されたタイトルを選択します。新規Q＆A登録欄が表示されますので、質問（Q.）とそれに対する答え（A.）を編集し「Q＆A保存」ボタンを押します。
+p Q＆Aが一時保存され、一覧に表示されます。（1つのタイトルに対し複数のQ＆Aを設定できますので、必要なだけ作業を繰り返します。）
+p 例）
+p ◇会員登録について（←Q＆Aのタイトルです。）
+p 　Q．会員登録に費用がかかるのですか？
+p 　A．会員登録は無料になっております。
+
+p タイトルを削除すると、関連するQ＆Aもすべて削除されますのでご注意ください。
+p 最後に「保存」ボタンを押してください。編集内容が保存されよくある質問ページに反映されます。
+
+= form_with model: @inquery, url: admin_inquery_path(@inquery), method: :patch, local: true do |f|
+  = f.label "タイトル"
+  = f.select :title, @inquery_select, prompt: "選択してください"
+  div
+  = f.label "タイトル編集"
+  = f.text_field :title
+  div
+  - @questions.each do |q|
+    = f.fields_for "questions[]", q do |ff|
+      = ff.label "Q"
+      = ff.label q.question
+      div
+      = ff.label "A"
+      = ff.label q.answer
+      div
+      = ff.label "表示順"
+      = ff.number_field :display_order_number
+      div
+      = link_to "編集", edit_admin_question_path(q)
+      div
+      = link_to "削除", admin_question_path(q), method: :delete
+      div
+  = f.label "新規Q＆A登録"
+  p Q
+  = f.text_field :question
+  p A
+  = f.text_field :answer
+  div
+  = f.submit "保存"

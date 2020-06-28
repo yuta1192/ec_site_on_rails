@@ -1,0 +1,2 @@
+module Admin::InqueriesHelper
+end
