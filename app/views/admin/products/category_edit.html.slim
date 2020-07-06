@@ -1,0 +1,18 @@
+- if params[:category][:id].present?
+  = form_with model: @category, url: category_update_admin_products_path, method: :patch, local: true do |f|
+    = f.hidden_field :id
+    = f.label 'カテゴリー名'
+    = f.text_field :name
+    = f.fields_for :child_categories do |ff|
+      / = ff.hidden_field :id, value: 6 ここは前の画面でカテゴリ、小カテゴリ両方選ばせるようにする。
+      = ff.label '小カテゴリー名'
+      = ff.text_field :name
+    = f.submit '登録'
+- else
+  = form_with model: @category, url: category_create_admin_products_path, method: :post, local: true do |f|
+    = f.label 'カテゴリー名'
+    = f.text_field :name
+    = f.fields_for :child_categories do |ff|
+      = ff.label '小カテゴリー名'
+      = ff.text_field :name
+    = f.submit '登録'

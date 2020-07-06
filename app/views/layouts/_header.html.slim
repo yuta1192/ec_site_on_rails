@@ -13,8 +13,8 @@ p ｜
 = link_to 'ログアウト', logout_path, method: :post
 
 p ｜
-- if @current_user
-  = link_to 'カートを見る', edit_user_cart_path(@current_user, @current_user.cart_id)
+/- if @current_user
+/  = link_to 'カートを見る', edit_user_cart_path(@current_user, @current_user.cart_id)
 
 p ここまでがヘッダとする
 p ------------------------------------

@@ -45,5 +45,14 @@ Rails.application.routes.draw do
     resources :page_contents, only: [:destroy, :create]
     resources :inqueries
     resources :questions
+    resources :products do
+      collection do
+        get 'search'
+        get 'category'
+        get 'category_edit'
+        post 'category_create'
+        patch 'category_update'
+      end
+    end
   end
 end

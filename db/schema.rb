@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_28_045639) do
+ActiveRecord::Schema.define(version: 2020_07_06_064614) do
 
   create_table "Images", force: :cascade do |t|
     t.string "image"
@@ -42,6 +42,37 @@ ActiveRecord::Schema.define(version: 2020_06_28_045639) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "title"
+  end
+
+  create_table "Products", force: :cascade do |t|
+    t.string "name"
+    t.text "detail"
+    t.string "category_name"
+    t.integer "category_id"
+    t.integer "price"
+    t.integer "member_price"
+    t.integer "stock"
+    t.string "product_number"
+    t.boolean "postage_flg", default: false, null: false
+    t.integer "postage"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "jan_code"
+    t.string "shipping_location"
+    t.string "notification_email"
+    t.boolean "new_flg", default: true, null: false
+    t.boolean "popular_flg", default: true, null: false
+    t.text "comment"
+    t.text "explanation_1"
+    t.text "explanation_2"
+    t.boolean "tax_flg", default: true, null: false
+    t.string "manufacturer"
+    t.boolean "remote_island_shipping_confirmation", default: true, null: false
+    t.date "display_period_start"
+    t.date "display_period_end"
+    t.integer "purchase_limit"
+    t.text "postage_comment"
+    t.boolean "is_release_flg", default: false, null: false
   end
 
   create_table "addresses", force: :cascade do |t|
@@ -83,11 +114,6 @@ ActiveRecord::Schema.define(version: 2020_06_28_045639) do
     t.index ["product_id"], name: "index_cart_items_on_product_id"
   end
 
-  create_table "cart_products", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "carts", force: :cascade do |t|
     t.string "cart_number"
     t.integer "order_history_id"
@@ -95,6 +121,19 @@ ActiveRecord::Schema.define(version: 2020_06_28_045639) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["order_history_id"], name: "index_carts_on_order_history_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "child_categories", force: :cascade do |t|
+    t.integer "category_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "contacts", force: :cascade do |t|
@@ -151,9 +190,11 @@ ActiveRecord::Schema.define(version: 2020_06_28_045639) do
     t.text "memo"
     t.integer "status"
     t.integer "user_id"
+    t.integer "cart_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "cart_number"
+    t.index ["cart_id"], name: "index_order_histories_on_cart_id"
     t.index ["user_id"], name: "index_order_histories_on_user_id"
   end
 
@@ -168,21 +209,6 @@ ActiveRecord::Schema.define(version: 2020_06_28_045639) do
   create_table "product_pages", force: :cascade do |t|
     t.text "up_page_text"
     t.text "bottom_page_text"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "products", force: :cascade do |t|
-    t.string "name"
-    t.text "detail"
-    t.integer "category"
-    t.integer "child_category"
-    t.integer "price"
-    t.integer "member_price"
-    t.integer "stock"
-    t.string "product_number"
-    t.boolean "postage_flg", default: false, null: false
-    t.integer "postage"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
