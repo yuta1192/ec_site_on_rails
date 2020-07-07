@@ -54,5 +54,12 @@ Rails.application.routes.draw do
         patch 'category_update'
       end
     end
+    resources :order_managements do
+      collection do
+        get 'user_search'
+        get 'order_history'
+        get 'order_history_search'
+      end
+    end
   end
 end

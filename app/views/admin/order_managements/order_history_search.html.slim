@@ -1,0 +1,57 @@
+p 受注情報一覧  ／ 該当データ ： 1件
+p 受注情報の検索結果一覧ページです。
+p 一覧の「詳細」ボタンを押すと、受注情報の詳細が表示されます。
+p 全商品がキャンセルされた受注情報は背景が灰色で表示されます。
+p 「出荷日」は、入力されている出荷日で異なるものがある場合は、早い出荷日を表示し（※）が付きます。
+
+div
+p
+  |
+    受注日 #{search_order_date}
+    お届け希望日 #{search_preferred_date}
+p
+  |
+    受注番号 #{search_order_number}
+    決済方式 #{search_payment_method}
+p
+  |
+    送り状番号 #{search_invoice_number}
+    入金 #{search_payment}
+p
+  |
+    出荷状況 #{shipping_status}
+    引当状況 #{allocation_status}
+p
+  |
+    送料確認 #{search_postage_confirmation}
+    商品No. #{search_product_number}
+p
+  |
+    商品名 #{search_product_name}
+    メーカー #{search_manufacturer}
+p
+  |
+    送り状番号 #{search_invoice_number}
+    会社名 #{search_company_name}
+p
+  |
+    部署コード #{search_department_code}
+    部署名 #{search_department_name}
+p
+  |
+    会員コード #{search_member_code}
+    担当者名 #{search_contact_name}
+p
+  |
+    出荷元 #{search_shipping_origin}
+    電話番号 #{search_tel}
+p
+  |
+    メールアドレス #{search_mail_address}
+    キャンセル #{search_cancel}
+p
+  |
+    表示順序 #{search_order_display}
+
+- @order_histories.each do |f|
+  = f.id
