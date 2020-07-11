@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_06_064614) do
+ActiveRecord::Schema.define(version: 2020_07_08_092142) do
 
   create_table "Images", force: :cascade do |t|
     t.string "image"
@@ -194,8 +194,29 @@ ActiveRecord::Schema.define(version: 2020_07_06_064614) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "cart_number"
+    t.date "order_date_start"
+    t.date "order_date_end"
+    t.boolean "preferred_date_flg", default: false, null: false
+    t.date "preferred_date_start"
+    t.date "preferred_date_end"
+    t.string "invoice_number"
+    t.integer "payment_method"
+    t.integer "payment"
+    t.integer "allocation_status"
+    t.integer "shipping_status"
+    t.boolean "postage_confirmation", default: false, null: false
+    t.integer "shipping_origin"
+    t.boolean "cancel_flg", default: false, null: false
     t.index ["cart_id"], name: "index_order_histories_on_cart_id"
     t.index ["user_id"], name: "index_order_histories_on_user_id"
+  end
+
+  create_table "order_history_products", force: :cascade do |t|
+    t.integer "order_history_id"
+    t.integer "product_id"
+    t.integer "num"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "page_contents", force: :cascade do |t|
