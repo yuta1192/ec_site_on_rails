@@ -61,5 +61,10 @@ Rails.application.routes.draw do
         get 'order_history_search'
       end
     end
+    resources :shipments do
+      collection do
+        get 'search'
+      end
+    end
   end
 end
