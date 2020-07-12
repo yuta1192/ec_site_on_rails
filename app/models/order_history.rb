@@ -5,6 +5,7 @@ class OrderHistory < ApplicationRecord
   has_many :cart_items
   has_many :order_history_products
   has_many :addresses, through: :user
+  belongs_to :shipment
 
   scope :search, -> (search_params) do
     return if search_params.blank?

@@ -1,0 +1,114 @@
+p 出荷情報詳細
+p
+  | [受注番号 ： #{@order_history.order_number}］の出荷情報を表示しています。
+
+div
+= link_to '一覧に戻る', search_admin_shipments_path
+
+p 受注番号	#{@order_history.order_number}	受注日時	#{@order_history.updated_at.strftime('%Y/%m/%d %H:%M')}
+p 決済方式	#{@order_history.payment_method}
+p 備考 #{@order_history.memo}
+div
+
+p お客様情報
+p 会員コード	#{@user.name}
+p 担当者名	#{@user.contact_name}
+p 会社コード	#{@addresse.company_name}
+p 会社名	#{@addresse.company_name}
+p 部署コード	#{@addresse.department_name}
+p 部署名	#{@addresse.department_name}
+p 住所 #{@addresse.zip_code} #{@addresse.prefectures} #{@addresse.municipation} #{@addresse.address_1} #{@addresse.address_2}
+p 電話番号 #{@addresse.tel}
+p 携帯番号 #{@addresse.phone_number}
+p FAX番号 #{@addresse.tel}
+p メールアドレス	#{@user.e_mail}
+p 会員情報備考 #{@user.name}
+div
+
+p お届け先情報
+p お名前	河合朋秋
+p 会社コード
+p 会社名	株式会社ファーストコンサルティング
+p 部署コード
+p 部署名
+p ご住所	103-0023
+p 東京都中央区 日本橋本町
+p 電話番号	03-4455-3848
+p 携帯番号
+p お届け希望日時	指定なし
+div
+
+= form_with model: Shipment, url: admin_shipment_path, method: :patch, local: true do |f|
+  p □	出荷状況	[商品No.]商品名	出荷元	在庫	運送会社	出荷予定日	出荷日	送り状番号	出荷メール	請求日
+  - @shipment_products.each do |sp|
+    = check_box_tag 'shipment_product[id][]', sp.id, false
+    = sp.status
+    | [#{sp.product.product_number}] #{sp.product.name}
+    = sp.product.shipping_origin
+    = sp.product.stock
+    = sp.product.shipping_company
+    = sp.expected_shipping_date
+    = sp.ship_date
+    = sp.invoice_number
+    = sp.shipping_email_flg
+    = sp.billing_date
+    div
+
+  p 処理内容　（上記チェックボックスにチェックを入れて実行）
+  = f.label '出荷状況'
+  = f.radio_button :status, 1
+  | 着手に変更
+  = f.radio_button :status, 2
+  | 出荷可能に戻す
+    ※出荷可能以降変更可能
+  div
+  = f.label '出荷予定日'
+  = f.text_field :expected_shipping_date, value: Time.now.strftime('%Y%m%d')
+  p ※「yyyymmdd」の形式で入力してください。（yyyy＝年／mm＝月／dd＝日）　例）20130731
+  div
+  = f.label '運送会社'
+  = f.radio_button :shipping_company, 1
+  | ヤマト運輸
+  = f.radio_button :shipping_company, 2
+  | 佐川急便
+  = f.radio_button :shipping_company, 3
+  | 日本郵便
+  = f.radio_button :shipping_company, 4
+  | その他
+  div
+  = f.label '出荷予定通知メール'
+  = f.check_box :shipment_notification_email, {class: "check_box"}, true, false
+  | 送信する
+  |	※出荷予定日が入力済みで未送信のみ送信可能
+  div
+  = f.label '送り状番号'
+  = f.text_field :invoice_number
+  p ※複数ある場合は、「,(カンマ)」で区切って入力してください
+  div
+  = f.label '出荷日'
+  = f.text_field :ship_date, value: Time.now.strftime('%Y%m%d')
+  p ※「yyyymmdd」の形式で入力してください。（yyyy＝年／mm＝月／dd＝日）　例）20130731
+  div
+  = f.label '出荷通知メール'
+  = f.check_box :shipping_email_flg, {class: "check_box"}, true, false
+  | 送信する
+  | ※出荷済で未送信のみ送信可能
+  div
+  = f.label 'ダウンロード'
+  = f.select :delivery_note, [['納品書(金額あり)',1],['納品書(金額なし)',2]]
+  = f.check_box :download, {class: "check_box"}, true, false
+  | 発行する
+  div
+  p セット商品
+  = f.radio_button :set, 1
+  | 両方出力する
+  div
+  = f.radio_button :set, 2
+  | セット単位(親)で出力する
+  div
+  = f.radio_button :set, 3
+  | セットの明細(子)単位で出力する
+  div
+  = f.submit '更新する'
+
+= link_to '一覧に戻る', search_admin_shipments_path

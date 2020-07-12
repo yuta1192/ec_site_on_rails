@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_08_092142) do
+ActiveRecord::Schema.define(version: 2020_07_12_023134) do
 
   create_table "Images", force: :cascade do |t|
     t.string "image"
@@ -73,6 +73,10 @@ ActiveRecord::Schema.define(version: 2020_07_08_092142) do
     t.integer "purchase_limit"
     t.text "postage_comment"
     t.boolean "is_release_flg", default: false, null: false
+    t.boolean "set_flg", default: false, null: false
+    t.integer "set_num"
+    t.integer "shipping_origin"
+    t.string "shipping_company"
   end
 
   create_table "addresses", force: :cascade do |t|
@@ -93,6 +97,9 @@ ActiveRecord::Schema.define(version: 2020_07_08_092142) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_select_flag", default: false, null: false
+    t.string "company_code"
+    t.string "department_code"
+    t.string "fax"
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
@@ -207,6 +214,7 @@ ActiveRecord::Schema.define(version: 2020_07_08_092142) do
     t.boolean "postage_confirmation", default: false, null: false
     t.integer "shipping_origin"
     t.boolean "cancel_flg", default: false, null: false
+    t.integer "shipment_id"
     t.index ["cart_id"], name: "index_order_histories_on_cart_id"
     t.index ["user_id"], name: "index_order_histories_on_user_id"
   end
@@ -256,6 +264,47 @@ ActiveRecord::Schema.define(version: 2020_07_08_092142) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "shipment_products", force: :cascade do |t|
+    t.integer "shipment_id"
+    t.integer "product_id"
+    t.integer "num"
+    t.integer "status"
+    t.boolean "picking_flg", default: false, null: false
+    t.boolean "csv_flg", default: false, null: false
+    t.date "expected_shipping_date"
+    t.date "ship_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "invoice_number"
+    t.boolean "shipping_email_flg", default: false, null: false
+    t.date "billing_date"
+  end
+
+  create_table "shipments", force: :cascade do |t|
+    t.integer "shipping_status"
+    t.integer "allocation_status"
+    t.date "expected_shipping_date"
+    t.integer "shipping_company"
+    t.date "ship_date"
+    t.boolean "shipping_email", default: false, null: false
+    t.date "billing_date"
+    t.date "sales_record_date"
+    t.integer "data_download"
+    t.boolean "total_picking", default: false, null: false
+    t.boolean "individual_picking", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "order_history_id"
+    t.boolean "cancel_flg", default: false, null: false
+    t.integer "shipping_origin"
+    t.integer "prefectures"
+    t.date "order_date"
+    t.date "preferred_arrival_date"
+    t.boolean "arrival_date_flg", default: false, null: false
+    t.boolean "expected_shipping_date_flg", default: false, null: false
+    t.boolean "sales_record_date_flg", default: false, null: false
+  end
+
   create_table "sitemaps", force: :cascade do |t|
     t.string "map_name"
     t.datetime "created_at", null: false
@@ -274,6 +323,8 @@ ActiveRecord::Schema.define(version: 2020_07_08_092142) do
     t.string "department_name"
     t.string "contact_name"
     t.integer "phone_number"
+    t.string "member_code"
+    t.text "remark"
     t.index ["cart_id"], name: "index_users_on_cart_id"
   end
 
