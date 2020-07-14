@@ -1,0 +1,23 @@
+p お届け先一覧/該当データ：10件
+p お届け先リストの確認・編集ができます。
+
+= form_with model: User, url: search_admin_addresses_path, method: :get, local: true do |f|
+  = f.label 'キーワード[?]'
+  = f.text_field :keyword
+  div
+  = f.submit '検索'
+
+- @users.each do |user|
+  p 会員	お届け先
+  p 会員ID 	会社名 	お名前 	お届け先ID 	会社名 	お名前 	地域 	電話番号 	詳細	削除
+  = user.member_id
+  = user.company_name
+  | #{%W(#{user.name_sei} #{user.name_mei}).join}
+  - @address.where(user_id: user).each do |ad|
+    = ad.id
+    = ad.company_name
+    | #{%W(#{ad.name_sei} #{ad.name_mei}).join}
+    = ad.prefectures
+    = ad.tel
+    = link_to '詳細', admin_address_path(ad)
+    = link_to '削除', admin_address_path(ad), method: :delete

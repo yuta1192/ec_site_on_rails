@@ -1,0 +1,17 @@
+p 会員グループ一覧
+p 会員グループ検索
+= form_with model: Group, url: search_admin_groups_path, method: :get, local: true do |f|
+  = f.label 'グループ名'
+  = f.text_field :group_name
+  div
+  = f.submit '検索'
+
+p ID	グループ名	登録日	会員数	サブ商品数	詳細	削除
+- @groups.each do |group|
+  = group.id
+  = group.name
+  = group.created_at.strftime('%Y%m%d')
+  = group.group_users.count
+  | 0
+  = link_to '詳細', admin_group_path(group)
+  = link_to '削除', admin_group_path(group), method: :delete

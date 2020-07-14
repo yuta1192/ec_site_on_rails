@@ -1,0 +1,59 @@
+p 会員グループ登録
+p 会員グループ登録
+= form_with model: @group, url: admin_group_path, method: :patch, local: true do |f|
+  = f.label 'グループ名'
+  = f.text_field :name, value: @group.name
+  = f.submit '保存', name: "group_name"
+
+= form_with model: Group, url: admin_group_path(@group), method: :get, local: true do |f|
+  = f.label '会員コード'
+  = f.text_field :member_code
+  div
+  = f.label '会社名'
+  = f.text_field :company_name
+  = f.label '部署名'
+  = f.text_field :department_name
+  div
+  = f.label '名前	姓'
+  = f.text_field :name_sei
+  = f.label '名'
+  = f.text_field :name_mei
+  = f.label '郵便番号'
+  = f.text_field :zip_code_first
+  | -
+  = f.text_field :zip_code_second
+  div
+  = f.label 'メールアドレス'
+  = f.text_field :e_mail
+  = f.label '電話番号'
+  = f.text_field :tel_first
+  | -
+  = f.text_field :tel_second
+  | -
+  = f.text_field :tel_third
+  div
+  = f.submit '検索'
+
+- if params[:group].present?
+  = form_with model: Group, url: admin_group_path, method: :patch, local: true do |f|
+    p 会社名 （部署名）	お名前	会員コード
+    - @users.each do |user|
+      = check_box_tag 'user[id][]', user.id, false
+      | #{user.company_name}#{user.department_name.present? ? "(#{user.department_name})" : ""}
+      | #{user.name_sei + " " + user.name_mei}
+      = user.member_code
+      div
+    = f.submit '削除', name: "delete"
+    = f.submit '追加', name: "add"
+
+- else
+  = form_with model: Group, url: admin_group_path, method: :patch, local: true do |f|
+    p 会社名 （部署名）	お名前	会員コード
+    - @group_users.each do |group_user|
+      = check_box_tag 'user[id][]', group_user.user.id, false
+      | #{group_user.user.company_name}#{group_user.user.department_name.present? ? "(#{group_user.user.department_name})" : ""}
+      | #{group_user.user.name_sei + " " + group_user.user.name_mei}
+      = group_user.user.member_code
+      div
+    = f.submit '削除', name: "delete"
+    = f.submit '追加', name: "add"

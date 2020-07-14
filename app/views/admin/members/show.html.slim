@@ -1,0 +1,109 @@
+p 更新
+p 編集後は、「更新」ボタンを押してください。
+p 各会員は、フロントサイトにメールアドレス、もしくは会員コードでログインします。
+
+= link_to '一覧に戻る', admin_members_path
+
+p 会員ステータス切替
+= form_with model: @user, url: admin_member_path, method: :patch, local: true do |f|
+  = f.submit '一時停止', name: "member_stop"
+  div
+  = f.label '会社名（必須）'
+  = f.text_field :company_name, value: @user.company_name
+  div
+  = f.label '会社名 フリガナ'
+  = f.text_field :company_name_kana, value: @user.company_name_kana
+  div
+  = f.label '会社コード'
+  = f.text_field :company_code, value: @user.company_code
+  div
+  = f.label '部署名'
+  = f.text_field :department_name, value: @user.department_name
+  div
+  = f.label '部署コード'
+  = f.text_field :department_code, value: @user.department_code
+  div
+  = f.label '会員ランク'
+  = f.select :rank, User.ranks.keys, value: @user.rank
+  div
+  = f.label '会員コード （必須）'
+  = f.text_field :member_code, value: @user.member_code
+  p ※半角英数字4文字以上16文字以下で入力してください。
+  div
+  = f.label 'メールアドレス （必須）'
+  = f.text_field :e_mail, value: @user.e_mail
+  p ※半角英数字で入力してください。
+  div
+  = f.label 'パスワード（必須）'
+  = f.text_field :password
+  p ※半角英数字4文字以上10文字以内で入力してください。
+  div
+  = f.label '担当者名	姓'
+  = f.text_field :name_sei, value: @user.name_sei
+  = f.label '名'
+  = f.text_field :name_mei, value: @user.name_mei
+  div
+  = f.label '担当者名 フリガナ	姓'
+  = f.text_field :name_sei_kana, value: @user.name_sei_kana
+  = f.label '名'
+  = f.text_field :name_mei_kana, value: @user.name_mei_kana
+  p ※全角カタカナで入力してください。
+  div
+  = f.label '住所（必須）'
+  = f.label '郵便番号'
+  = f.text_field :zip_code_front
+  | -
+  = f.text_field :zip_code_back
+  p ※半角数字で入力してください。
+  div
+  = f.label '都道府県'
+  = f.select :prefectures, User.prefectures.keys, value: @user.prefectures
+  div
+  = f.label '市区町村'
+  = f.text_field :municipation, value: @user.municipation
+  div
+  = f.label '地番、番地'
+  = f.text_field :address_1, value: @user.address_1
+  div
+  = f.label 'ビル、マンション、アパート名など'
+  = f.text_field :address_2, value: @user.address_2
+  div
+  = f.label '電話番号 （必須）'
+  = f.text_field :tel_first
+  | -
+  = f.text_field :tel_second
+  | -
+  = f.text_field :tel_third
+  p ※半角数字で入力してください。
+  div
+  = f.label '携帯番号'
+  = f.text_field :phone_number_first
+  | -
+  = f.text_field :phone_number_second
+  | -
+  = f.text_field :phone_number_third
+  p ※半角数字で入力してください。
+  div
+  = f.label 'FAX番号'
+  = f.text_field :fax_first
+  | -
+  = f.text_field :fax_second
+  | -
+  = f.text_field :fax_third
+  p ※半角数字で入力してください。
+  div
+  = f.label '決済方法（必須）'
+  = f.radio_button :payment_method, 1
+  | 基本支払方法設定に従う
+  | ＜基本設定／支払方法設定＞で設定した支払方法設定が適用されます。
+  div
+  = f.radio_button :payment_method, 2
+  | 会員別に設定する
+  div
+  = f.check_box :deadline
+  | 締め払い
+  div
+  = f.label '会員情報備考'
+  = f.text_field :remark, value: @user.remark
+  div
+  = f.submit '更新'

@@ -1,0 +1,36 @@
+p 会員一覧 ／ 該当データ ： 5件 ／ 最大登録数 ： 3,000件
+p 検索フォームより会員データを検索できます。
+p 検索条件を入力して「検索」ボタンを押してください。検索結果が一覧表示されます。（初期表示：登録順）
+p 会員情報の変更は詳細ページより行ってください。「詳細」ボタンを押すと、会員情報詳細ページが表示されます。
+p お客様へのログイン情報ご案内について：会員登録後は、フロントサイトのURLとログイン用の ログインID（メールアドレスまたは会員コード） をお伝えください。（パスワードはフロントサイトより再発行するようご案内ください。）
+
+= form_with model: User, url: search_admin_members_path, method: :get, local: true do |f|
+  = f.label 'キーワード [?]'
+  = f.text_field :keyword
+  div
+  = f.label '状態'
+  = f.select :status, [['有効',1],['退会',2],['一時停止',3]]
+  = f.label '地域'
+  = f.select :prefectures, User.prefectures.keys, {include_blank: "全て", selected: "全て"}
+  div
+  = f.label '入会日'
+  = f.text_field :start_date, placeholder: 'yyyymmdd'
+  | ~
+  = f.text_field :end_date, placeholder: 'yyyymmdd'
+  = f.label '会員ランク'
+  = f.select :rank, User.ranks.keys, {include_blank: "全て", selected: "全て"}
+  div
+  = f.submit '検索'
+
+p 会社名 （部署名） 	担当者名 	会員コード 	メールアドレス 	会員情報備考 	入会日 	会員ランク	詳細	退会	ログイン
+- @users.each do |user|
+  | #{user.company_name} #{(user.department_name.present? && user.company_name.present?) ? "(#{user.department_name})" : ""}
+  | #{user.name_sei + " " + user.name_mei}
+  = user.member_code
+  = user.e_mail
+  = user.remark
+  = user.created_at.strftime('%Y%m%d')
+  = user.rank
+  = link_to '詳細', admin_member_path(user)
+  = link_to '退会', admin_member_path(user), method: :delete
+  = link_to 'ログイン', admin_members_path

@@ -66,5 +66,29 @@ Rails.application.routes.draw do
         get 'search'
       end
     end
+    resources :members do
+      collection do
+        get 'search'
+      end    end
+    resources :groups do
+      collection do
+        get 'search'
+      end    end
+    resources :addresses do
+      collection do
+        get 'search'
+        get 'user_search'
+      end
+    end
+    resources :shipping_origins do
+      collection do
+        get 'search'
+      end
+    end
+    resources :stock_managements do
+      collection do
+        get 'search'
+      end
+    end
   end
 end
