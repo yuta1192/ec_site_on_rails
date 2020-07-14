@@ -1,0 +1,5 @@
+p ユーザー検索
+
+- @users.each do |user|
+  = user.id
+  = link_to '選択', new_admin_address_path(user_id: user)

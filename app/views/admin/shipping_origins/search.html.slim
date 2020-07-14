@@ -1,0 +1,23 @@
+p 出荷元一覧
+p 出荷元の情報を編集する場合は「詳細」ボタンを押してください。出荷元情報の編集ページが表示されます。
+p 出荷元を削除する場合は「削除」ボタンを押してください。（※一度削除した出荷元情報は元に戻すことができませんのでご注意ください。）
+= form_with model: ShippingOrigin, url: search_admin_shipping_origins_path, method: :get, local: true do |f|
+  = f.label '出荷元ID'
+  = f.text_field :origin_id
+  = f.label '出荷元名'
+  = f.text_field :shipping_origin_name
+  div
+  = f.label '状態'
+  = f.select :status, [['指定なし',99],['有効',1],['無効',2]]
+  div
+  = f.submit '検索'
+
+p 状態	出荷元ID	パスワード	出荷元名	詳細	削除	ログイン
+- @shipping_origins.each do |so|
+  = so.status
+  = so.origin_id
+  = so.password_digest
+  = so.shipping_origin_name
+  = link_to '詳細', admin_shipping_origin_path(so)
+  = link_to '削除', admin_shipping_origin_path(so), method: :delete
+  p ログイン

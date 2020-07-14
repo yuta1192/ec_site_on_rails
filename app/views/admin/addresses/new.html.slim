@@ -1,0 +1,82 @@
+p お届け先情報更新
+p お届け先情報を更新します。
+p 編集内容は、会員様のお届け先リストに反映されます。
+p 編集後は、「更新」ボタンを押してください。
+p 会員情報（必須）
+- if @user.present?
+  p
+    | 会員ID #{@user.member_id}
+  p
+    | 会社名 #{@user.company_name}
+  p
+    | お名前 #{%W(#{@user.name_sei} #{@user.name_mei}).join}
+  p
+  |	住所 #{@user.zip_code}
+  | #{@user.prefectures} #{@user.municipation} #{@user.address_1} #{@user.address_2}
+  p
+  |	電話番号 #{@user.tel}
+  p
+  | メールアドレス #{@user.e_mail}
+- else
+  p 会員ID #{link_to '検索', user_search_admin_addresses_path}
+  p 会社名
+  p お名前
+  p 住所
+  p 電話番号
+  p メールアドレス
+div
+
+= form_with model: @address, url: admin_addresses_path, method: :post, local: true do |f|
+  = f.label 'お届け先情報'
+  div
+  = f.label 'お届け先ID'
+  div
+  = f.label '会社名（必須）'
+  = f.text_field :company_name
+  div
+  = f.label '部署名'
+  = f.text_field :department_name
+  div
+  = f.label 'お名前	姓'
+  = f.text_field :name_sei
+  = f.label '名'
+  = f.text_field :name_mei
+  | ※全角で入力してください。
+  div
+  = f.label 'お名前（カナ）	姓'
+  = f.text_field :name_sei_kana
+  = f.label '名'
+  = f.text_field :name_mei_kana
+  | ※全角カタカナで入力してください。
+  div
+  = f.label '住所'
+  = f.label '郵便番号（必須）'
+  = f.text_field :zip_code_first
+  | -
+  = f.text_field :zip_code_second
+  | ※半角数字で入力してください。
+  div
+  = f.label '都道府県（必須）'
+  = f.select :prefectures, Address.prefectures.keys, {include_blank: "選択してください", selected: "選択してください"}
+  div
+  = f.label '市区町村（必須）'
+  = f.text_field :municipation
+  div
+  = f.label '地番、番地（必須）'
+  = f.text_field :address_1
+  div
+  = f.label 'ビル、マンション、アパート名など'
+  = f.text_field :address_2
+  div
+  = f.label '電話番号（必須）'
+  = f.text_field :tel_first
+  | -
+  = f.text_field :tel_second
+  | -
+  = f.text_field :tel_third
+  | ※半角数字で入力してください。
+  div
+  = f.label '携帯番号'
+  = f.text_field :phone_number
+  div
+  = f.submit '更新'

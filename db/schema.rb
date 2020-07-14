@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_12_023134) do
+ActiveRecord::Schema.define(version: 2020_07_13_093313) do
 
   create_table "Images", force: :cascade do |t|
     t.string "image"
@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(version: 2020_07_12_023134) do
     t.boolean "is_release_flg", default: false, null: false
     t.boolean "set_flg", default: false, null: false
     t.integer "set_num"
-    t.integer "shipping_origin"
+    t.integer "shipping_origin_id"
     t.string "shipping_company"
   end
 
@@ -86,13 +86,13 @@ ActiveRecord::Schema.define(version: 2020_07_12_023134) do
     t.string "name_mei"
     t.string "name_sei_kana"
     t.string "name_mei_kana"
-    t.integer "zip_code"
+    t.string "zip_code"
     t.integer "prefectures"
     t.string "municipation"
     t.string "address_1"
     t.string "address_2"
-    t.integer "tel"
-    t.integer "phone_number"
+    t.string "tel"
+    t.string "phone_number"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 2020_07_12_023134) do
     t.string "company_code"
     t.string "department_code"
     t.string "fax"
+    t.string "delivery_id"
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
@@ -177,6 +178,19 @@ ActiveRecord::Schema.define(version: 2020_07_12_023134) do
     t.integer "display_order"
   end
 
+  create_table "group_users", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "items", force: :cascade do |t|
     t.string "item"
     t.integer "sitemap_id"
@@ -212,7 +226,7 @@ ActiveRecord::Schema.define(version: 2020_07_12_023134) do
     t.integer "allocation_status"
     t.integer "shipping_status"
     t.boolean "postage_confirmation", default: false, null: false
-    t.integer "shipping_origin"
+    t.integer "shipping_origin_id"
     t.boolean "cancel_flg", default: false, null: false
     t.integer "shipment_id"
     t.index ["cart_id"], name: "index_order_histories_on_cart_id"
@@ -296,13 +310,23 @@ ActiveRecord::Schema.define(version: 2020_07_12_023134) do
     t.datetime "updated_at", null: false
     t.integer "order_history_id"
     t.boolean "cancel_flg", default: false, null: false
-    t.integer "shipping_origin"
+    t.integer "shipping_origin_id"
     t.integer "prefectures"
     t.date "order_date"
     t.date "preferred_arrival_date"
     t.boolean "arrival_date_flg", default: false, null: false
     t.boolean "expected_shipping_date_flg", default: false, null: false
     t.boolean "sales_record_date_flg", default: false, null: false
+  end
+
+  create_table "shipping_origins", force: :cascade do |t|
+    t.integer "status"
+    t.string "origin_id"
+    t.string "password_digest"
+    t.string "shipping_origin_name"
+    t.string "shipping_origin_email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "sitemaps", force: :cascade do |t|
@@ -312,7 +336,6 @@ ActiveRecord::Schema.define(version: 2020_07_12_023134) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "name"
     t.string "e_mail"
     t.integer "cart_id"
     t.datetime "created_at", null: false
@@ -321,10 +344,29 @@ ActiveRecord::Schema.define(version: 2020_07_12_023134) do
     t.string "remember_token"
     t.string "company_name"
     t.string "department_name"
-    t.string "contact_name"
-    t.integer "phone_number"
+    t.string "phone_number"
     t.string "member_code"
     t.text "remark"
+    t.integer "status"
+    t.integer "rank"
+    t.string "name_sei"
+    t.string "name_mei"
+    t.string "name_sei_kana"
+    t.string "name_mei_kana"
+    t.string "zip_code"
+    t.integer "prefectures"
+    t.string "municipation"
+    t.string "address_1"
+    t.string "address_2"
+    t.string "tel"
+    t.string "fax"
+    t.integer "payment_method"
+    t.string "company_name_kana"
+    t.string "company_code"
+    t.string "department_name_kana"
+    t.string "department_code"
+    t.string "member_id"
+    t.boolean "deadline", default: false, null: false
     t.index ["cart_id"], name: "index_users_on_cart_id"
   end
 
