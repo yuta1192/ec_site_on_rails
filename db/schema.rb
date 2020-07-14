@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_14_071327) do
+ActiveRecord::Schema.define(version: 2020_07_14_100720) do
 
   create_table "Images", force: :cascade do |t|
     t.string "image"
@@ -162,6 +162,29 @@ ActiveRecord::Schema.define(version: 2020_07_14_071327) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["sitemap_id"], name: "index_items_on_sitemap_id"
+  end
+
+  create_table "mail_settings", force: :cascade do |t|
+    t.boolean "use_basic_email_flg", default: true, null: false
+    t.string "password_reissue_sender"
+    t.string "password_reissue_destination"
+    t.string "order_change_sender"
+    t.string "order_change_destination"
+    t.string "shipping_sender"
+    t.string "shipping_destination"
+    t.string "cancel_sender"
+    t.string "cancel_destination"
+    t.string "stock_notification_sender"
+    t.string "stock_notification_destination"
+    t.string "shipment_request_change_sender"
+    t.string "shipment_request_change_destination"
+    t.string "user_password_reissue_sender"
+    t.string "user_password_change_sender"
+    t.string "user_thank_you_change_sender"
+    t.string "user_shipping_sender"
+    t.string "user_cancel_sender"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "my_lists", force: :cascade do |t|
@@ -324,6 +347,33 @@ ActiveRecord::Schema.define(version: 2020_07_14_071327) do
     t.string "password_digest"
     t.string "shipping_origin_name"
     t.string "shipping_origin_email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "shops", force: :cascade do |t|
+    t.boolean "open_flg", default: true, null: false
+    t.string "logo"
+    t.string "name"
+    t.string "company_name"
+    t.string "zip_code"
+    t.integer "prefectures"
+    t.string "municipation"
+    t.string "address_1"
+    t.string "address_2"
+    t.string "tel"
+    t.string "fax"
+    t.string "email"
+    t.integer "stock_notification_num"
+    t.integer "payment_method"
+    t.string "billing_customer_code"
+    t.integer "product_name_setting"
+    t.string "name_set"
+    t.integer "start_condition"
+    t.boolean "shipped_flg", default: true, null: false
+    t.boolean "set_shipping_company_flg", default: true, null: false
+    t.integer "product_consumption_tax_flg"
+    t.integer "tax_rate"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

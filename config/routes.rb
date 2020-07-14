@@ -92,5 +92,7 @@ Rails.application.routes.draw do
         patch 'bluk_update'
       end
     end
+    resources :shops
+    resources :mail_settings
   end
 end

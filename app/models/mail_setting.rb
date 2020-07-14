@@ -1,0 +1,2 @@
+class MailSetting < ApplicationRecord
+end
