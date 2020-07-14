@@ -1,0 +1,38 @@
+p 在庫管理
+p 在庫数の編集、履歴の確認ができます。
+p 「一括更新」ボタンから在庫数の調整が行えます。検索後に「一括更新」ボタンを押した場合には、検索結果の在庫編集になります。
+p 「詳細」ボタンから、在庫数変動の履歴が確認できます。
+
+= form_with model: Product, url: search_admin_stock_managements_path, method: :get, local: true do |f|
+  = f.label 'キーワード [?]'
+  = f.text_field :keyword
+  div
+  = f.label '商品状態'
+  = f.check_box :new_flg, {}, true, false
+  | 新商品
+  = f.check_box :popular_flg, {}, true, false
+  | 人気商品
+  = f.check_box :stock, {}, true, false
+  | 在庫切れ
+  = f.label 'カテゴリ'
+  = f.select :category, select_categories
+  div
+  = f.label '出荷元'
+  = f.select :shipping_origin, select_shipping_origin
+  div
+  = f.submit '検索'
+
+div
+= link_to '一括更新', bluk_edit_admin_stock_managements_path(previous_action: params[:action])
+
+p 商品No. 	商品名 	出荷元	在庫 	引当  [?]	詳細
+- @products.each do |p|
+  = p.product_number
+  = p.name
+  = ShippingOrigin.find_by(id: p.shipping_origin_id).shipping_origin_name
+  = OrderHistoryProduct.where(product_id: p.id).sum(:num)
+  = link_to '詳細', admin_stock_management_path(p)
+  div
+
+div
+= link_to '一括更新', bluk_edit_admin_stock_managements_path(previous_action: params[:action])
