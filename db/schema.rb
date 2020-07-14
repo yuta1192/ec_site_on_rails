@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_13_093313) do
+ActiveRecord::Schema.define(version: 2020_07_14_071327) do
 
   create_table "Images", force: :cascade do |t|
     t.string "image"
@@ -42,41 +42,6 @@ ActiveRecord::Schema.define(version: 2020_07_13_093313) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "title"
-  end
-
-  create_table "Products", force: :cascade do |t|
-    t.string "name"
-    t.text "detail"
-    t.string "category_name"
-    t.integer "category_id"
-    t.integer "price"
-    t.integer "member_price"
-    t.integer "stock"
-    t.string "product_number"
-    t.boolean "postage_flg", default: false, null: false
-    t.integer "postage"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "jan_code"
-    t.string "shipping_location"
-    t.string "notification_email"
-    t.boolean "new_flg", default: true, null: false
-    t.boolean "popular_flg", default: true, null: false
-    t.text "comment"
-    t.text "explanation_1"
-    t.text "explanation_2"
-    t.boolean "tax_flg", default: true, null: false
-    t.string "manufacturer"
-    t.boolean "remote_island_shipping_confirmation", default: true, null: false
-    t.date "display_period_start"
-    t.date "display_period_end"
-    t.integer "purchase_limit"
-    t.text "postage_comment"
-    t.boolean "is_release_flg", default: false, null: false
-    t.boolean "set_flg", default: false, null: false
-    t.integer "set_num"
-    t.integer "shipping_origin_id"
-    t.string "shipping_company"
   end
 
   create_table "addresses", force: :cascade do |t|
@@ -256,6 +221,40 @@ ActiveRecord::Schema.define(version: 2020_07_13_093313) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.text "detail"
+    t.integer "category_id"
+    t.integer "price"
+    t.integer "member_price"
+    t.string "product_number"
+    t.boolean "postage_flg", default: false, null: false
+    t.integer "postage"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "jan_code"
+    t.string "shipping_location"
+    t.string "notification_email"
+    t.boolean "new_flg", default: true, null: false
+    t.boolean "popular_flg", default: true, null: false
+    t.text "comment"
+    t.text "explanation_1"
+    t.text "explanation_2"
+    t.boolean "tax_flg", default: true, null: false
+    t.string "manufacturer"
+    t.boolean "remote_island_shipping_confirmation", default: true, null: false
+    t.date "display_period_start"
+    t.date "display_period_end"
+    t.integer "purchase_limit"
+    t.text "postage_comment"
+    t.boolean "is_release_flg", default: false, null: false
+    t.boolean "set_flg", default: false, null: false
+    t.integer "set_num"
+    t.integer "shipping_origin_id"
+    t.string "shipping_company"
+    t.integer "stock_management_id"
+  end
+
   create_table "purchase_histories", force: :cascade do |t|
     t.integer "cart_id"
     t.string "cart_number"
@@ -331,6 +330,26 @@ ActiveRecord::Schema.define(version: 2020_07_13_093313) do
 
   create_table "sitemaps", force: :cascade do |t|
     t.string "map_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "stock_fluctuations", force: :cascade do |t|
+    t.integer "stock"
+    t.integer "allocate"
+    t.boolean "unlimited_flg", default: false, null: false
+    t.integer "stock_management_id"
+    t.text "memo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "status"
+  end
+
+  create_table "stock_managements", force: :cascade do |t|
+    t.integer "stock"
+    t.integer "allocate"
+    t.boolean "unlimited_flg", default: false, null: false
+    t.integer "product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

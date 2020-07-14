@@ -1,5 +1,7 @@
 class Product < ApplicationRecord
   belongs_to :category
+  belongs_to :stock_management
+  belongs_to :shipping_origin
   #enum category: { オリジナル商品: 1, 食べ物: 2 }
 
   def self.search(search)

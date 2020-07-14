@@ -88,6 +88,8 @@ Rails.application.routes.draw do
     resources :stock_managements do
       collection do
         get 'search'
+        get 'bluk_edit'
+        patch 'bluk_update'
       end
     end
   end

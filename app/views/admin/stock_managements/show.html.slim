@@ -1,0 +1,32 @@
+p 在庫管理 ／ 詳細
+p 商品No.	商品名	出荷元	在庫	引当[?]
+= @product.product_number
+= @product.name
+= @product.shipping_origin.shipping_origin_name
+= @product.stock_management.stock
+= @product.stock_management.allocate
+
+p 在庫編集
+= form_with model: @stock_management, url: admin_stock_management_path, method: :patch, local: true do |f|
+  = f.label '無制限[?]'
+  = f.check_box :unlimited, {}, true, false
+  div
+  = f.label '在庫数'
+  = f.radio_button :sabun, 1, checked: true
+  | 差分入力
+  = f.radio_button :sabun, 2
+  | 実数入力
+  div
+  = f.text_field :aiueo, placeholder: "現在の在庫数：#{@stock_management.stock}"
+  div
+  = f.label 'メモ[?]'
+  = f.text_field :memo
+  div
+  = f.submit '保存'
+
+div
+= link_to '戻る', admin_stock_managements_path
+
+p 日付	区分	受注番号	移動数量	対象	在庫	引当[?]	メモ
+- @stock_fluctuations.each do |sf|
+  = sf.created_at.strftime('%Y%m%d')
