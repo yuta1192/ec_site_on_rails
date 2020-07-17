@@ -1,0 +1,12 @@
+p カート備考欄
+p カート備考欄の初期値を編集できます。
+p ご注文手続きSTEP2の備考欄に初期値として表示されます。
+p 「ラッピング要（　）不要（　）」など、注文されるお客様に質問したいことなどを入力してください。
+p 特に必要のない場合は空白にしてください。
+
+= form_with model: @cart_memo, url: admin_shipping_setting_path, method: :patch, local: true do |f|
+  = f.label '備考'
+  div
+  = f.text_field :memo
+  div
+  = f.submit '保存'

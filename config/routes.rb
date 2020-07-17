@@ -94,5 +94,13 @@ Rails.application.routes.draw do
     end
     resources :shops
     resources :mail_settings
+    resources :payment_method_settings
+    resources :shipping_settings
+    resources :cart_memos
+    resources :member_ranks do
+      collection do
+        patch 'bluk_update'
+      end
+    end
   end
 end

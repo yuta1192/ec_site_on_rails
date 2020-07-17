@@ -1,0 +1,186 @@
+p 送料設定
+p ショップの基本となる送料を設定します。
+p 商品登録時に、「基本設定に従う」を選択した商品に適用されます。
+p 送料が有料の場合は、全国一律送料または地域別送料（送料表1～10）のいずれかが適用されます。
+p 同一梱包設定欄に入力した場合は、入力個数までを同一送料にします。
+
+= form_with model: @shipping_setting, url: admin_shipping_setting_path(@shipping_setting), method: :patch, local: true do |f|
+  = f.label '送料無料サービス'
+  div
+  | ご注文商品の合計が
+  = f.text_field :free_shipping_service
+  |  円 （税抜）以上の場合、送料を無料にする。
+  p ※空欄の場合には適用されません。
+  = f.submit '保存'
+
+  div
+  = f.label '基本設定'
+  p ショップ全体の基本となる送料を設定してください。商品管理にて商品毎に設定することもできます。
+  |
+  = f.radio_button :a, 1, checked: true
+  | 送料無料
+  div
+  = f.radio_button :a, 2
+  | 全国一律
+  = f.text_field :aiueo
+  | 円
+  div
+  = f.radio_button :a, 3
+  | 地域別　（
+  = f.select :postage_id, postage_select
+  | を適用する）
+  div
+  p 選択した送料表に従って地域別の送料を適用します。
+  p ※送料表（1～10）を、このページ下部の＜送料表＞より設定してください。
+  div
+  p ［ 同一送料設定 ］
+  | ご注文商品
+  = f.text_field :nu
+  | 個ごとに送料を加算する。
+  p ※上記設定で、「全国一律」または「地域別」を選択した場合に設定してください。
+  p ※空欄の場合は1個ごとの設定になります。
+  p ※注文数に関係なく送料を固定にする場合には、0 を入力してください。
+  p ※この設定は商品登録の送料設定で「基本設定に従う」を選んだ商品に適用されます。
+  = f.submit '保存'
+  div
+
+  = f.label '送料表'
+  p 全国47都道府県別に送料を設定します。（送料表は10種類まで登録できます。）
+  p 設定する送料表（1～10）を選択し、都道府県ごとに送料を設定してください。
+  p このページ上の「基本送料設定」で「地域別」を選択する場合または＜商品管理／商品登録＞で商品個別の送料設定をする際にあらかじめ設定が必要です。
+  div
+  | ●送料表を選択してください。 ・・・・・
+  = f.select :postage_id, postage_select
+  div
+  | 北海道
+  = f.text_field :a_1
+  | 円
+  | 青森県
+  = f.text_field :a_2
+  | 円
+  | 岩手県
+  = f.text_field :a_3
+  | 円
+  | 宮城県
+  = f.text_field :a_4
+  | 円
+  div
+  | 秋田県
+  = f.text_field :a_5
+  | 円
+  | 山形県
+  = f.text_field :a_6
+  | 円	福島県
+  = f.text_field :a_7
+  | 円	茨城県
+  = f.text_field :a_8
+  | 円
+  div
+  | 栃木県
+  = f.text_field :a_9
+  | 円	群馬県
+  = f.text_field :a_10
+  | 円	埼玉県
+  = f.text_field :a_11
+  | 円	千葉県
+  = f.text_field :a_12
+  | 円
+  div
+  | 東京都
+  = f.text_field :a_13
+  | 円	神奈川県
+  = f.text_field :a_14
+  | 円	新潟県
+  = f.text_field :a_15
+  | 円	富山県
+  = f.text_field :a_16
+  | 円
+  div
+  | 石川県
+  = f.text_field :a_17
+  | 円	福井県
+  = f.text_field :a_18
+  | 円	山梨県
+  = f.text_field :a_19
+  | 円	長野県
+  = f.text_field :a_20
+  | 円
+  div
+  | 岐阜県
+  = f.text_field :a_21
+  | 円	静岡県
+  = f.text_field :a_22
+  | 円	愛知県
+  = f.text_field :a_23
+  | 円	三重県
+  = f.text_field :a_24
+  | 円
+  div
+  | 滋賀県
+  = f.text_field :a_25
+  | 円	京都府
+  = f.text_field :a_26
+  | 円	大阪府
+  = f.text_field :a_27
+  | 円	兵庫県
+  = f.text_field :a_28
+  | 円
+  div
+  | 奈良県
+  = f.text_field :a_29
+  | 円	和歌山県
+  = f.text_field :a_30
+  | 円	鳥取県
+  = f.text_field :a_31
+  | 円	島根県
+  = f.text_field :a_32
+  | 円
+  div
+  | 岡山県
+  = f.text_field :a_33
+  | 円	広島県
+  = f.text_field :a_34
+  | 円	山口県
+  = f.text_field :a_35
+  | 円	徳島県
+  = f.text_field :a_36
+  | 円
+  div
+  | 香川県
+  = f.text_field :a_37
+  | 円	愛媛県
+  = f.text_field :a_38
+  | 円	高知県
+  = f.text_field :a_39
+  | 円	福岡県
+  = f.text_field :a_40
+  | 円
+  div
+  | 佐賀県
+  = f.text_field :a_41
+  | 円	長崎県
+  = f.text_field :a_42
+  | 円	熊本県
+  = f.text_field :a_43
+  | 円	大分県
+  = f.text_field :a_44
+  | 円
+  div
+  | 宮崎県
+  = f.text_field :a_45
+  | 円	鹿児島県
+  = f.text_field :a_46
+  | 円	沖縄県
+  = f.text_field :a_47
+  | 円
+  div
+  = f.submit '保存'
+
+  div
+  = f.label '送料消費税[?]'
+  = f.radio_button :e, 1, checked: true
+  | 税込
+  = f.radio_button :e, 2
+  | 税別
+  div
+  = f.submit '保存'

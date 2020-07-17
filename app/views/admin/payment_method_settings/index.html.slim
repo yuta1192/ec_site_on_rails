@@ -2,64 +2,75 @@ p 支払方法の設定
 p 支払い方法の設定ができます。
 p 各種支払方法の設定をします。
 p ご注文手続きの「STEP.2」「STEP.3」と、ご注文の後にお客様に送られる確認メールに表示されます。
-= form_with model: , url: , method: :patch, local: true do |f|
+= form_with model: @payment_method_setting, url: admin_payment_method_setting_path(@payment_method_setting), method: :patch, local: true do |f|
   = f.label '支払い方法（必須）'
-  = f.radio_button :payment_method, 1, checked: true
+  = f.check_box :payment_method
   | 銀行振込
-  = f.radio_button :payment_method, 2
+  = f.check_box :payment_methods
   | 代金引換
-  = f.radio_button :payment_method, 3
+  = f.check_box :payment_methodss
   | 締め払い
   div
   = f.label '銀行振込'
   | ＜振込先情報＞
-  = f.text_field :bank_transfer_comment
+  = f.text_field :payee_memo
   div
   = f.label '代金引換'
   | ＜代引手数料設定＞
-  p 集金金額（税込）	代引手数料　 税込 税別
-  p 1
-  | 0円 〜
-  = f.text_field :first_limit
-1	0円 ～
-1000
-円未満
-100
-円
-2	～
-10000
-円未満
-300
-円
-3	～
-30000
-円未満
-400
-円
-4	～
-100000
-円未満
-600
-円
-5	～
-0
-円未満
-0
-円
-6	～
-0
-円未満
-0
-円
-7	～ 300000円以下
-1000
-円
-※代引手数料は、集金金額に合わせ7段階までの設定ができます。
-※集金金額とは、商品代金に消費税・送料・代引手数料等を全て含んだ支払い合計額です。
-※代引手数料が一律の場合は「7」の300000円以下の欄のみ入力してください。
-※集金金額が300000円を超える場合、お客様は代金引換の支払いを選択できません。
-＜代引手数料についての説明＞
-コメント
-※＜代引手数料設定＞に登録した内容をテキストで入力してください。
-　ご注文STEPの支払い方法に表示されます。
-締め払い	＜備考＞
+  p 集金金額（税込）	代引手数料
+  = f.radio_button :cash_on_delivery_charge_flg, 1, checked: true
+  | 税込
+  = f.radio_button :cash_on_delivery_charge_flg, 2
+  | 税別
+  div
+  | 1, 0円 〜
+  = f.text_field :amount_collected_1
+  | 円未満
+  = f.text_field :cash_on_delivery_charge_1
+  | 円
+  div
+  | 2, 〜
+  = f.text_field :amount_collected_2
+  | 円未満
+  = f.text_field :cash_on_delivery_charge_2
+  | 円
+  div
+  | 3, 〜
+  = f.text_field :amount_collected_3
+  | 円未満
+  = f.text_field :cash_on_delivery_charge_3
+  | 円
+  div
+  | 4, 〜
+  = f.text_field :amount_collected_4
+  | 円未満
+  = f.text_field :cash_on_delivery_charge_4
+  | 円
+  div
+  | 5, 〜
+  = f.text_field :amount_collected_5
+  | 円未満
+  = f.text_field :cash_on_delivery_charge_5
+  | 円
+  div
+  | 6, 〜
+  = f.text_field :amount_collected_6
+  | 円未満
+  = f.text_field :cash_on_delivery_charge_6
+  | 円
+  div
+  | 7, 〜 300000円以下
+  = f.text_field :cash_on_delivery_charge_7
+  | 円
+  p ※代引手数料は、集金金額に合わせ7段階までの設定ができます。
+  p ※集金金額とは、商品代金に消費税・送料・代引手数料等を全て含んだ支払い合計額です。
+  p ※代引手数料が一律の場合は「7」の300000円以下の欄のみ入力してください。
+  p ※集金金額が300000円を超える場合、お客様は代金引換の支払いを選択できません。
+  p ＜代引手数料についての説明＞
+  = f.text_field :cash_on_delivery_charge_memo
+  p ※＜代引手数料設定＞に登録した内容をテキストで入力してください。
+  p ご注文STEPの支払い方法に表示されます。
+  = f.label '締め払い'
+  p ＜備考＞
+  = f.text_field :deadline_memo
+  = f.submit '保存'

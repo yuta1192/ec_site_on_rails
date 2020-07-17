@@ -1,0 +1,2 @@
+class CartMemo < ApplicationRecord
+end

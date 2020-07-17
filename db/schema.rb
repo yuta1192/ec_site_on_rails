@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_14_100720) do
+ActiveRecord::Schema.define(version: 2020_07_17_063308) do
 
   create_table "Images", force: :cascade do |t|
     t.string "image"
@@ -85,6 +85,12 @@ ActiveRecord::Schema.define(version: 2020_07_14_100720) do
     t.integer "order_history_id"
     t.index ["cart_id"], name: "index_cart_items_on_cart_id"
     t.index ["product_id"], name: "index_cart_items_on_product_id"
+  end
+
+  create_table "cart_memos", force: :cascade do |t|
+    t.text "memo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "carts", force: :cascade do |t|
@@ -187,6 +193,14 @@ ActiveRecord::Schema.define(version: 2020_07_14_100720) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "member_ranks", force: :cascade do |t|
+    t.string "name"
+    t.integer "multiplication_rate"
+    t.integer "recalculation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "my_lists", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -233,6 +247,80 @@ ActiveRecord::Schema.define(version: 2020_07_14_100720) do
     t.string "title"
     t.text "sentence"
     t.integer "free_page_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "payment_method_settings", force: :cascade do |t|
+    t.integer "payment_method"
+    t.text "payee_memo"
+    t.boolean "cash_on_delivery_charge_flg", default: true, null: false
+    t.string "amount_collected_1"
+    t.string "cash_on_delivery_charge_1"
+    t.string "amount_collected_2"
+    t.string "cash_on_delivery_charge_2"
+    t.string "amount_collected_3"
+    t.string "cash_on_delivery_charge_3"
+    t.string "amount_collected_4"
+    t.string "cash_on_delivery_charge_4"
+    t.string "amount_collected_5"
+    t.string "cash_on_delivery_charge_5"
+    t.string "amount_collected_6"
+    t.string "cash_on_delivery_charge_6"
+    t.string "cash_on_delivery_charge_7"
+    t.text "cash_on_delivery_charge_memo"
+    t.text "deadline_memo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "postages", force: :cascade do |t|
+    t.string "hokkaido"
+    t.string "aomori"
+    t.string "iwate"
+    t.string "miyagi"
+    t.string "akita"
+    t.string "yamagata"
+    t.string "hukushima"
+    t.string "ibaragi"
+    t.string "totigi"
+    t.string "gunma"
+    t.string "saitama"
+    t.string "chiba"
+    t.string "tokyo"
+    t.string "kanagawa"
+    t.string "nigata"
+    t.string "toyama"
+    t.string "ishikawa"
+    t.string "hukui"
+    t.string "yamanashi"
+    t.string "nagano"
+    t.string "gihu"
+    t.string "sizuoka"
+    t.string "aichi"
+    t.string "mie"
+    t.string "shiga"
+    t.string "kyoto"
+    t.string "osaka"
+    t.string "hyogo"
+    t.string "nara"
+    t.string "wakayama"
+    t.string "tottori"
+    t.string "shimane"
+    t.string "okayama"
+    t.string "hiroshima"
+    t.string "yamaguchi"
+    t.string "tokushima"
+    t.string "kagawa"
+    t.string "ehime"
+    t.string "kochi"
+    t.string "hukuoka"
+    t.string "saga"
+    t.string "nagasaki"
+    t.string "kumamoto"
+    t.string "oita"
+    t.string "kagoshima"
+    t.string "okinawa"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -347,6 +435,17 @@ ActiveRecord::Schema.define(version: 2020_07_14_100720) do
     t.string "password_digest"
     t.string "shipping_origin_name"
     t.string "shipping_origin_email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "shipping_settings", force: :cascade do |t|
+    t.string "free_shipping_service"
+    t.integer "basic_setting"
+    t.string "nationwide_rate"
+    t.string "same_shipping_rate_setting"
+    t.integer "postage_id"
+    t.integer "postage_consumption_tax"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

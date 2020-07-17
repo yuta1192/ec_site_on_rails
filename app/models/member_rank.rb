@@ -1,0 +1,2 @@
+class MemberRank < ApplicationRecord
+end
