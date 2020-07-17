@@ -1,0 +1,60 @@
+p 休業日設定
+p ショップの休業日設定ができます。
+p 基本設定のコメントは、ショップページの営業カレンダーの下部に表示されます。営業時間などを入力してください。
+p お客様が注文時に選択する配達希望日に連動しています。配達希望日は、注文日の翌日以降の最初の営業日の２日後から選択できるようになります。
+p 最初に基本設定で基本となる休日にチェックを入れて「保存」ボタンを押してください。
+p 各月ごとに休日が異なる場合は、月別設定で設定をしてください。チェックの入っている日が休業日になります。
+p 月別設定は、今月より６ヶ月分設定ができます。
+p 月別設定を行った後基本設定を行うと、月別設定で設定したものがクリアされ、基本設定で上書きされますのでご注意ください。
+p カレンダーの表示切替設定 ・・・ 現在の設定は 「表示する」 です。
+p 「表示する」でカレンダーが左メニューに表示されるようになります。
+p 「変更」ボタンを押すと、「表示する」と「表示しない」が切り替わります。
+
+= form_with model: ShopHoliday, url: admin_shop_holiday_path(1), method: :patch, local: true do |f|
+  = f.submit '変更'
+
+= form_with model: ShopHoliday, url: admin_shop_holiday_path(1), method: :patch, local: true do |f|
+  = f.label '基本休業日設定'
+  div
+  = f.label '曜日選択'
+  = f.check_box :sunday
+  | 日曜日
+  = f.check_box :sunday
+  | 月曜日
+  = f.check_box :sunday
+  | 火曜日
+  = f.check_box :sunday
+  | 水曜日
+  = f.check_box :sunday
+  | 木曜日
+  = f.check_box :sunday
+  | 金曜日
+  = f.check_box :sunday
+  | 土曜日
+  div
+  = f.label '祝日設定'
+  = f.check_box :sunday
+  |	祝日は休業日とする
+  div
+  = f.label 'コメント'
+  = f.text_field :comment
+  div
+  = f.submit '保存'
+
+  div
+= form_with model: SetMonthlyHoliday, url: admin_shop_holiday_path(1), method: :patch, local: true do |f|
+  = f.label '月別休業日設定[?]'
+  div
+  = f.label '月選択'
+  = f.select :a, [['a',1]]
+  div
+  = f.label '2020年7月'
+  = f.label '休業日設定'
+  p 日曜日	月曜日	火曜日	水曜日	木曜日	金曜日	土曜日
+  - select_day.each do |day|
+    = day
+    = f.check_box :day, value: day
+    - if (day % 7) == 0
+      div
+  div
+  = f.submit '保存'

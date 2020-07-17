@@ -1,0 +1,2 @@
+class ShopHoliday < ApplicationRecord
+end

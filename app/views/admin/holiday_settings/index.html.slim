@@ -1,0 +1,53 @@
+p 祝日設定
+p 休業日設定時の祝日をあらかじめ設定するページです。
+p 毎年同じ日の祝日や、土日に重なる祝日も含め、全ての祝日を入力してください。
+p 年の選択をして「表示」ボタンを押した後、各月にカンマ区切りで祝日を設定して「保存」ボタンを押してください。
+p 月別休業日設定にて保存を行った後、祝日設定をした場合、月別休業日設定が保存された月の休業日は自動で変更されませんのでご注意ください。
+p 今年と来年の２年分の設定ができます。
+p 祝日は前年の2月に決定されます。内閣府のホームページを参照ください。
+
+= form_with model: HolidaySetting, url: bluk_update_admin_holiday_settings_path, method: :patch, local: true do |f|
+  = f.label '年選択'
+  |
+  = f.select :year, [['2020年', 1], ['2021年',2]]
+  div
+  = f.label '2020年 祝日設定  [?]'
+  = f.label '1月'
+  = f.text_field :january_holiday
+  p ※祝日を半角数字で入力してください。
+  p ※祝日が複数の場合は、カンマ区切りで入力してください。　例）1,12
+  div
+  = f.label '2月'
+  = f.text_field :february_holiday
+  div
+  = f.label '3月'
+  = f.text_field :march_holiday
+  div
+  = f.label '4月'
+  = f.text_field :april_holiday
+  div
+  = f.label '5月'
+  = f.text_field :may_holiday
+  div
+  = f.label '6月'
+  = f.text_field :june_holiday
+  div
+  = f.label '7月'
+  = f.text_field :july_holiday
+  div
+  = f.label '8月'
+  = f.text_field :august_holiday
+  div
+  = f.label '9月'
+  = f.text_field :september_holiday
+  div
+  = f.label '10月'
+  = f.text_field :october_holiday
+  div
+  = f.label '11月'
+  = f.text_field :november_holiday
+  div
+  = f.label '12月'
+  = f.text_field :december_holiday
+  div
+  = f.submit '保存'

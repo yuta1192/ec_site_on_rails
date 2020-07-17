@@ -1,0 +1,2 @@
+class HolidaySetting < ApplicationRecord
+end

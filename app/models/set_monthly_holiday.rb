@@ -1,0 +1,2 @@
+class SetMonthlyHoliday < ApplicationRecord
+end

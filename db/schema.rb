@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_17_063308) do
+ActiveRecord::Schema.define(version: 2020_07_17_074429) do
 
   create_table "Images", force: :cascade do |t|
     t.string "image"
@@ -158,6 +158,24 @@ ActiveRecord::Schema.define(version: 2020_07_17_063308) do
 
   create_table "groups", force: :cascade do |t|
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "holiday_settings", force: :cascade do |t|
+    t.date "year"
+    t.string "january_holiday"
+    t.string "february_holiday"
+    t.string "march_holiday"
+    t.string "april_holiday"
+    t.string "may_holiday"
+    t.string "june_holiday"
+    t.string "july_holiday"
+    t.string "august_holiday"
+    t.string "september_holiday"
+    t.string "october_holiday"
+    t.string "november_holiday"
+    t.string "december_holiday"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -388,6 +406,13 @@ ActiveRecord::Schema.define(version: 2020_07_17_063308) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "set_monthly_holidays", force: :cascade do |t|
+    t.date "year_month"
+    t.string "set_holidays"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "shipment_products", force: :cascade do |t|
     t.integer "shipment_id"
     t.integer "product_id"
@@ -446,6 +471,22 @@ ActiveRecord::Schema.define(version: 2020_07_17_063308) do
     t.string "same_shipping_rate_setting"
     t.integer "postage_id"
     t.integer "postage_consumption_tax"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "shop_holidays", force: :cascade do |t|
+    t.boolean "calendar_display_flg", default: true, null: false
+    t.boolean "sunday_break", default: true, null: false
+    t.boolean "monday_break", default: false, null: false
+    t.boolean "tuesday_break", default: false, null: false
+    t.boolean "wednesday_break", default: false, null: false
+    t.boolean "thursday_break", default: false, null: false
+    t.boolean "friday_break", default: false, null: false
+    t.boolean "saturday_break", default: true, null: false
+    t.boolean "holiday_setting", default: true, null: false
+    t.text "comment"
+    t.integer "set_monthly_holiday_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

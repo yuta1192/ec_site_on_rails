@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   get 'mypage', to: 'mypages#mypage'
 
   namespace :admin do
+    get 'dashboard', to: 'dashboards#index'
     resources :informations
     resources :images
     get 'banner_index', to: 'images#banner_index'
@@ -102,5 +103,11 @@ Rails.application.routes.draw do
         patch 'bluk_update'
       end
     end
+    resources :holiday_settings do
+      collection do
+        patch 'bluk_update'
+      end
+    end
+    resources :shop_holidays
   end
 end
