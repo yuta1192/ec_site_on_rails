@@ -54,7 +54,7 @@ p 画像は一覧に戻ってから登録してください。
   = f.label :remote_island_shipping_confirmation, "必要"
   div
   = f.label 'カテゴリ（必須）'
-  = f.collection_select :category_name, @category, :category_name, :category_name, include_blank: '親カテゴリを選択してください'
+  = f.select :category_first, @category
   div
   = f.label '表示期間'
   = f.text_field :display_period_start_yyyy_mm_dd

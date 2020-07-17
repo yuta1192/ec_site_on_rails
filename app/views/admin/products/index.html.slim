@@ -20,7 +20,7 @@ p データフォーマット設定で商品一括、商品、商品ロット、
   = f.label '在庫切れ'
   = f.check_box :stock, {class: "check_box"}, 'true', 'false'
   = f.label 'カテゴリ'
-  = f.collection_select :category_name, @category, :category_name, :category_name
+  = f.select :category, select_categories
   = f.label '出荷元'
   = f.text_field :manufacturer
   div

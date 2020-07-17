@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_17_074429) do
+ActiveRecord::Schema.define(version: 2020_07_17_085012) do
 
   create_table "Images", force: :cascade do |t|
     t.string "image"
@@ -576,6 +576,7 @@ ActiveRecord::Schema.define(version: 2020_07_17_074429) do
     t.string "department_code"
     t.string "member_id"
     t.boolean "deadline", default: false, null: false
+    t.boolean "admin", default: false, null: false
     t.index ["cart_id"], name: "index_users_on_cart_id"
   end
 

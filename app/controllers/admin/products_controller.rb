@@ -11,7 +11,7 @@ class Admin::ProductsController < ApplicationController
 
   def new
     @product = Product.new
-    @category = Product.select(:category_name).distinct
+    @category = Category.pluck(:name)
   end
 
   def edit
