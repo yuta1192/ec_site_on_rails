@@ -72,26 +72,32 @@
     = link_to '休業日設定', admin_holiday_settings_path
     div
   - else
-    p ロゴを入れる
-
-    = link_to 'トップ', root_path
-    p |
-    - if FreePage.where(place: 1).or(FreePage.where(place: 3)) ## 自由ページの場所がヘッダーの1or3
-      - FreePage.where(place: 1).or(FreePage.where(place: 3)).each do |fp|
-        = link_to fp.page_title, free_pages_path(url_value: fp.url)
-        div
-    p ｜
-    = link_to 'よくある質問', inqueries_path
-    p ｜
-    = link_to 'サイトマップ', sitemap_path
-    div
-    = link_to '会員ページ', mypage_path
-    p ｜
-    = link_to 'ログアウト', logout_path, method: :post
-
-    p ｜
-    /- if @current_user
-    /  = link_to 'カートを見る', edit_user_cart_path(@current_user, @current_user.cart_id)
-
-    p ここまでがヘッダとする
-    p ------------------------------------
+    .container
+      .row
+        .col-2
+          p ロゴを入れる
+        .col-2
+          p #{@current_user.name_sei + @current_user.name_mei}
+          p さま
+        .col-2
+        .col-md-auto
+          = link_to 'トップ', root_path
+          | |
+          - if FreePage.where(place: 1).or(FreePage.where(place: 3)) ## 自由ページの場所がヘッダーの1or3
+            - FreePage.where(place: 1).or(FreePage.where(place: 3)).each do |fp|
+              = link_to fp.page_title, free_pages_path(url_value: fp.url)
+              | |
+          = link_to 'よくある質問', inqueries_path
+          | |
+          = link_to 'サイトマップ', sitemap_path
+      .row
+        .col-6
+        .col-6
+          div
+          = link_to '会員ページ', mypage_path
+          | |
+          = link_to 'ログアウト', logout_path, method: :post
+          - if @current_user
+            | |
+            = link_to 'カートを見る', edit_user_cart_path(@current_user, @current_user.cart_id)
+      p ------------------------------------------------------------------------------------------------------------------------------------------------
