@@ -35,6 +35,8 @@ gem 'jbuilder', '~> 2.5'
 gem "activesupport", ">= 5.2.4.3"
 gem "actionpack", ">= 5.2.4.3"
 gem "activestorage", ">= 5.2.4.3"
+gem 'bootstrap', '~> 4.5.0'
+gem 'jquery-rails'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
