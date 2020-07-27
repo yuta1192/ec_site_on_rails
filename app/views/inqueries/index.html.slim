@@ -12,15 +12,18 @@ p お客様から寄せられる質問とその回答を掲載しています。
   = f.submit '検索'
 
 h2 ＦＡＱの質問のタイトル
-- @questions.each do |question|
-  = question.question
+- @questions.each do |q|
+  | Q.
+  = q.question
   div
 
 h2 ＦＡＱの質問のタイトル
-- @inqueries.each do |inquery|
-  = inquery.question
+- @questions.each do |q|
+  | Q.
+  = q.question
   div
-  = inquery.answer
+  | A.
+  = q.answer
   div
 
 div

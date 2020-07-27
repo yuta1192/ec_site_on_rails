@@ -1,12 +1,3 @@
-p freepage
-
-- rara = nil
-- FreePage.all.sort_by { |x| x.title }.each do |a|
-  - if rara != a.title || rara == nil
-    - rara = a.title
-    h1 = a.title
-  div
-  h2 = a.second_title
-  div
-  = a.sentence
-  div
+- if @freepage.present?
+  h1 = @freepage.h1_tag
+  h2 = @freepage.page_title

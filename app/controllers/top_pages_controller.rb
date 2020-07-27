@@ -1,5 +1,5 @@
 class TopPagesController < ApplicationController
   def index
-    @product_categories = Product.select(:category).distinct
+    @product_categories = Category.all
   end
 end
