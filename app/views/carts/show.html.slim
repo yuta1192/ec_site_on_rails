@@ -3,7 +3,7 @@ p Step2 情報入力
 h2 お客様情報
 p 会社名 #{@current_user.company_name}
 p 部署名 #{@current_user.department_name}
-p 担当者名 #{@current_user.contact_name}
+p 担当者名 #{@current_user.name_sei + @current_user.name_mei}
 p 電話番号 #{@current_user.phone_number}
 
 h2 お届け先情報(ここjavascript)

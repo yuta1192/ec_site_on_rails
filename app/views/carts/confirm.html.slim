@@ -3,25 +3,28 @@ h2 Step3 最終確認
 p 以下の内容でよろしければ、下の「この内容で注文する」ボタンを押してください。
 p ※他の画面に遷移するとご入力いただいた情報が失われてしまうことがありますのでご注意ください。
 
-p 品番	品名	単価（税抜）	数量	金額（税抜）
-- @cart_items.each do |cart_item|
-  = cart_item.product.product_number
-  = cart_item.product.name
-  = cart_item.product.price
-  = cart_item.product.price * cart_item.quantity
-
-p 商品金額（税抜）#{@total_price}円
-p 送料 1000円
-p 消費税 1000円
-p 合計金額 #{@total_price + 1000 + 1000}円
-
-h2 お客様情報
-p 会社名 #{@current_user.company_name}
-p 部署名 #{@current_user.department_name}
-p 担当者名 #{@current_user.contact_name}
-p 電話番号 #{@current_user.phone_number}
-
 = form_with url: user_carts_path, method: :post, local: true do |f|
+  p 品番	品名	単価（税抜）	数量	金額（税抜）
+  - @cart_items.each do |cart_item|
+    = cart_item.product.product_number
+    = cart_item.product.name
+    = cart_item.product.price
+    = cart_item.product.price * cart_item.quantity
+    = f.hidden_field "cart_item[][product_id]", value: cart_item.product_id
+    = f.hidden_field "cart_item[][quantity]", value: cart_item.quantity
+    div
+
+  p 商品金額（税抜）#{@total_price}円
+  p 送料 1000円
+  p 消費税 1000円
+  p 合計金額 #{@total_price + 1000 + 1000}円
+
+  h2 お客様情報
+  p 会社名 #{@current_user.company_name}
+  p 部署名 #{@current_user.department_name}
+  p 担当者名 #{@current_user.name_sei + @current_user.name_mei}
+  p 電話番号 #{@current_user.phone_number}
+
   h2 お届け先情報
   - if params[:companies]
     p else 変更がある場合は
