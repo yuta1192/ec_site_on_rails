@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_27_102801) do
+ActiveRecord::Schema.define(version: 2020_08_04_142056) do
 
   create_table "Images", force: :cascade do |t|
     t.string "image"
@@ -391,6 +391,7 @@ ActiveRecord::Schema.define(version: 2020_07_27_102801) do
     t.integer "shipping_origin_id"
     t.string "shipping_company"
     t.integer "stock_management_id"
+    t.integer "child_category_id"
   end
 
   create_table "questions", force: :cascade do |t|

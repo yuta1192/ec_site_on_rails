@@ -38,7 +38,7 @@ class CartsController < ApplicationController
   end
 
   def confirm
-    @cart_items = @current_user.cart.cart_items
+    @cart_items = CartItem.where(cart_number: @current_user.cart.cart_number)
     total_price = 0
     @cart_items.each do |cart_item|
       total_price += cart_item.product.price * cart_item.quantity
@@ -50,6 +50,8 @@ class CartsController < ApplicationController
   end
 
   def complite
+    order_history = OrderHistory.find(params[:order_history_id])
+    @order_number = order_history.order_number
   end
 
   def create
@@ -64,28 +66,24 @@ class CartsController < ApplicationController
         end
         order_history_number = SecureRandom.alphanumeric()
       end
-      # 出荷情報仮作成(orderhistoryで必要なので)
-      shipment = Shipment.new(order_history_id: 1)
-      shipment.save!
       # memo: 備考, status: 考えてないけど、購入した段階（enumで作る、最初は1かな)
-      order_history = OrderHistory.new(order_number: order_history_number, memo: params[:remakes], status: 1, user_id: @current_user.id, cart_number: @cart_info.cart_number, shipment_id: shipment.id)
-      order_history.save!
-      shipment.update!(order_history_id: order_history.id)
+      @order_history = OrderHistory.new(order_number: order_history_number, memo: params[:remakes], status: 1, user_id: @current_user.id, cart_number: @cart_info.cart_number)
+      @order_history.save!
       # purchase_history作成と在庫の減少
       params[:cart_item].each do |cart_item|
         product = Product.find(cart_item["product_id"])
         stock = (product.stock_management.stock - cart_item["quantity"].to_i)
         product.stock_management.update!(stock: stock)
-        purchase_history = PurchaseHistory.new(cart_number: @cart_info.cart_number, order_history_id: order_history.id, product_id: cart_item["product_id"], stock: cart_item["quantity"])
-        purchase_history.save!
+        @purchase_history = PurchaseHistory.new(cart_number: @cart_info.cart_number, order_history_id: @order_history.id, product_id: cart_item["product_id"], stock: cart_item["quantity"])
+        @purchase_history.save!
       end
       # パラメータからDeliveryInfoの作成
-      delivery_info = DeliveryInfo.new(company_name: params[:addresses][:company_name], user_name: params[:addresses][:user_name], zip_code: params[:addresses][:zip_code], address: params[:addresses][:address] ,tel: params[:addresses][:tel], phone_number: params[:addresses][:phone_number], delivery_day: params[:date], purchase_history_id: 1, order_history_id: order_history.id)
+      delivery_info = DeliveryInfo.new(company_name: params[:addresses][:company_name], user_name: params[:addresses][:user_name], zip_code: params[:addresses][:zip_code], address: params[:addresses][:address] ,tel: params[:addresses][:tel], phone_number: params[:addresses][:phone_number], delivery_day: params[:date], purchase_history_id: @purchase_history.id, order_history_id: @order_history.id)
       delivery_info.save!
       # OrderHistoryからCartItem引き出せるようにorder_history_idを作成
       @cart_items = CartItem.where(cart_number: @cart_info.cart_number)
       @cart_items.each do |cart_item|
-        cart_item.update(order_history_id: order_history.id)
+        cart_item.update(order_history_id: @order_history.id)
       end
       # カートの処理
       cart_number = SecureRandom.alphanumeric(10)
@@ -98,7 +96,7 @@ class CartsController < ApplicationController
       @cart_info.update!(cart_number: cart_number)
       #todo バリデーションエラーの時返すものを書く
     end
-    redirect_to user_cart_complite_path(@current_user, @cart_info)
+    redirect_to user_cart_complite_path(@current_user, @cart_info, order_history_id: @order_history.id)
   end
 
   def destroy

@@ -1,68 +1,152 @@
-p Step2 情報入力
+.container
+  .row
+    .col-12
+      = form_with url: confirm_user_cart_path, method: :post, local: true do |f|
+        p Step2 情報入力
+        p.text-right カートの情報 - 情報入力 - 最終確認・ご注文
 
-h2 お客様情報
-p 会社名 #{@current_user.company_name}
-p 部署名 #{@current_user.department_name}
-p 担当者名 #{@current_user.name_sei + @current_user.name_mei}
-p 電話番号 #{@current_user.phone_number}
+        p お客様情報
+        .row
+          .col-4.text-right
+            p 会社名
+          .col-8
+            p #{@current_user.company_name}
+        .row
+          .col-4.text-right
+            p 部署名
+          .col-8
+            p #{@current_user.department_name}
+        .row
+          .col-4.text-right
+            p 担当者名
+          .col-8
+            p #{@current_user.name_sei + @current_user.name_mei}
+        .row
+          .col-4.text-right
+            p 電話番号
+          .col-8
+            #{@current_user.phone_number}
 
-h2 お届け先情報(ここjavascript)
-p お届け先	お客様情報と同じ住所に配送する
-p 1件の異なる住所に配送する
+        p お届け先情報(ここjavascript)
+        .row
+          .col-4.text-right
+            p お届け先
+          .col-8
+            = f.radio_button :use_basic_email_flg, 1, checked: true
+            | お客様情報と同じ住所に配送する
+            div
+            = f.radio_button :use_basic_email_flg, 2
+            | 1件の異なる住所に配送する
 
-h2 お届け先情報の追加
-p お届け先リスト
-= form_with url: confirm_user_cart_path, method: :post, local: true do |f|
-  = f.select :companies, @addresses_name
-  = f.fields_for :address do |ff|
-    div
-    = ff.label '会社名'
-    = ff.text_field :company_name
-    div
-    = ff.label '部署名'
-    = ff.text_field :department_name
-    div
-    = ff.label 'お名前[全角]'
-    = ff.text_field :name_sei
-    = ff.text_field :name_mei
-    div
-    = ff.label 'お名前フリガナ[全角カタカナ]'
-    = ff.text_field :name_sei_kana
-    = ff.text_field :name_mei_kana
-    div
-    = ff.label '郵便番号'
-    = ff.number_field :zip_code
-    div
-    = ff.label '都道府県'
-    = ff.number_field :prefectures
-    div
-    = ff.label '市区郡町村'
-    = ff.text_field :municipation
-    div
-    = ff.label '町域、丁目、番地'
-    = ff.text_field :address_1
-    div
-    = ff.label 'ビル・マンション名、部屋番号など'
-    = ff.text_field :address_2
-    div
-    = ff.label '電話番号[半角数字]'
-    = ff.number_field :tel
-    div
-    = ff.label '携帯番号[半角数字]'
-    = ff.number_field :phone_number
-    div
+        p お届け先情報の追加
+        .row
+          .col-4
+            p.text-right お届け先リスト
+          .col-8
+            = f.select :companies, @addresses_name
 
-  h2 お支払い方法
-  p 締め払い
-  p 御社規定に従います
+        = f.fields_for :address do |ff|
+          .row
+            .col-4.text-right
+              = ff.label '会社名(必須)'
+            .col-8
+              = ff.text_field :company_name
+          .row
+            .col-4.text-right
+              = ff.label '部署名'
+            .col-8
+              = ff.text_field :department_name
+          .row
+            .col-4.text-right
+              = ff.label 'お名前'
+            .col-8
+              | 姓
+              = ff.text_field :name_sei
+              | 名
+              = ff.text_field :name_mei
+          .row
+            .col-4.text-right
+              = ff.label 'お名前フリガナ[全角カタカナ]'
+            .col-8
+              | 姓
+              = ff.text_field :name_sei_kana
+              | 名
+              = ff.text_field :name_mei_kana
+          .row
+            .col-4.text-right
+              = ff.label '郵便番号'
+              div
+              | [半角数字：上3桁-下4桁]
+              div
+              | 必須
+            .col-8
+              = ff.number_field :zip_code
+          .row
+            .col-4.text-right
+              = ff.label '都道府県'
+              div
+              | 必須
+            .col-8
+              = ff.number_field :prefectures
+          .row
+            .col-4.text-right
+              = ff.label '市区郡町村'
+              div
+              | 必須
+            .col-8
+              = ff.text_field :municipation
+          .row
+            .col-4.text-right
+              = ff.label '町域、丁目、番地'
+              div
+              | 必須
+            .col-8
+              = ff.text_field :address_1
+          .row
+            .col-4.text-right
+              = ff.label 'ビル・マンション名、部屋番号など'
+              div
+              | 省略可
+            .col-8
+              = ff.text_field :address_2
+          .row
+            .col-4.text-right
+              = ff.label '電話番号[半角数字]'
+              div
+              | 必須
+            .col-8
+              = ff.number_field :tel
+          .row
+            .col-4.text-right
+              = ff.label '携帯番号[半角数字]'
+              div
+              | 省略可
+            .col-8
+              = ff.number_field :phone_number
+          .row
+            .col-4
+            .col-8
+              = ff.check_box :address_create, {class: "check_box"}, 'true', 'false'
+              | このお届け先情報をお届け先リストに登録する
 
-  h2 お届け希望日
-  = f.label 'お届け希望日'
-  = f.select :date, @date_select
+          p お支払い方法 必須
+          p 締め払い
+          p 御社規定に従います
 
-  h2 備考・連絡事項等
-  = f.text_field :remakes
+          p お届け希望日
+          .row
+            .col-4.text-right
+              = f.label 'お届け希望日'
+            .col-8
+              = f.select :date, @date_select
 
-  div
-  = link_to 'step1に戻る', edit_user_cart_path(@current_user, @current_user.cart_id)
-  = f.submit '次へ進む'
+          p 備考・連絡事項等
+          = f.text_area :remakes, size: "60x5"
+
+          .row
+            .col-3
+            .col-3
+              = link_to 'step1に戻る', edit_user_cart_path(@current_user, @current_user.cart_id), class: "form-control text-center"
+            .col-3
+              = f.submit '次へ進む', class: "form-control"
+            .col-3
