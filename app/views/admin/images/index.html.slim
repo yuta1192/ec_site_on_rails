@@ -5,7 +5,11 @@ p 画像ファイルは、png、jpg、gifに対応。ただし、アニメーシ
 p アップ可能な最大ファイルサイズは、約20.0 MBです。
 p 画像アップロード
 = form_with url: admin_images_path, method: :post, local: true do |f|
+  = f.file_field :image
   = f.label "ここにファイルをドラッグするか、クリックして選択してください。※ファイル名は半角英数字にしてください。※アップロードできるファイルの形式は、画像ファイル（gif,jpgのみ）です。※画像はそのままのサイズでアップロードされます。"
+  /TODO ここのfile_field修正,アップロードする画像が見えるようにする。(labelが消えてプレビューになるような感じ)
+  = f.submit '登録する'
+
 
 p 登録画像一覧（表示 ： 数字昇順 ＋ ABC順）
 p サムネイル画像	URL	削除

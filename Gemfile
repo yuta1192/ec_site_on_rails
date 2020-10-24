@@ -45,6 +45,9 @@ gem 'bcrypt'
 # slim化
 gem 'slim'
 gem 'html2slim'
+# 画像系
+gem 'carrierwave'
+gem 'rmagick'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

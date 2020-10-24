@@ -1,21 +1,28 @@
-p ログインIDとパスワードを入力し、「ログイン」ボタンを押してください。
-
-= form_with model: Session, url: login_path do |f|
-  = f.label :ログインID
-  = f.text_field :e_mail
-  p ※メールアドレスまたは会員コード
+.container
+  .row
+    .col-12
+      p ログインIDとパスワードを入力し、「ログイン」ボタンを押してください。
+  .row
+    .col-3
+    .col-6.py-5.text-center
+      = form_with model: Session, url: login_path, method: :post, local: true do |f|
+        .form_group
+          = f.label :ログインID
+          = f.text_field :e_mail
+          p ※メールアドレスまたは会員コード
+        .form_group
+          = f.label :パスワード
+          = f.password_field :password
+        .div
+        = f.submit 'ログイン'
   .div
-  = f.label :パスワード
-  = f.password_field :password
-  .div
-  = f.submit 'ログイン'
-
-div
-  p TODO:まだ未作成
-  p パスワードをお忘れのかたへ
-  p メールアドレスを入力して「送信」ボタンを押してください。
-  p パスワード再設定ページのURLをお送りします。
-= form_with model: User do |f|
-  = f.label :メールアドレス
-  = f.text_field :e_mail
-  = f.submit '送信'
+  .row
+    .col-3
+    .col-6
+      p パスワードをお忘れのかたへ
+      p メールアドレスを入力して「送信」ボタンを押してください。
+      p パスワード再設定ページのURLをお送りします。
+      = form_with model: User do |f|
+        = f.label :メールアドレス
+        = f.text_field :e_mail
+        = f.submit '送信'

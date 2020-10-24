@@ -14,8 +14,8 @@ p 注文履歴（それぞれのユーザーの）
   = f.label '商品名'
   = f.text_field :product_name
   div
-  = f.label 'カテゴリ'
-  = f.collection_select :category, @categories, :category, :category, include_blank: '選択してください'
+  /= f.label 'カテゴリ'
+  /= f.collection_select :category, @categories, :category, :category, include_blank: '選択してください'
   div
   = f.label 'メモ'
   = f.text_field :memo

@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
       redirect_to root_path
     else
       flash.now[:danger] = t('.flash.invalid_password')
-      render 'new'
+      redirect_to '/login'
     end
   end
 

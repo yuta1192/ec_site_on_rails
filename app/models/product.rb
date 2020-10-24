@@ -3,6 +3,7 @@ class Product < ApplicationRecord
   belongs_to :stock_management
   belongs_to :shipping_origin
   belongs_to :child_category
+  #mount_uploader :image, ImageUploader
   #enum category: { オリジナル商品: 1, 食べ物: 2 }
 
   def self.search(search)
