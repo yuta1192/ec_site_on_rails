@@ -9,6 +9,7 @@ module TopPagesHelper
         end
       end
     end
+    all_category.unshift('選択して下さい')
     return all_category
   end
 end

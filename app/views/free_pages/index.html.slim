@@ -1,3 +1,6 @@
-- if @freepage.present?
-  h1 = @freepage.h1_tag
-  h2 = @freepage.page_title
+.container
+  .row
+    .col-12
+      - if @freepage.present?
+        h1 = @freepage.h1_tag
+        h2 = @freepage.page_title

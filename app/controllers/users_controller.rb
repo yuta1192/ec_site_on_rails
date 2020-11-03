@@ -7,7 +7,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    if @user.save
+    if @user.save!
       redirect_to sessions_path
     else
       render 'new'
@@ -33,6 +33,6 @@ class UsersController < ApplicationController
   private
 
     def user_params
-      params.require(:user).permit(:name, :e_mail, :password, :password_confirmation)
+      params.require(:user).permit(:name_sei, :e_mail, :password, :password_confirmation, :cart_id)
     end
 end

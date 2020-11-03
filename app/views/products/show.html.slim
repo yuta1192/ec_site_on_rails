@@ -1,24 +1,64 @@
-p 商品詳細
-
-h2 = @product.name
-
-
-p 参考価格：#{@product.price}円/税込#{@product.price + 100}円
-p 会員価格：#{@product.member_price}円
-
-p 左に画像
-
-p 右に
-p 商品番号	#{@product.product_number}
-- if @product.postage_flg == "true"
-  p 送料 送料は別途かかります
-- else
-  p 送料 無料
-p お届け予定日	配送設定デモ(それ用のリンク作ってパクれ)
-
-p 商品のご注文
-p 価格	在庫数	数量	カートに入れる
-= form_with url: show_create_products_path(product_id: @product.id), method: :post, local: true do |f|
-  p #{@product.price}円 #{@product.stock}
-  = f.number_field :quantity
-  = f.submit "カートに入れる"
+.container
+  .row
+    .col-12
+      h2 = @product.name
+      p 参考価格：#{@product.price}円/税込#{@product.price * 1.1}円
+      p 会員価格：#{@product.member_price}円
+      .row
+        .col-6
+          p 画像
+        .col-6
+          .row
+            .col-4
+              p 商品番号
+            .col-8
+              p #{@product.product_number}
+          .row
+            .col-4
+              p 送料
+            .col-8
+              - if @product.postage_flg == "true"
+                p 送料は別途かかります
+              - else
+                p 無料
+          .row
+            .col-4
+              p お届け予定日
+            .col-8
+              p 配送設定デモ
+          .row
+            .col-4
+              p 参考価格
+            .col-8
+              p #{@product.price}円/税込#{@product.price * 1.1}円
+          .row
+            .col-4
+              p 会員価格
+            .col-8
+              p #{@product.member_price}円
+      .row
+        .col-6
+          p.text-center 商品のご注文
+          .row
+            .col-2
+              p 価格
+            .col-2
+              p 在庫数
+            .col-2
+              p 数量
+            .col-6
+              p カートに入れる
+          = form_with url: show_create_products_path(product_id: @product.id), method: :post, local: true do |f|
+            .row
+              .col-2
+                p #{@product.price}
+              .col-2
+                p #{@product.stock_management.stock}
+              .col-2
+                = f.number_field :quantity
+              .col-6
+                = f.submit "カートに入れる"
+          p この商品をマイリストに追加する
+      p お取り寄せ商品について
+      p メーカーの在庫や生産状況により、納品まで時間がかかる場合がございます。
+      p メーカーでの廃盤により、注文をキャンセルさせていただく場合がございます。

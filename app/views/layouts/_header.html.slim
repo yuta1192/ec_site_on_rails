@@ -1,85 +1,24 @@
-- if signed_in?
-  - if @current_user.admin?
-    = link_to 'EC-Next', admin_dashboard_path
-    | ショップ管理画面
-    | USER： #{@current_user.name_sei + @current_user.name_mei}様
-    = link_to 'はじめにお読み下さい', admin_dashboard_path
-    = link_to 'ログアウト', logout_path, method: :post
-    p ページ編集
-    = link_to '新着情報', admin_informations_path
-    div
-    = link_to '画像管理', admin_images_path
-    div
-    = link_to 'バナー・リンク管理', admin_banner_index_path
-    div
-    = link_to '商品ページ', admin_product_page_edit_path
-    div
-    = link_to 'ページ管理', admin_free_pages_path
-    div
-    = link_to 'よくある質問', new_admin_inquery_path
-    div
-    p 商品管理
-    = link_to '商品一覧', admin_products_path
-    div
-    = link_to '商品登録', new_admin_product_path
-    div
-    = link_to 'カテゴリ管理', category_admin_products_path
-    div
-    p 受注管理
-    = link_to '受注入力', admin_order_managements_path
-    div
-    = link_to '受注管理', order_history_admin_order_managements_path
-    div
-    p 出荷管理
-    = link_to '出荷管理', admin_shipments_path
-    div
-    p 会員管理
-    = link_to '会員一覧', admin_members_path
-    div
-    = link_to '会員登録', new_admin_member_path
-    div
-    = link_to '会員グループ一覧', admin_groups_path
-    div
-    = link_to '会員グループ登録', new_admin_group_path
-    div
-    = link_to 'お届け先一覧', admin_addresses_path
-    div
-    = link_to 'お届け先登録', new_admin_address_path
-    div
-    p 出荷元管理
-    = link_to '出荷元一覧', admin_shipping_origins_path
-    div
-    = link_to '出荷元登録', new_admin_shipping_origin_path
-    div
-    p 在庫管理
-    = link_to '在庫管理', admin_stock_managements_path
-    div
-    p 基本設定
-    = link_to '基本設定', admin_shops_path
-    div
-    = link_to 'メール設定', admin_mail_settings_path
-    div
-    = link_to '支払方法設定', admin_payment_method_settings_path
-    div
-    = link_to '送料設定', admin_shipping_settings_path
-    div
-    = link_to 'カートの備考欄', edit_admin_cart_memo_path(1)
-    div
-    = link_to '会員ランク設定', admin_member_ranks_path
-    div
-    = link_to '祝日設定', admin_shop_holidays_path
-    div
-    = link_to '休業日設定', admin_holiday_settings_path
-    div
-  - else
-    .container
-      .row
-        .col-2
-          p ロゴを入れる
-        .col-2
-          p #{@current_user.name_sei + @current_user.name_mei}
-          p さま
-        .col-2
+nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+  .container
+    a.navbar-brand[href="/"]
+      / TODO ここは設定したロゴに変更される
+      img[src="/docs/4.2/assets/brand/bootstrap-solid.svg" width="30" height="30" alt=""]
+      | EC-Next
+    - if signed_in?
+      - if @current_user.admin?
+        div.float-left
+          | ショップ管理画面
+          br
+          | USER： #{@current_user.name_sei + @current_user.name_mei}様
+        div.float-right
+          = link_to 'はじめにお読み下さい', admin_dashboard_path
+          = link_to 'サイトを見る', root_path
+          = link_to 'ログアウト', logout_path, method: :post
+      - else
+        div.float-left
+          | #{@current_user.name_sei + @current_user.name_mei}
+          br さま
+
         .col-md-auto
           = link_to 'トップ', root_path
           | |
@@ -90,14 +29,12 @@
           = link_to 'よくある質問', inqueries_path
           | |
           = link_to 'サイトマップ', sitemap_path
-      .row
-        .col-6
-        .col-6
-          div
+          br
           = link_to '会員ページ', mypage_path
           | |
           = link_to 'ログアウト', logout_path, method: :post
           - if @current_user
-            | |
-            = link_to 'カートを見る', edit_user_cart_path(@current_user, @current_user.cart_id)
-      p ------------------------------------------------------------------------------------------------------------------------------------------------
+            | | "カートを見る"
+            /= link_to 'カートを見る', edit_user_cart_path(@current_user, @current_user.cart_id)
+
+/ ログインしてない場合、ロゴのみ表示

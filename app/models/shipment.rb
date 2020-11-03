@@ -1,5 +1,5 @@
 class Shipment < ApplicationRecord
-  belongs_to :order_history
+  belongs_to :order_history, optional: true
   has_many :shipment_products
 
   scope :search, -> (shipment_params) do

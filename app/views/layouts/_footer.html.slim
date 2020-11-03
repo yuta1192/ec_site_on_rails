@@ -1,18 +1,18 @@
-.container
-  p ------------------------------------------------------------------------------------------------------------------------------------------------
-  - if signed_in?
-    - if @current_user.admin?
-      / footer
-      div
-    - else
-      - if FreePage.where(place: 2).or(FreePage.where(place: 3)) ## 自由ページの場所がヘッダーの1or3
-        .row
-          .col-12
-            .text-center
-              - FreePage.where(place: 2).or(FreePage.where(place: 3)).each do |fp|
-                = link_to fp.page_title, free_pages_path(url_value: fp.url)
-                | |
-        .row
-          .col-8
-          .col-4
-            p Copyright © ショップ名 All Rights Reserved.
+nav.navbar.fixed-bottom.navbar-expand-sm.navbar-dark.bg-dark
+  button.navbar-toggler[type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"]
+    span.navbar-toggler-icon
+  #navbarCollapse.collapse.navbar-collapse
+    ul.navbar-nav.col-4
+    ul.navbar-nav.col-4
+      - if signed_in?
+        - if @current_user.admin?
+          / adminはコピーライトのみ
+        - else
+          - if FreePage.where(place: 2).or(FreePage.where(place: 3)) ## 自由ページの場所がヘッダーの1or3
+            - FreePage.where(place: 2).or(FreePage.where(place: 3)).each do |fp|
+              li.nav-item.active
+                a.nav-link[href="#"]
+                  = link_to fp.page_title, free_pages_path(url_value: fp.url)
+    ul.navbar-nav.col-4
+      li.nav-item
+          | Copyright © ショップ名 All Rights Reserved.

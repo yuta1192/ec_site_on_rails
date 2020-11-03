@@ -1,7 +1,8 @@
 class ProductsController < ApplicationController
   def search
     @product_categories = Product.select(:category).distinct
-    @products = Product.search(products_search_params[:name]).category_search(products_search_params[:category])
+    @products = Product.search(products_search_params[:name]).category_name_search(products_search_params[:category])
+    @category_name = params[:product][:category]
   end
 
   def show
@@ -47,10 +48,15 @@ class ProductsController < ApplicationController
           order_history.save!
         end
         check_product.flatten!
-        check_product.each do |product|
-          unless CartItem.where(product_id: product[:product_id], cart_number: @current_user.cart.cart_number)
-            cart_item = CartItem.new(quantity: product[:quantity], product_id: product[:product_id], cart_id: @current_user.cart_id, cart_number: @current_user.cart.cart_number, order_history_id: order_history.id)
-            cart_item.save!
+        ActiveRecord::Base.transaction do
+          check_product.each do |product|
+            if CartItem.where(product_id: product[:product_id], cart_number: @current_user.cart.cart_number).present?
+              cart_item = CartItem.find_by(product_id: product[:product_id], cart_number: @current_user.cart.cart_number)
+              cart_item.update(quantity: product[:quantity])
+            else
+              cart_item = CartItem.new(quantity: product[:quantity], product_id: product[:product_id], cart_id: @current_user.cart_id, cart_number: @current_user.cart.cart_number, order_history_id: order_history.id)
+              cart_item.save!
+            end
           end
         end
         redirect_to edit_user_cart_path(@current_user, @current_user.cart_id)
@@ -92,6 +98,15 @@ class ProductsController < ApplicationController
   end
 
   private
+
+    def select_categories
+      a = []
+      Category.all.each do |c|
+        a << [c.name, c.id]
+      end
+      binding.pry
+      a.unshift['選択して下さい', nil]
+    end
 
     def products_search_params
       params.require(:product).permit(:name, :category)

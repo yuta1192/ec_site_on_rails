@@ -4,6 +4,11 @@ class Admin::ImagesController < ApplicationController
   end
 
   def create
+    if Image.create(banner_upload)
+      redirect_to admin_images_path
+    else
+      return render index 
+    end
   end
 
   def destroy
@@ -24,5 +29,11 @@ class Admin::ImagesController < ApplicationController
     else
       render admin_banner_index_path
     end
+  end
+
+  private
+
+  def banner_upload
+    params.require(:image).permit(:image)
   end
 end

@@ -4,21 +4,21 @@
       h2 商品検索
       = form_with model: Product, url: search_products_path , method: :get, local: true do |f|
         = f.label 'カテゴリ'
-        = f.select :category, select_categories
+        = f.select :category, select_categories, {}, class: 'form-control'
         div
         = f.label 'キーワード'
         div
-        = f.text_field :name, value: ""
+        = f.text_field :name, value: "", class: 'form-control'
         .div
         = f.submit '検索'
       div
       h2 商品カテゴリー
       - @product_categories.each do |parent_category|
-        = link_to parent_category.name, root_path
+        = link_to parent_category.name, search_products_path(product: {category: parent_category.name})
         div
         - if parent_category.child_categories.present?
           - parent_category.child_categories.each do |child_category|
-            = link_to child_category.name, root_path
+            = link_to child_category.name.present? ? child_category.name : "#{parent_category.name + '/'}", search_products_path(product: {category: "#{[parent_category.name,child_category.name].join('/')}"})
             div
       = link_to "クイックオーダー", quick_order_products_path
       div
