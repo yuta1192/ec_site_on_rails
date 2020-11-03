@@ -1,76 +1,148 @@
 .container
   .row
+    / サイドメニュー
     .col-3
-      h2 商品検索
-      = form_with model: Product, url: search_products_path , method: :get, local: true do |f|
-        = f.label 'カテゴリ'
-        = f.select :category, select_categories, {}, class: 'form-control'
-        div
-        = f.label 'キーワード'
-        div
-        = f.text_field :name, value: "", class: 'form-control'
-        .div
-        = f.submit '検索'
+      br
+      .table.table-bordered
+        .thead.bg-primary
+          .tr
+            .td.h2 商品検索
+        .tbody
+          .tr
+            = form_with model: Product, url: search_products_path , method: :get, local: true do |f|
+              .td = f.label 'カテゴリ'
+              .td = f.select :category, select_categories, {}, class: 'form-control'
+              .td = f.label 'キーワード'
+              .td = f.text_field :name, value: "", class: 'form-control'
+              = f.submit '検索'
+      br
+      .table.table-bordered
+        .thead.bg-primary
+          .tr
+            .td.h2 商品カテゴリー
+        .tbody
+          .tr
+            - @product_categories.each do |parent_category|
+              .td = link_to "#{parent_category.name}(#{parent_category.child_categories.present? ? "#{parent_category.child_categories.count}" : 1})", search_products_path(product: {category: parent_category.name})
+          br
+          .tr = link_to "全カテゴリー"
+        / TODO 一旦カテゴリーができているか確認、確認次第削除
+        /
+          - if parent_category.child_categories.present?
+            - parent_category.child_categories.each do |child_category|
+              = link_to child_category.name.present? ? child_category.name : "#{parent_category.name + '/'}", search_products_path(product: {category: "#{[parent_category.name,child_category.name].join('/')}"})
+              div
       div
-      h2 商品カテゴリー
-      - @product_categories.each do |parent_category|
-        = link_to parent_category.name, search_products_path(product: {category: parent_category.name})
-        div
-        - if parent_category.child_categories.present?
-          - parent_category.child_categories.each do |child_category|
-            = link_to child_category.name.present? ? child_category.name : "#{parent_category.name + '/'}", search_products_path(product: {category: "#{[parent_category.name,child_category.name].join('/')}"})
-            div
-      = link_to "クイックオーダー", quick_order_products_path
+      .table.table-bordered
+        .tbody
+          .tr = link_to "クイックオーダー", quick_order_products_path
       div
+      br
+      / TODO バナーが表示されるように修正
       h2 バナー
       h2 バナー
+      / TODO バナーの表示ができるように修正
       div
-      h2 営業日(未完成 今月と翌月 土日は赤色に)
-
-      - today = Date.today
-      table
-        caption= today.strftime('%Y年%m月')
-        tr
-          th 日
-          th 月
-          th 火
-          th 水
-          th 木
-          th 金
-          th 土
-        tr
-          - month = today.strftime('%m')
-          - d = today.at_beginning_of_month.at_beginning_of_week(:sunday)
-          - 1.upto(5).each do|i|
+      br
+      / TODO 営業日カレンダー(未完成 今月と翌月 土日は赤色に)
+      .table.table-bordered
+        .thead.bg-primary
+          .tr
+            .td.h4 営業日カレンダー
+        .tbody
+          / 今月のカレンダー
+          - today = Date.today
+          tr
+            td = today.strftime('%Y年%m月')
+          table.table-sm
             tr
-              - (d..d.end_of_week(:sunday)).each do|c|
-                th= (c.strftime('%m') == month)? c.strftime('%d'): "  "
-            - d = d + 1.week
-
-      p この日（赤色）は休業日です。
+              th.text-danger 日
+              th 月
+              th 火
+              th 水
+              th 木
+              th 金
+              th.text-primary 土
+            tr
+              - month = today.strftime('%m')
+              - d = today.at_beginning_of_month.at_beginning_of_week(:sunday)
+              - 1.upto(5).each do|i|
+                tr
+                  - (d..d.end_of_week(:sunday)).each do|c|
+                    th= (c.strftime('%m') == month)? c.strftime('%d'): "  "
+                - d = d + 1.week
+          / 来月のカレンダー
+          br
+          - next_months = Date.today.next_month
+          tr
+            td = next_months.strftime('%Y年%m月')
+          table.table-sm
+            tr
+              th.text-danger 日
+              th 月
+              th 火
+              th 水
+              th 木
+              th 金
+              th.text-primary 土
+            tr
+              - month = next_months.strftime('%m')
+              - d = next_months.at_beginning_of_month.at_beginning_of_week(:sunday)
+              - 1.upto(5).each do|i|
+                tr
+                  - (d..d.end_of_week(:sunday)).each do|c|
+                    th= (c.strftime('%m') == month)? c.strftime('%d'): "  "
+                - d = d + 1.week
+        br
+        p.text-danger この日(赤色)は休業日です。
       div
 
+      / TODO ランキングはredisで作成
+      / 商品のランキング
       h2 ランキング(redisで作る予定)
       p ランキング
       p 左に画像image
       p 第●位(10位まで)
       p 商品名
+    / メインメニュー
     .col-9
+      br
+      / TODO ロゴを表示できるようにする。
       h2 ロゴ
-      h2 新入荷
-      - Product.last(3).reverse.each.with_index(1) do |product, i|
-        p 第#{i}位
-        p 画像イメージ
-        = link_to product.name, product_path(product)
-        = product.detail
-        = product.price
-        = product.member_price
-
-      h2 新着情報
+      table.table
+        thead.thead-light
+          tr
+            th[scope="col"]
+              | 新入荷
+            th[scope="col"]
+            th[scope="col"]
+        / TODO ここの書き方は何度も同じことをしなければならないのか？？
+        tbody.table-bordered
+          tr
+            - @new_products.each.with_index(1) do |product, i|
+              th 第#{i}位
+          tr
+            - @new_products.each.with_index(1) do |product, i|
+              td 画像イメージ
+          tr
+            - @new_products.each.with_index(1) do |product, i|
+              td = link_to product.name, product_path(product)
+          tr
+            - @new_products.each.with_index(1) do |product, i|
+              td = product.detail.present? ? product.detail : "詳細がありません"
+          tr
+            - @new_products.each.with_index(1) do |product, i|
+              td.text-danger = product.price
+          tr
+            - @new_products.each.with_index(1) do |product, i|
+              td.text-danger = product.member_price
+      br
+      h2.border-bottom 新着情報
       - Information.all.each do |info|
-        = info.created_at.strftime('%Y年%m月%d日')
-        div
+        br
+        p.text-danger = info.created_at.strftime('%Y年%m月%d日')
         = info.detail
-        p ファイル添付はまだ
-
-      h2 バーナー
+        br
+      br
+      /TODO バナー作成
+      /TODO ページトップへ　のボタン作成
