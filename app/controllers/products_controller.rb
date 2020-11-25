@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   def search
-    @product_categories = Product.select(:category).distinct
+    @product_categories = Product.select(:category_id).distinct
     @products = Product.search(products_search_params[:name]).category_name_search(products_search_params[:category])
     @category_name = params[:product][:category]
   end
@@ -94,6 +94,14 @@ class ProductsController < ApplicationController
           return redirect_to quick_order_products_path
         end
       end
+    end
+  end
+
+  def update
+    binding.pry
+    if Product.find(1).update!(image: params[:product][:image])
+     redirect_to root_path
+    else
     end
   end
 

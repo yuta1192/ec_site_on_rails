@@ -3,7 +3,7 @@ class Product < ApplicationRecord
   belongs_to :stock_management
   belongs_to :shipping_origin
   belongs_to :child_category
-  #mount_uploader :image, ImageUploader
+  mount_uploader :image, ImageUploader
   #enum category: { オリジナル商品: 1, 食べ物: 2 }
 
   def self.search(search)
@@ -15,15 +15,9 @@ class Product < ApplicationRecord
     return Product.all unless category_name
     return Product.all if category_name.blank?
     return Product.all if category_name == "選択して下さい"
-    # 子カテゴリと親カテゴリで検索条件分け
-    if category_name.include? "/"
-      category_id = ChildCategory.find_by(name: "#{category_name.partition('/').last}").category_id
-      child_category_id = ChildCategory.find_by(name: "#{category_name.partition('/').last}").id
-      Product.where(category_id: category_id).where(child_category_id: child_category_id)
-    else
-      category_id = Category.find_by(name: "#{category_name}").id
-      Product.where(category_id: category_id)
-    end
+
+    category_id = Category.find_by(name: "#{category_name}").id
+    Product.where(category_id: category_id)
   }
 
   scope :product_number_search, -> product_number {

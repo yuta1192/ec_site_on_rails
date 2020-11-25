@@ -7,7 +7,7 @@ class Admin::ImagesController < ApplicationController
     if Image.create(banner_upload)
       redirect_to admin_images_path
     else
-      return render index 
+      return render index
     end
   end
 
@@ -19,7 +19,9 @@ class Admin::ImagesController < ApplicationController
     @images = Image.where(banner_id: 1)
   end
 
-  def banner
+  def banner_create
+    Banner.create(image: params[:banner][:image], name: "banana1", hyoji_area: 2, comment: "バナー下")
+    redirect_to root_path
   end
 
   def banner_update

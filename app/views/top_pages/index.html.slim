@@ -23,25 +23,20 @@
         .tbody
           .tr
             - @product_categories.each do |parent_category|
-              .td = link_to "#{parent_category.name}(#{parent_category.child_categories.present? ? "#{parent_category.child_categories.count}" : 1})", search_products_path(product: {category: parent_category.name})
+              .td = link_to "#{parent_category.name}(#{Product.where(category_id: parent_category.id).count})", search_products_path(product: {category: parent_category.name})
           br
-          .tr = link_to "全カテゴリー"
-        / TODO 一旦カテゴリーができているか確認、確認次第削除
-        /
-          - if parent_category.child_categories.present?
-            - parent_category.child_categories.each do |child_category|
-              = link_to child_category.name.present? ? child_category.name : "#{parent_category.name + '/'}", search_products_path(product: {category: "#{[parent_category.name,child_category.name].join('/')}"})
-              div
+          .tr = link_to "全カテゴリー", search_products_path(product: {category: nil})
       div
       .table.table-bordered
         .tbody
           .tr = link_to "クイックオーダー", quick_order_products_path
       div
       br
-      / TODO バナーが表示されるように修正
-      h2 バナー
-      h2 バナー
-      / TODO バナーの表示ができるように修正
+
+      / TODO バナー表示（表示カラムを追加して、左に表示するかを制御する。helperに書いてある
+      - banner_left.each do |b|
+        = image_tag(b.image.to_s, :size => '210x90')
+
       div
       br
       / TODO 営業日カレンダー(未完成 今月と翌月 土日は赤色に)
@@ -123,7 +118,7 @@
               th 第#{i}位
           tr
             - @new_products.each.with_index(1) do |product, i|
-              td 画像イメージ
+              td = image_tag(product.image.to_s, :size => '200x200')
           tr
             - @new_products.each.with_index(1) do |product, i|
               td = link_to product.name, product_path(product)
@@ -132,10 +127,10 @@
               td = product.detail.present? ? product.detail : "詳細がありません"
           tr
             - @new_products.each.with_index(1) do |product, i|
-              td.text-danger = product.price
+              td.text-danger = "参考価格：#{product.price}"
           tr
             - @new_products.each.with_index(1) do |product, i|
-              td.text-danger = product.member_price
+              td.text-danger = "会員価格：#{product.member_price}"
       br
       h2.border-bottom 新着情報
       - Information.all.each do |info|
@@ -146,3 +141,33 @@
       br
       /TODO バナー作成
       /TODO ページトップへ　のボタン作成
+      br
+      table.table
+        thead
+          - banner_under.each.with_index(1) do |b, i|
+            - if i == 2
+              tr
+                td
+                  = image_tag(b.image.to_s, :size => '340x100')
+            - else
+              td
+                = image_tag(b.image.to_s, :size => '340x100')
+
+
+      /      td
+      /        | バナー
+      /    tr
+      /      td
+      /        | バナー
+      /      td
+      /        | バナー
+
+/
+              = form_with model: Product, url: product_path(1), action: :update, method: :patch, local: true do |f|
+                .td = f.label 'カテゴリ'
+                .td = f.file_field :image
+                = f.submit '検索'
+/
+              = form_with model: Banner, url: admin_banner_create_path, method: :post, local: true do |f|
+                = f.file_field :image
+                = f.submit '１検索'
