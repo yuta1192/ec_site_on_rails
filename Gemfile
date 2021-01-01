@@ -48,6 +48,9 @@ gem 'html2slim'
 # 画像系
 gem 'carrierwave'
 gem 'rmagick'
+# 表示切り替えや表示個数の指定のため
+gem 'kaminari'
+gem 'kaminari-bootstrap'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

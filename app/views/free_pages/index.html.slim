@@ -1,6 +1,11 @@
 .container
   .row
     .col-12
+      | 現在位置：
+      = link_to 'トップ', root_path
+      = "> #{@freepage.page_title}"
+    .col-3
+    .col-9
       - if @freepage.present?
         h1 = @freepage.h1_tag
         h2 = @freepage.page_title

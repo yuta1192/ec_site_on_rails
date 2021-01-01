@@ -1,0 +1,17 @@
+.col-3
+  br
+  .row.border
+    .col-12.bg-primary
+      h2 会員メニュー
+    .col-12
+      = "#{@current_user.name_sei + @current_user.name_mei}"
+      p さま
+      .border-bottom
+      br
+      ul
+        li = link_to 'マイページトップ', mypage_path
+        li = link_to 'マイリスト', user_my_lists_path(@current_user)
+        li = link_to '注文履歴', user_order_histories_path(@current_user)
+        li = link_to 'アドレス帳', user_addresses_path(@current_user)
+        li = link_to 'パスワード変更', password_edit_user_path(@current_user)
+        li = link_to 'ログアウト', logout_path, method: :post

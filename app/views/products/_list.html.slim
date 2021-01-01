@@ -1,0 +1,76 @@
+.row.bg-secondary.border-bottom.border-primary
+  h3 = @category_name
+.row.bg-warning
+  .col-8
+    | 表示方法：
+    = link_to 'リスト形式（画像あり）', search_products_path(product: {category: session[:category]}, display: 'list_image', per: @per, page: @page, order: @order)
+    | | リスト形式 |
+    = link_to '大きい画像', search_products_path(product: {category: session[:category]}, display: 'image', per: @per, page: @page, order: @order)
+  .col-4
+    - if @per.to_i == 30
+      | 表示件数：３０件 |
+      = link_to '６０件', search_products_path(product: {category: session[:category]}, per: 60, page: @page, display: @display, order: @order)
+    - elsif @per.to_i == 60
+      | 表示件数：
+      = link_to '３０件', search_products_path(product: {category: session[:category]}, per: 30, page: @page, display: @display, order: @order)
+      |  | ６０件
+  .col-12
+    - if @order == "created_at desc"
+      | 並び替え：新着
+      | |
+      = link_to '価格安い順', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "price asc")
+      | |
+      = link_to '価格高い順', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "price desc")
+    - elsif @order == "price asc"
+      | 並び替え：
+      = link_to '新着', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "created_at desc")
+      | |価格安い順|
+      = link_to '価格高い順', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "price desc")
+    - elsif @order == "price desc"
+      | 並び替え：
+      = link_to '新着', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "created_at desc")
+      | |
+      = link_to '価格安い順', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "price asc")
+      | | 価格高い順
+br
+p ↓全て選択/解除
+.row.bg-success.text-center
+  .col-1.border
+  .col-3.border
+    p 商品名
+  .col-4.border
+    p 価格
+  .col-2.border
+    p 送料
+  .col-2.border
+    p 数量
+= form_with url: products_path, method: :post, local: true, class: "form-horizontal" do |f|
+  - @products.each.with_index(1) do |product, id|
+    .row.border-top.border-bottom.d-flex.align-items-center
+      .form-group.col-md-1
+        = f.fields_for :check_product do |ff|
+          = ff.check_box "[id_#{id}]check", {}, "true", "false"
+          = ff.hidden_field "[id_#{id}]product_id", value: product.id
+      .form-group.col-md-3
+        = link_to product.name, product_path(product)
+      .form-group.col-md-4
+        = "参考価格#{product.price}/(税込)#{product.price}"
+        div
+        = "会員価格#{product.price}"
+      .form-group.col-md-2
+        - if product.postage_flg == true
+          | 送料は別途
+        - else
+          | 無料
+      .form-group.col-md-2
+        = f.fields_for :check_product do |ff|
+          = ff.number_field "[id_#{id}]quantity", class: "image-max-size"
+          div
+
+  = paginate @products
+
+  br
+  p ↑全て選択/解除
+  = f.submit "マイリストに入れるボタン", name: "mylist"
+  div
+  = f.submit "カートに入れるボタン"

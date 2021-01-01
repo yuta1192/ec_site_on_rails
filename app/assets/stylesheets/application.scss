@@ -12,3 +12,17 @@
  *
  */
 @import "bootstrap";
+
+text-red-color {
+  color: red;
+}
+
+/* 画面に収まるサイズにする。*/
+.image-max-size {
+  width: 100%;
+}
+
+/* kaminariを中央寄せ */
+.pagination {
+  justify-content: center;
+}

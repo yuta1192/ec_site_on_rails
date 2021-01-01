@@ -1,0 +1,58 @@
+.row.bg-secondary.border-bottom.border-primary
+  h3 = @category_name
+.row.bg-warning
+  .col-8
+    | 表示方法：
+    = link_to 'リスト形式（画像あり）', search_products_path(product: {category: session[:category]}, display: 'list_image', per: @per, page: @page, order: @order)
+    | |
+    = link_to 'リスト形式', search_products_path(product: {category: session[:category]}, display: 'list', per: @per, page: @page, order: @order)
+    |  | 大きい画像
+  .col-4
+    - if @per.to_i == 30
+      | 表示件数：３０件 |
+      = link_to '６０件', search_products_path(product: {category: session[:category]}, per: 60, page: @page, display: @display, order: @order)
+    - elsif @per.to_i == 60
+      | 表示件数：
+      = link_to '３０件', search_products_path(product: {category: session[:category]}, per: 30, page: @page, display: @display, order: @order)
+      |  | ６０件
+  .col-12
+    - if @order == "created_at desc"
+      | 並び替え：新着
+      | |
+      = link_to '価格安い順', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "price asc")
+      | |
+      = link_to '価格高い順', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "price desc")
+    - elsif @order == "price asc"
+      | 並び替え：
+      = link_to '新着', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "created_at desc")
+      | |価格安い順|
+      = link_to '価格高い順', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "price desc")
+    - elsif @order == "price desc"
+      | 並び替え：
+      = link_to '新着', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "created_at desc")
+      | |
+      = link_to '価格安い順', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "price asc")
+      | | 価格高い順
+br
+
+  = form_with url: products_path, method: :post, local: true, class: "form-horizontal" do |f|
+    .card-group
+      .row
+        - @products.each do |product|
+          .col-md-4
+            .card
+              = image_tag(product.image.to_s, class: 'svg bd-placeholder-img card-img-top')
+                title
+                  | Placeholder
+                rect[fill="#868e96" width="100%" height="100%"]
+                text[fill="#dee2e6" dy=".3em" x="50%" y="50%"]
+                  | Image cap
+              .card-body
+                h5.card-title
+                  = link_to product.name, product_path(product)
+                p.card-text
+                  = "参考価格:#{product.price}/(税込)#{product.price}"
+                  br
+                  = "会員価格:#{product.price}"
+
+        = paginate @products

@@ -1,12 +1,40 @@
 class ProductsController < ApplicationController
   def search
     @product_categories = Product.select(:category_id).distinct
-    @products = Product.search(products_search_params[:name]).category_name_search(products_search_params[:category])
+    # 初期表示の際、ページ場所と表示数と表示方法のパラメータがないときは初期値を設定する。
+    if params[:page].blank?
+      params[:page] = 1
+    end
+    if params[:per].blank?
+      params[:per] = 30
+    end
+    if params[:display].blank?
+      params[:display] = "list_image"
+    end
+    if params[:order].blank?
+      params[:order] = "created_at desc"
+    end
+    @page = params[:page]
+    @per = params[:per]
+    @display = params[:display]
+    @order = params[:order]
+
+    @products = Product.search(products_search_params[:name]).category_name_search(products_search_params[:category]).order(@order).page(@page).per(@per)
     @category_name = params[:product][:category]
+
+    session[:name] = products_search_params[:name]
+    session[:category] = products_search_params[:category]
   end
 
   def show
     @product = Product.find(params[:id])
+    @category = Category.find(@product.category_id)
+    # 子カテゴリーがある場合はパンくず作る
+    if @product.child_category_id.present?
+      @child_category = @category.child_categories.find(@product.child_category_id)
+    else
+      @child_category = nil
+    end
   end
 
   def show_create

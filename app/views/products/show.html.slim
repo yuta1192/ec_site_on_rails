@@ -1,64 +1,92 @@
 .container
   .row
     .col-12
+      | 現在位置：
+      = link_to 'トップ', root_path
+      | >
+      = link_to @category.name, search_products_path(product: {category: @category.name})
+      - if @child_category.present?
+        | >
+        = link_to @child_category.name, search_products_path(product: {category: @child_category.name})
+      | >
+      = @product.name
+    / サイドメニュー
+    = render 'layouts/side_menu'
+    .col-9
+      br
+      | 今月の注文締め切りは<text-red-color>２０日</text-red-color>です。
+      br
+      br
+      br
       h2 = @product.name
-      p 参考価格：#{@product.price}円/税込#{@product.price * 1.1}円
-      p 会員価格：#{@product.member_price}円
+      .border-bottom.border-dark
+      br
+
+      / 商品詳細
+      p.text-danger 参考価格：#{@product.price}円/税込#{@product.price * 1.1}円
+      p.text-danger 会員価格：#{@product.member_price}円
+      br
       .row
         .col-6
-          p 画像
-        .col-6
+          - if @product.image.present?
+            = image_tag(@product.image.to_s, class: "image-max-size")
+          - else
+            = image_tag('/no_image_square.jpg', class: "image-max-size")
+          / no-gutters colの余白無くしてくれるすげー
           .row
-            .col-4
-              p 商品番号
-            .col-8
-              p #{@product.product_number}
-          .row
-            .col-4
-              p 送料
-            .col-8
-              - if @product.postage_flg == "true"
-                p 送料は別途かかります
-              - else
-                p 無料
-          .row
-            .col-4
-              p お届け予定日
-            .col-8
-              p 配送設定デモ
-          .row
-            .col-4
-              p 参考価格
-            .col-8
-              p #{@product.price}円/税込#{@product.price * 1.1}円
-          .row
-            .col-4
-              p 会員価格
-            .col-8
-              p #{@product.member_price}円
-      .row
-        .col-6
-          p.text-center 商品のご注文
-          .row
-            .col-2
-              p 価格
-            .col-2
-              p 在庫数
-            .col-2
-              p 数量
-            .col-6
-              p カートに入れる
+            .col-12
+              table.table-bordered
+                thead
+                  tr.d-flex
+                    th.col-12.text-center 商品のご注文
+                tbody
+                  tr.d-flex.no-gutters
+                    td.col-2 価格
+                    td.col-2 在庫数
+                    td.col-2 数量
+                    td.col-6 カートに入れる
+                  tr.d-flex.no-gutters
+                    = form_with url: show_create_products_path(product_id: @product.id), method: :post, local: true do |f|
+                      td.col-2
+                        p #{@product.price}
+                      td.col-2
+                        p #{@product.stock_management.stock}
+                      td.col-2
+                        = f.number_field :quantity, value: 1, class: "image-max-size"
+                      td.col-6
+                        = f.submit "カートに入れる"
+          # link_toとボタンにする
           = form_with url: show_create_products_path(product_id: @product.id), method: :post, local: true do |f|
-            .row
-              .col-2
-                p #{@product.price}
-              .col-2
-                p #{@product.stock_management.stock}
-              .col-2
-                = f.number_field :quantity
-              .col-6
-                = f.submit "カートに入れる"
-          p この商品をマイリストに追加する
+            = f.submit 'この商品をマイリストに追加する'
+        .col-6
+          .row
+            .col-12
+              table.table-bordered
+                tbody
+                  tr.d-flex
+                    td.col-5 商品番号
+                    td.col-7 = @product.product_number
+                  tr.d-flex
+                    td.col-5 送料
+                    td.col-7
+                      - if @product.postage_flg == "true"
+                        | 送料は別途かかります
+                      - else
+                        | 無料
+                  tr.d-flex
+                    td.col-5 お届け予定日
+                    td.col-7 配送設定デモ
+                  tr.d-flex
+                    td.col-5 参考価格
+                    td.col-7 #{@product.price}円/税込#{@product.price * 1.1}円
+                  tr.d-flex
+                    td.col-5 会員価格
+                    td.col-7 #{@product.member_price}円
+      /商品説明
+      br
+      = @product.detail
+      br
+      br
       p お取り寄せ商品について
       p メーカーの在庫や生産状況により、納品まで時間がかかる場合がございます。
       p メーカーでの廃盤により、注文をキャンセルさせていただく場合がございます。

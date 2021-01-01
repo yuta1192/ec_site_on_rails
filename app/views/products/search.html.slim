@@ -1,62 +1,18 @@
 .container
   .row
-    .col-4
-      h2 商品検索
+    .col-12
+      | 現在位置：
+      = link_to 'トップ', root_path
+      | >
+      = @category_name
+    / サイドメニュー
+    = render 'layouts/side_menu'
 
-      = form_with model: Product, url: search_products_path , method: :get, local: true do |f|
-        = f.label 'カテゴリ'
-        = f.select :category, select_categories
-        .div
-        = f.label 'キーワード'
-        = f.text_field :name, value: ""
-        .div
-        = f.submit '検索'
-
-    .col-8
-      h3 = @category_name
-      div
-      .row
-        .col-8
-          p 表示方法(リスト形式と大画像)
-        .col-4
-          p 表示件数（３０、６０）
-      p 並び替え　高い、安い、新着
-      .row
-        .col-1
-        .col-2
-          p 画像
-        .col-2
-        	p 商品名
-        .col-3
-          p 価格
-        .col-2
-          p 送料
-        .col-2
-          p 数量
-      = form_with url: products_path, method: :post, local: true do |f|
-        - @products.each.with_index(1) do |product, id|
-          .row
-            .form-group.col-md-1
-              = f.fields_for :check_product do |ff|
-                = ff.check_box "[id_#{id}]check", {}, "true", "false"
-                = ff.hidden_field "[id_#{id}]product_id", value: product.id
-            .form-group.col-md-2
-              | 商品の画像
-            .form-group.col-md-2
-              = link_to product.name, product_path(product)
-            .form-group.col-md-3
-              = "参考価格#{product.price}/(税込)#{product.price}"
-              div
-              = "会員価格#{product.price}"
-            .form-group.col-md-2
-              - if product.postage_flg == true
-                | 送料は別途
-              - else
-                | 無料
-            .form-group.col-md-2
-              = f.fields_for :check_product do |ff|
-                = ff.number_field "[id_#{id}]quantity"
-                div
-        = f.submit "マイリストに入れるボタン", name: "mylist"
-        div
-        = f.submit "カートに入れるボタン"
+    .col-9
+      br
+      - if @display == "list_image"
+        = render partial: 'list_image'
+      - elsif @display == "list"
+        = render partial: 'list'
+      - elsif @display == "image"
+        = render partial: 'image'

@@ -1,4 +1,10 @@
 .container
   .row
     .col-12
-      p 一旦index作る
+      | 現在位置：
+      = link_to 'トップ', root_path
+      | >
+      = link_to '会員ページ', mypage_path
+      | > マイリスト
+    / サイドメニュー
+    = render 'layouts/mylist_side_menu'

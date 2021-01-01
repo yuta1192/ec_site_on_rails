@@ -7,7 +7,10 @@ Rails.application.routes.draw do
     resources :order_histories do
       get 'search', on: :collection
     end
-    resources :my_lists
+    resources :my_lists do
+      delete 'product_delete'
+      post 'product_add_cart', on: :collection
+    end
     resources :addresses
     resources :carts do
       post 'confirm', on: :member

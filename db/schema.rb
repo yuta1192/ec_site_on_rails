@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_25_111924) do
+ActiveRecord::Schema.define(version: 2020_12_16_075545) do
 
   create_table "Images", force: :cascade do |t|
     t.string "image"
@@ -42,6 +42,42 @@ ActiveRecord::Schema.define(version: 2020_11_25_111924) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "title"
+  end
+
+  create_table "Products", force: :cascade do |t|
+    t.string "name"
+    t.text "detail"
+    t.integer "category_id"
+    t.integer "price"
+    t.integer "member_price"
+    t.string "product_number"
+    t.boolean "postage_flg", default: false, null: false
+    t.integer "postage"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "jan_code"
+    t.string "shipping_location"
+    t.string "notification_email"
+    t.boolean "new_flg", default: true, null: false
+    t.boolean "popular_flg", default: true, null: false
+    t.text "comment"
+    t.text "explanation_1"
+    t.text "explanation_2"
+    t.boolean "tax_flg", default: true, null: false
+    t.string "manufacturer"
+    t.boolean "remote_island_shipping_confirmation", default: true, null: false
+    t.date "display_period_start"
+    t.date "display_period_end"
+    t.integer "purchase_limit"
+    t.text "postage_comment"
+    t.boolean "is_release_flg", default: false, null: false
+    t.boolean "set_flg", default: false, null: false
+    t.integer "set_num"
+    t.integer "shipping_origin_id"
+    t.string "shipping_company"
+    t.integer "stock_management_id"
+    t.integer "child_category_id"
+    t.string "image"
   end
 
   create_table "Purchase_histories", force: :cascade do |t|
@@ -235,7 +271,7 @@ ActiveRecord::Schema.define(version: 2020_11_25_111924) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
-    t.integer "product_id"
+    t.string "name"
   end
 
   create_table "order_histories", force: :cascade do |t|
@@ -360,42 +396,6 @@ ActiveRecord::Schema.define(version: 2020_11_25_111924) do
     t.text "bottom_page_text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "products", force: :cascade do |t|
-    t.string "name"
-    t.text "detail"
-    t.integer "category_id"
-    t.integer "price"
-    t.integer "member_price"
-    t.string "product_number"
-    t.boolean "postage_flg", default: false, null: false
-    t.integer "postage"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "jan_code"
-    t.string "shipping_location"
-    t.string "notification_email"
-    t.boolean "new_flg", default: true, null: false
-    t.boolean "popular_flg", default: true, null: false
-    t.text "comment"
-    t.text "explanation_1"
-    t.text "explanation_2"
-    t.boolean "tax_flg", default: true, null: false
-    t.string "manufacturer"
-    t.boolean "remote_island_shipping_confirmation", default: true, null: false
-    t.date "display_period_start"
-    t.date "display_period_end"
-    t.integer "purchase_limit"
-    t.text "postage_comment"
-    t.boolean "is_release_flg", default: false, null: false
-    t.boolean "set_flg", default: false, null: false
-    t.integer "set_num"
-    t.integer "shipping_origin_id"
-    t.string "shipping_company"
-    t.integer "stock_management_id"
-    t.integer "child_category_id"
-    t.string "image"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -548,6 +548,14 @@ ActiveRecord::Schema.define(version: 2020_11_25_111924) do
     t.integer "product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_my_list_products", force: :cascade do |t|
+    t.integer "mylist_id"
+    t.integer "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "quantity"
   end
 
   create_table "users", force: :cascade do |t|

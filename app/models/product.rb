@@ -16,8 +16,14 @@ class Product < ApplicationRecord
     return Product.all if category_name.blank?
     return Product.all if category_name == "選択して下さい"
 
-    category_id = Category.find_by(name: "#{category_name}").id
-    Product.where(category_id: category_id)
+    # カテゴリーで検索した場合と子カテゴリーで検索した場合で分ける
+    category = Category.find_by(name: "#{category_name}")
+    if category.present?
+      Product.where(category_id: category.id)
+    else
+      child_category = ChildCategory.find_by(name: "#{category_name}")
+      Product.where(category_id: child_category.category_id, child_category_id: child_category.id)
+    end
   }
 
   scope :product_number_search, -> product_number {
