@@ -133,6 +133,38 @@ class ProductsController < ApplicationController
     end
   end
 
+  def mylist_create
+    # mylist_idが0なら新規作成、それ以外ならマイリストを名前から検索
+    if params[:mylist_id].to_i == 0
+      ActiveRecord::Base.transaction do
+        mylist = MyList.new(user_id: @current_user.id, name: "新しいマイリスト")
+        mylist.save!
+
+        mylist_product = UserMyListProduct.new(mylist_id: mylist.id, product_id: params[:product_id], quantity: params[:num])
+        mylist_product.save!
+
+        redirect_to user_my_list_path(@current_user.id, mylist)
+      end
+    else
+      mylist = MyList.find_by(user_id: @current_user.id, id: params[:mylist_id])
+
+      # mylistに商品がないか確認、あれば何もせず、無かったら商品追加
+      if UserMyListProduct.find_by(mylist_id: mylist.id, product_id: params[:product_id]).blank?
+        ActiveRecord::Base.transaction do
+          mylist_product = UserMyListProduct.new(mylist_id: mylist.id, product_id: params[:product_id], quantity: params[:num])
+          mylist_product.save!
+        end
+        redirect_to user_my_list_path(@current_user.id, mylist)
+      else
+        # todo 既に商品がある場合のエラー文
+        puts "マイリストの中に既に商品があります。"
+      end
+    end
+  rescue => e
+    # todo saveのエラー文考える
+    puts "error"
+  end
+
   private
 
     def select_categories

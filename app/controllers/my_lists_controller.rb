@@ -5,7 +5,12 @@ class MyListsController < ApplicationController
   end
 
   def show
-    @mylist_products = UserMyListProduct.joins(:product).where(mylist_id: params[:id])
+    if params[:page].blank?
+      params[:page] = 1
+    end
+    @page = params[:page]
+    @mylist_products = UserMyListProduct.joins(:product).where(mylist_id: params[:id]).order("created_at desc").page(@page).per(1)
+    @mylist = MyList.find_by(id: params[:id], user_id: @current_user.id)
   end
 
   # マイリストページ(index)のメニューからname入れて作成
@@ -22,6 +27,15 @@ class MyListsController < ApplicationController
       end
     else
       # 10個超えてるからダメのエラーメッセージ返す
+    end
+  end
+
+  def update
+    # 現状名前変更オンリー
+    ActiveRecord::Base.transaction do
+      mylist = MyList.find_by(id: params[:id], user_id: @current_user.id)
+      mylist.update!(name: mylist_params[:name])
+      redirect_to user_my_list_path(@current_user.id, mylist.id)
     end
   end
 
@@ -52,5 +66,11 @@ class MyListsController < ApplicationController
   def side_menu_mylists
     @mylists = MyList.where(user_id: current_user.id)
     @mylist_count = MyList.where(user_id: @current_user.id).present? ? MyList.where(user_id: @current_user.id).count : 0
+  end
+
+  private
+
+  def mylist_params
+    params.require(:my_list).permit(:name)
   end
 end

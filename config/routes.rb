@@ -27,6 +27,7 @@ Rails.application.routes.draw do
       get 'quick_order', to: 'products#quick_order'
       post 'quick_order', to: 'products#quick_order'
       post 'show_create', to: 'products#show_create'
+      post 'mylist_create', to: 'products#mylist_create'
     end
   end
   resources :free_pages, only: [:index]

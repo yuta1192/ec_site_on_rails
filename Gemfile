@@ -37,6 +37,8 @@ gem "actionpack", ">= 5.2.4.3"
 gem "activestorage", ">= 5.2.4.3"
 gem 'bootstrap', '~> 4.5.0'
 gem 'jquery-rails'
+# seed
+gem 'seed-fu'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false

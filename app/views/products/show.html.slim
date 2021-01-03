@@ -55,8 +55,11 @@
                         = f.number_field :quantity, value: 1, class: "image-max-size"
                       td.col-6
                         = f.submit "カートに入れる"
-          # link_toとボタンにする
-          = form_with url: show_create_products_path(product_id: @product.id), method: :post, local: true do |f|
+
+          / mylist_selectはhelperで
+          = form_with url: mylist_create_products_path(product_id: @product.id), method: :post, local: true do |f|
+            = f.select :mylist_id, mylist_select
+            = f.number_field :num, value: 1, class: "image-max-size"
             = f.submit 'この商品をマイリストに追加する'
         .col-6
           .row

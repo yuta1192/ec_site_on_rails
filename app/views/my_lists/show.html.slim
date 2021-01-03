@@ -11,6 +11,8 @@
 
     .col-9
       br
+      .border-bottom = @mylist.name
+      br
       - if @mylist_products.present?
         = form_with model: MyList, url: product_add_cart_user_my_lists_path(@current_user) , method: :post, local: true do |f, id|
           table.table.table-bordered
@@ -48,3 +50,49 @@
                 td.col-12 全て選択/解除
               tr.table-info
                 td.col-12.text-center = f.submit 'カートに入れる'
+          = paginate @mylist_products
+      - else
+        table.table.table-bordered
+          thead.table-info
+            tr.d-flex.no-gutters.text-center
+              th.col-1 選択
+              th.col-6 商品（商品番号／品名）
+              th.col-3 価格
+              th.col-1 数量
+              th.col-1 削除
+          tbody
+            tr.d-flex.no-gutters.justify-content-center
+              td.col-12.d-flex.align-items-center.justify-content-center
+                | － 現在、マイリストへの登録はありません －
+
+        p.d-flex.align-items-center.justify-content-center 前へ | 1 | 次へ
+
+      table.table.table-bordered
+        thead.table-info
+          tr.d-flex.no-gutters.text-center
+            th.col-12 フォルダ名を変更
+        tbody
+          tr.d-flex.no-gutters
+            td.col-12.d-flex
+              = form_with model: @mylist, url: user_my_list_path(used_id: @current_user.id, id: @mylist.id), method: :patch, local: true do |f|
+                = f.text_field :name, value: @mylist.name
+                = f.submit '保存'
+
+      |【ご利用方法】
+      .row
+        .col-1
+        .col-11
+          | よく注文される商品を登録しておくことで、すばやく必要な商品にたどりつけます。
+          br
+          | 各商品ページの「この商品をマイリストへ追加する」ボタンをクリックするとお客様のマイリストに商品が追加されます。
+          br
+          | マイリストから商品を注文するには、注文する商品の選択欄にチェックを入れ、「カートに入れる」ボタンを押してください。選択した商品がカートに追加されます。
+          br
+          | マイリストから商品を削除する場合は、該当する商品欄の「削除」ボタンを押してください。マイリストより削除されます。
+      |【ご注意】
+      .row
+        .col-1
+        .col-11
+          | マイリストのページを切り替えると選択欄のチェックが外れます。
+          br
+          | 1ページごとに「カートに入れる」ボタンを押してください。（1ページ最大50件まで表示されます。）

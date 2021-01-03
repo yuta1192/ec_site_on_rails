@@ -21,11 +21,12 @@
         - @new_products.each.with_index(1) do |product, i|
           .col-4
             | 第#{i}位
+            br
             = image_tag(product.image.to_s, :size => '200x200')
             br
             = link_to product.name, product_path(product)
             br
-            = product.detail.present? ? product.detail : "詳細がありません"
+            .text-break.text-wrap = product.detail.present? ? product.detail : "詳細がありません"
             br
             .text-danger = "参考価格：#{product.price}"
             .text-danger = "会員価格：#{product.member_price}"
