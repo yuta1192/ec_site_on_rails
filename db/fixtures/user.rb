@@ -1,3 +1,6 @@
+# randamな文字取得
+require 'securerandom'
+
 # userを10個作成
 10.times do |i|
   User.seed do |s|
@@ -32,5 +35,34 @@
     s.member_id = "#{i+1}"
     s.deadline = true
     s.admin = false
+  end
+end
+
+# 住所を数個登録
+5.times do |p|
+  Address.seed do |a|
+    a.company_name = SecureRandom.alphanumeric()
+    a.department_name = SecureRandom.alphanumeric()
+    a.name_sei = SecureRandom.alphanumeric(5)
+    a.name_mei = SecureRandom.alphanumeric(5)
+    a.name_sei_kana = "サンプル#{p}"
+    a.name_mei_kana = "サンプル#{p}"
+    a.zip_code = "999-0000"
+    a.prefectures = rand(1..47)
+    a.municipation = SecureRandom.alphanumeric()
+    a.address_1 = SecureRandom.alphanumeric()
+    a.address_2 = SecureRandom.alphanumeric()
+    a.tel = "000-0000-0000"
+    a.phone_number = "0120-00-0000"
+    a.user_id = rand(1..10)
+    if p == 1
+      a.is_select_flag = true
+    else
+      a.is_select_flag = false
+    end
+    a.company_code = SecureRandom.alphanumeric()
+    a.department_code = SecureRandom.alphanumeric()
+    a.fax = "0120-00-0000"
+    a.delivery_id = p+1
   end
 end

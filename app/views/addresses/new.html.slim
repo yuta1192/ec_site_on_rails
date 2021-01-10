@@ -1,54 +1,11 @@
 .container
   .row
     .col-12
-      p アドレス帳のnew
-      h2 アドレス帳
-      p お届け先をあらかじめご登録いただけます。
-      h2 お届け先
-      = form_with model: Address, url: new_user_address_path, local: true, method: :get do |f|
-        = f.submit '新規お届け先を追加'
-
-      - @addresses.each do |address|
-        = address.company_name
-        = link_to '編集', edit_user_address_path(address.user_id, address.id)
-        div
-
-      h2 新規お届け先情報
-      = form_with model: Address, url: user_addresses_path do |f|
-        = f.label '会社名'
-        = f.text_field :company_name
-        div
-        = f.label '部署名'
-        = f.text_field :department_name
-        div
-        = f.label 'お名前[全角]'
-        = f.text_field :name_sei
-        = f.text_field :name_mei
-        div
-        = f.label 'お名前フリガナ[全角カタカナ]'
-        = f.text_field :name_sei_kana
-        = f.text_field :name_mei_kana
-        div
-        = f.label '郵便番号'
-        = f.number_field :zip_code
-        div
-        = f.label '都道府県'
-        = f.number_field :prefectures
-        div
-        = f.label '市区郡町村'
-        = f.text_field :municipation
-        div
-        = f.label '町域、丁目、番地'
-        = f.text_field :address_1
-        div
-        = f.label 'ビル・マンション名、部屋番号など'
-        = f.text_field :address_2
-        div
-        = f.label '電話番号[半角数字]'
-        = f.number_field :tel
-        div
-        = f.label '携帯番号[半角数字]'
-        = f.number_field :phone_number
-        div
-        = f.hidden_field :user_id, value: @current_user.id
-        = f.submit '更新'
+      | 現在位置：
+      = link_to 'トップ', root_path
+      | >
+      = link_to '会員ページ', mypage_path
+      | >アドレス帳
+    / サイドメニュー
+    = render 'layouts/mypage_side_menu'
+    = render 'addresses/common_page'
