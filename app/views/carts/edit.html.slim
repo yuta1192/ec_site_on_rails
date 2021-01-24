@@ -2,51 +2,63 @@
   .row
     .col-12
       - if @cart_items.present?
-        h3 Step1 カートの確認
+        br
+        h3.border-bottom.border-5.border-info Step1 カートの確認
         p カートには、以下の商品が入っています。
         p 商品の数量を変更する場合は、数量を変更し「変更」ボタンを押してください。
         p.text-right カートの情報 - 情報入力 - 最終確認・ご注文
-        p カートの内容
-        .row
-          .col-1
-            p 画像
-          .col-2
-            p 商品番号
-          .col-2
-            p 品名
-          .col-2
-            p 単価（税抜）
-          .col-2
-            p 数量
-          .col-2
-            p 金額（税抜）
-          .col-1
-            p 取消
-        = form_with model: Cart, url: user_cart_path, method: :get, local: true do |f|
-          - @cart_items.each do |cart_item|
-            = f.hidden_field "cart_item_id[][#{cart_item.id}]", value: cart_item.id
-            .row
-              .col-1
-                p 画像
-              .col-2
-                = cart_item.product.product_number
-              .col-2
-                = link_to cart_item.product.name, product_path(cart_item.product)
-              .col-2
-                = cart_item.product.price
-              .col-2
-                = f.fields_for :quantity do |ff|
-                  = ff.number_field "product_quantity[#{cart_item.id}][#{cart_item.quantity}]", value: cart_item.quantity, class: "form-control"
-                  = ff.submit '変更', name: "cart_item_id[#{cart_item.id}]"
-              .col-2
-                = cart_item.product.price * cart_item.quantity
-              .col-1
-                = link_to '取消', user_cart_path(@current_user, cart_item_id: cart_item.id), method: :delete
 
-          p.text-right 商品金額（税抜）#{@total_price}円
-          p.text-right 送料 ※step3でご確認ください
-          p.text-right 消費税 1000円
-          p.text-right 合計金額 #{@total_price + 1000}円
+        = form_with model: Cart, url: user_cart_path, method: :get, local: true, class: "form-horizontal" do |f|
+          .border
+            p.pl-3.py-3 カートの内容
+            table.table.table-bordered.text-center.mx-auto(style="width:95%;")
+              thead
+                tr.d-flex.no-gutters
+                  th.col-sm-1 画像
+                  th.col-sm-1 商品番号
+                  th.col-sm-5 品名
+                  th.col-sm-1 単価（税抜）
+                  th.col-sm-2 数量
+                  th.col-sm-1 金額（税抜）
+                  th.col-sm-1 取消
+              tbody
+                - @cart_items.each do |cart_item|
+                  = f.hidden_field "cart_item_id[][#{cart_item.id}]", value: cart_item.id
+                  tr.d-flex.no-gutters
+                    td.col-sm-1 = image_tag(cart_item.product.image.to_s, class: "image-max-size")
+                    td.col-sm-1.text-break = cart_item.product.product_number
+                    td.col-sm-5 = link_to cart_item.product.name, product_path(cart_item.product)
+                    td.col-sm-1 = cart_item.product.price
+                    td.col-sm-2
+                      .form-inline
+                        = f.fields_for :quantity do |ff|
+                          = ff.number_field "product_quantity[#{cart_item.id}][#{cart_item.quantity}]", value: cart_item.quantity, class: "col-sm-8 form-control"
+                          = ff.submit '変更', name: "cart_item_id[#{cart_item.id}]", class: "col-sm-4 form-control"
+                    td.col-sm-1
+                      = cart_item.product.price * cart_item.quantity
+                    td.col-sm-1
+                      = link_to '取消', user_cart_path(@current_user, cart_item_id: cart_item.id), method: :delete, class: "btn btn-primary"
+            .row
+              .col-md-7
+              .col-md-5.pb-5.pr-5.pt-2
+                .row
+                  .col-md-7.bg-info.text-right
+                    | 商品金額（税抜）10%
+                  .col-md-5
+                    | #{@total_price}円
+                  .col-md-7.bg-info.text-right
+                    | 送料
+                  .col-md-5
+                    | ※step3でご確認ください
+                  .col-md-7.border-bottom.bg-info.text-right
+                    | 消費税 10%
+                  .col-md-5.border-bottom
+                    | #{@total_price*0.1}円
+                  .col-md-7.bg-info.text-right
+                    | 合計金額
+                  .col-md-5
+                    | #{@total_price + 1000}円
+          br
           .row
             .col-3
             .col-3
@@ -54,6 +66,8 @@
             .col-3
               = f.submit '注文画面に進む', name: 'next', class: "form-control"
             .col-3
+        br
+        .text-right = link_to 'ページトップに', root_path
 
       - else
         p ご注文内容をご確認ください。

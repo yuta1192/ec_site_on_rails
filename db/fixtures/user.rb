@@ -6,7 +6,6 @@ require 'securerandom'
   User.seed do |s|
     s.id = i+1
     s.e_mail = "sample#{i+1}@gmail.com"
-    s.cart_id = nil
     s.password = "password"
     s.remember_token = SecureRandom.urlsafe_base64
     s.company_name = "company#{i+1}"
@@ -35,6 +34,12 @@ require 'securerandom'
     s.member_id = "#{i+1}"
     s.deadline = true
     s.admin = false
+  end
+
+  Cart.seed do |c|
+    c.id = i+1
+    c.cart_number = SecureRandom.alphanumeric(10)
+    c.user_id = i+1
   end
 end
 

@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   resources :users do
     resources :order_histories do
       get 'search', on: :collection
+      post 'cart_add', on: :collection
+      post 'one_cart_add', to: 'order_histories#one_cart_add'
     end
     resources :my_lists do
       delete 'product_delete'

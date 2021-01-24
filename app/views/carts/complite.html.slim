@@ -1,12 +1,19 @@
 .container
   .row
     .col-12
-      p ご注文完了
+      br
+      p.border-bottom ご注文完了
+      br
+      br
+      br
       p ご注文ありがとうございます。
       p 注文番号：#{@order_number}
       p ご登録のメールアドレス宛に、ご注文確認のメールをお送りいたします。
-
-      p ※会員の方は現在ログイン中です。
-      p 会員サービスをご利用にならない場合には、ログアウトすることをおすすめします。
-      = link_to 'ログアウト', logout_path, method: :post
-      = link_to 'トップへ', root_path
+      br
+      .row
+        .col-3
+        .col-3
+          = link_to 'ログアウト', logout_path, method: :post, class: "form-control text-center"
+        .col-3
+          = link_to 'トップへ', root_path, class: "form-control text-center"
+        .col-3

@@ -19,8 +19,8 @@ class UsersController < ApplicationController
 
   def password_reset
     @user = @current_user
-    if @user.authenticate(params[:password]) && (params[:new_password] == params[:password_confirmation]) && (params[:new_password] != nil)
-      if @user.update_attributes(password: params[:new_password])
+    if @user.authenticate(user_password_params[:password]) && (user_password_params[:new_password] == user_password_params[:password_confirmation]) && (user_password_params[:new_password] != nil)
+      if @user.update_attributes(password: user_password_params[:new_password])
         redirect_to mypage_path
       else
         render 'password_edit'
@@ -34,5 +34,10 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(:name_sei, :e_mail, :password, :password_confirmation, :cart_id)
+    end
+
+    # password_resetのストロングパラメータ
+    def user_password_params
+      params.permit(:password, :new_password, :password_confirmation)
     end
 end

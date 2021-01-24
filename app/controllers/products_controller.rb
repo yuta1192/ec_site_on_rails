@@ -82,12 +82,12 @@ class ProductsController < ApplicationController
               cart_item = CartItem.find_by(product_id: product[:product_id], cart_number: @current_user.cart.cart_number)
               cart_item.update(quantity: product[:quantity])
             else
-              cart_item = CartItem.new(quantity: product[:quantity], product_id: product[:product_id], cart_id: @current_user.cart_id, cart_number: @current_user.cart.cart_number, order_history_id: order_history.id)
+              cart_item = CartItem.new(quantity: product[:quantity], product_id: product[:product_id], cart_id: @current_user.cart.id, cart_number: @current_user.cart.cart_number, order_history_id: order_history.id)
               cart_item.save!
             end
           end
         end
-        redirect_to edit_user_cart_path(@current_user, @current_user.cart_id)
+        redirect_to edit_user_cart_path(@current_user, @current_user.cart.id)
       end
     else
       render search
@@ -114,10 +114,10 @@ class ProductsController < ApplicationController
         if Product.where(product_number: pc[:product_code]).present?
           product = Product.where(product_number: pc[:product_code])
           unless CartItem.where(product_id: product.id, cart_number: @current_user.cart.cart_number)
-            cart_item = CartItem.new(quantity: pc[:quantity], product_id: product.id, cart_id: @current_user.cart_id, cart_number: @current_user.cart.cart_number, order_history_id: order_history_id)
+            cart_item = CartItem.new(quantity: pc[:quantity], product_id: product.id, cart_id: @current_user.cart.id, cart_number: @current_user.cart.cart_number, order_history_id: order_history_id)
             cart_item.save!
           end
-          redirect_to edit_user_cart_path(@current_user, @current_user.cart_id)
+          redirect_to edit_user_cart_path(@current_user, @current_user.cart.id)
         else
           return redirect_to quick_order_products_path
         end

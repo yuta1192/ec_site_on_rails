@@ -1,3 +1,6 @@
+# randamな文字取得
+require 'securerandom'
+
 # productで使用するため、先にcategory作成
 # カテゴリー
 Category.seed do |s|
@@ -83,5 +86,40 @@ end
     s.image = File.open(['./public/uploads/product/image/1/something.jpg', './public/uploads/product/image/2/youtuber_mask_sunglass.png',
                         './public/uploads/product/image/3/otaku_fujoshi_winter.png', './public/uploads/product/image/4/bunbougu_nerikeshi.png',
                         './public/uploads/product/image/5/medical_virus_kouseibusshitsu_yakuzai_taiseikin.png'].sample)
+  end
+end
+
+# OrderHistory作成
+100.times do |i|
+  OrderHistory.seed do |s|
+    s.id = i+1
+    s.order_number = SecureRandom.alphanumeric()
+    s.memo = "memo"
+    s.status = 1
+    s.user_id = 1
+    s.cart_id = 1
+    s.cart_number = "cart_number"
+    s.order_date_start = DateTime.now.ago(1.years)
+    s.order_date_end = DateTime.now
+    s.preferred_date_flg = false
+    s.preferred_date_start = nil
+    s.preferred_date_end = nil
+    s.invoice_number = nil
+    s.payment_method = nil
+    s.payment = nil
+    s.allocation_status = nil
+    s.shipping_status = nil
+    s.postage_confirmation = false
+    s.shipping_origin_id = nil
+    s.cancel_flg = false
+    s.shipment_id = nil
+
+    5.times do |f|
+      OrderHistoryProduct.seed do |ohp|
+        ohp.order_history_id = i+1
+        ohp.product_id = rand(1..100)
+        ohp.num = rand(1..10)
+      end
+    end
   end
 end

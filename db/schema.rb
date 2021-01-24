@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_16_075545) do
+ActiveRecord::Schema.define(version: 2021_01_17_051943) do
 
   create_table "Images", force: :cascade do |t|
     t.string "image"
@@ -143,11 +143,9 @@ ActiveRecord::Schema.define(version: 2020_12_16_075545) do
 
   create_table "carts", force: :cascade do |t|
     t.string "cart_number"
-    t.integer "order_history_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
-    t.index ["order_history_id"], name: "index_carts_on_order_history_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -560,7 +558,6 @@ ActiveRecord::Schema.define(version: 2020_12_16_075545) do
 
   create_table "users", force: :cascade do |t|
     t.string "e_mail"
-    t.integer "cart_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest"
@@ -591,7 +588,6 @@ ActiveRecord::Schema.define(version: 2020_12_16_075545) do
     t.string "member_id"
     t.boolean "deadline", default: false, null: false
     t.boolean "admin", default: false, null: false
-    t.index ["cart_id"], name: "index_users_on_cart_id"
   end
 
 end

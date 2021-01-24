@@ -21,7 +21,7 @@ class MyListsController < ApplicationController
     # 上限は10個、10個超えたら作らない
     if mylist_count < 10
       if mylist.save!
-        redirect_to user_my_list_path(mylist.user_id, mylist.name)
+        redirect_to user_my_list_path(mylist.user_id, mylist.id)
       else
         # エラー処理
       end

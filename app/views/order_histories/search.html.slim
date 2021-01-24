@@ -1,20 +1,85 @@
-p serach_paramsで表示させる
+.container
+  .row
+    .col-12
+      | 現在位置：
+      = link_to 'トップ', root_path
+      | >
+      = link_to '会員ページ', mypage_path
+      | >
+      = link_to '注文履歴 検索', user_order_histories_path
+      | > 注文履歴 検索結果
+    / サイドメニュー
+    = render 'layouts/mypage_side_menu'
 
-h2 ひとかたまり上
-p 注文履歴 検索結果 〇〇件
-p 期間指定 #{@params[:order_history]["start_date(1i)"]}年#{@params[:order_history]["start_date(2i)"]}月#{@params[:order_history]["start_date(3i)"]}日〜#{@params[:order_history]["end_date(1i)"]}年#{@params[:order_history]["end_date(2i)"]}月#{@params[:order_history]["end_date(3i)"]}日までの注文履歴
-p 注文番号 #{@params[:order_history][:order_number]}
-p 商品番号 #{@params[:order_history][:product_number]}
-p 商品名 #{@params[:order_history][:product_name]}
-p カテゴリ #{@params[:order_history][:category]}
-p メモ #{@params[:order_history][:memo]}
+    .col-9
+      br
+      p.border-bottom 注文履歴　検索結果
 
-h2 ひとかたまり下 ここはデータ作ったらにしよう
-p 注文日時
-p 注文番号
-p お届け先
-p 出荷状況
-p 出荷予定日
-p 出荷日
-p 商品名
-p 詳細
+      .border(style="padding:5px;")
+        .row
+          .col-sm-4
+            p.bg-info.text-center 検索結果
+          .col-sm-8
+            .border-bottom #{order_count}件
+          .col-sm-4
+            p.bg-info.text-center 注文日
+          .col-sm-8
+            .border-bottom
+              = start_dates
+              | 〜
+              = end_dates
+              | までの注文履歴
+          .col-sm-4
+            p.bg-info.text-center 注文番号
+          .col-sm-8
+            .border-bottom = params_order_number
+          .col-sm-4
+            p.bg-info.text-center 商品番号
+          .col-sm-8
+            .border-bottom = params_product_number
+          .col-sm-4
+            p.bg-info.text-center 商品名
+          .col-sm-8
+            .border-bottom = params_product_name
+          .col-sm-4
+            p.bg-info.text-center カテゴリ
+          .col-sm-8
+            .border-bottom = params_category
+          .col-sm-4
+            p.bg-info.text-center キャンセル
+          .col-sm-8
+            .border-bottom = params_cancel
+          .col-sm-4
+            p.bg-info.text-center メモ
+          .col-sm-8
+            .border-bottom = params_memo
+      br
+      p.text-right 表示件数 25件 50件 100件
+
+      table.table
+        thead.table-bordered.table-info
+          tr
+            th 注文日時
+            th 注文番号
+            th お届け先
+            th 出荷状況
+            th 出荷予定日
+            th 出荷日
+            th 送り状
+            th 商品名
+            th 詳細
+        tbody.border-bottom
+          - @order_query.each do |oq|
+            tr
+              td = oq.order_date_start
+              td = oq.order_number
+              td お届け先
+              td = oq.status
+              td = oq.order_date_end
+              td = oq.preferred_date_start
+              td 送り状
+              td
+                - oq.order_history_products.each do |p|
+                  = p.product.name
+                  br
+              td = link_to '詳細', user_order_history_path(@current_user.id, oq), class: 'btn border'

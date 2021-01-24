@@ -1,4 +1,7 @@
 class OrderHistory < ApplicationRecord
+  # status 1:出荷前、2:出荷中、3:出荷済
+  # payment_method 1:一括、2:その会社毎の設定した払い日
+  # 1:入金待ち、2:済+確認不要
   belongs_to :user
   has_one :purchase_history
   has_one :delivery_info
@@ -154,7 +157,7 @@ class OrderHistory < ApplicationRecord
     if cancel == "99"
       all # 指定なし
     else
-      where(cancel: cancel)
+      where(cancel_flg: cancel)
     end
   }
 end

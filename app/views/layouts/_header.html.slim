@@ -2,7 +2,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
   .container
     a.navbar-brand[href="/"]
       / TODO ここは設定したロゴに変更される
-      img[src="/docs/4.2/assets/brand/bootstrap-solid.svg" width="30" height="30" alt=""]
+      / img[src="/docs/4.2/assets/brand/bootstrap-solid.svg" width="30" height="30" alt=""]
       | EC-Next
     - if signed_in?
       - if @current_user.admin?
@@ -34,7 +34,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
           | |
           = link_to 'ログアウト', logout_path, method: :post
           - if @current_user
-            | | "カートを見る"
-            /= link_to 'カートを見る', edit_user_cart_path(@current_user, @current_user.cart_id)
+            | |
+            = link_to "カートを見る(#{CartItem.where(cart_number: @current_user.cart.cart_number).count})", edit_user_cart_path(@current_user, @current_user.cart)
 
 / ログインしてない場合、ロゴのみ表示

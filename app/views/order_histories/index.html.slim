@@ -1,23 +1,63 @@
-p 注文履歴（それぞれのユーザーの）
+.container
+  .row
+    .col-12
+      | 現在位置：
+      = link_to 'トップ', root_path
+      | >
+      = link_to '会員ページ', mypage_path
+      | > 注文履歴 検索
+    / サイドメニュー
+    = render 'layouts/mypage_side_menu'
 
-= form_with model: OrderHistory, url: search_user_order_histories_path, method: :get, local: true do |f|
-  = f.label '購入期間'
-  = raw sprintf(f.date_select(:start_date,use_month_numbers: true,start_year:2020,end_year:(Time.now.year - 10),default:Date.new(2020, 1, 1),date_separator:'%s'),'年 ', '月 ') + '日'
-  = raw sprintf(f.date_select(:end_date,use_month_numbers: true,start_year:2020,end_year:(Time.now.year - 10),default:Date.new(2020, 1, 1),date_separator:'%s'),'年 ', '月 ') + '日'
-  div
-  = f.label '注文番号'
-  = f.text_field :order_number
-  div
-  = f.label '商品番号'
-  = f.text_field :product_number
-  div
-  = f.label '商品名'
-  = f.text_field :product_name
-  div
-  /= f.label 'カテゴリ'
-  /= f.collection_select :category, @categories, :category, :category, include_blank: '選択してください'
-  div
-  = f.label 'メモ'
-  = f.text_field :memo
-  div
-  = f.submit '検索'
+    .col-9
+      br
+      p.border-bottom 注文履歴 検索
+      | これまでの注文内容がご確認いただけます。
+      br
+      | 全ての注文をご覧になる場合は、検索条件を変更せずに『検索』ボタンを押してください。
+      br
+      br
+      = form_with model: OrderHistory, url: search_user_order_histories_path, method: :get, local: true do |f|
+        .border(style="padding:5px;")
+          .form-group.row
+            .col-sm-4.col-form-label
+              .bg-info = f.label '購入期間'
+            .col-md-8.pt-3
+              = raw sprintf(f.date_select(:start_date,use_month_numbers: true,start_year:2020,end_year:(Time.now.year - 10),default:Date.new(2020, 1, 1),date_separator:'%s'),'年 ', '月 ') + '日'
+              | 〜
+              = raw sprintf(f.date_select(:end_date,use_month_numbers: true,start_year:2025,end_year:(Time.now.year - 10),default:Date.new(2025, 1, 1),date_separator:'%s'),'年 ', '月 ') + '日'
+          .form-group.row
+            .col-sm-4.col-form-label
+              .bg-info = f.label '注文番号'
+            .col-md-8 = f.text_field :order_number, class: "form-control"
+          .form-group.row
+            .col-sm-4.col-form-label
+              .bg-info = f.label '商品番号'
+            .col-md-8 = f.text_field :product_number, class: "form-control"
+          .form-group.row
+            .col-sm-4.col-form-label
+              .bg-info = f.label '商品名'
+            .col-md-8 = f.text_field :product_name, class: "form-control"
+          .form-group.row
+            .col-sm-4.col-form-label
+              .bg-info .
+              .bg-info = f.label 'カテゴリ'
+              .bg-info .
+            .col-md-8.pt-2
+              = f.collection_select :category_1, @categories, :id, :name, include_blank: '選択してください', class: "form-control"
+              br
+              = f.collection_select :category_2, @categories, :id, :name, include_blank: '選択してください', class: "form-control"
+              br
+              = f.collection_select :category_3, @categories, :id, :name, include_blank: '選択してください', class: "form-control"
+          .form-group.row
+            .col-sm-4.col-form-label
+              .bg-info = f.label 'キャンセル'
+            .col-md-8 = f.select :cancel_flg, select_cancel_flg, class: "form-control"
+          .form-group.row
+            .col-sm-4.col-form-label
+              .bg-info = f.label 'メモ'
+            .col-md-8 = f.text_field :memo, class: "form-control"
+          .form-group.row
+            .col-md-5
+            .col-md-2 = f.submit '検索', class: "form-control"
+            .col-md-5
