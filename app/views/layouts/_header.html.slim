@@ -1,20 +1,34 @@
-nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+nav.navbar.navbar-expand-lg.navbar-dark.bg-light.border-bottom.border-5.border-muted
   .container
-    a.navbar-brand[href="/"]
-      / TODO ここは設定したロゴに変更される
-      / img[src="/docs/4.2/assets/brand/bootstrap-solid.svg" width="30" height="30" alt=""]
-      | EC-Next
     - if signed_in?
       - if @current_user.admin?
-        div.float-left
-          | ショップ管理画面
-          br
-          | USER： #{@current_user.name_sei + @current_user.name_mei}様
-        div.float-right
-          = link_to 'はじめにお読み下さい', admin_dashboard_path
-          = link_to 'サイトを見る', root_path
-          = link_to 'ログアウト', logout_path, method: :post
+        a.text-warning.navbar-brand[href="/admin/dashboard"]
+          / TODO ここは設定したロゴに変更される
+          / img[src="/docs/4.2/assets/brand/bootstrap-solid.svg" width="30" height="30" alt=""]
+          | EC-Next
+        .navbar-nav.mr-auto
+          .nav.flex-column
+            .nav-item
+              | ショップ管理画面
+            / todo 管理者編集ページが作成されていないため作成しリンク修正
+            .nav-item
+              | USER：
+              = link_to "#{@current_user.name_sei + @current_user.name_mei}", admin_dashboard_path
+              | 様
+        .navbar-nav
+          .nav-item
+            = link_to 'はじめにお読み下さい', admin_hazimeni_path, class: 'd-flex align-items-center'
+        .navbar-nav
+          .nav-item
+            = link_to 'サイトを見る', root_path, class: 'btn btn-primary mr-3 ml-3'
+        .navbar-nav
+          .nav-item
+            = link_to 'ログアウト', logout_path, class: 'btn btn-secondary', method: :post
       - else
+        a.navbar-brand[href="/"]
+          / TODO ここは設定したロゴに変更される
+          / img[src="/docs/4.2/assets/brand/bootstrap-solid.svg" width="30" height="30" alt=""]
+          | EC-Next
         div.float-left
           | #{@current_user.name_sei + @current_user.name_mei}
           br さま
@@ -36,5 +50,9 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
           - if @current_user
             | |
             = link_to "カートを見る(#{CartItem.where(cart_number: @current_user.cart.cart_number).count})", edit_user_cart_path(@current_user, @current_user.cart)
-
-/ ログインしてない場合、ロゴのみ表示
+    - else
+      / ログインしてない場合、ロゴのみ表示
+      a.navbar-brand[href="/"]
+        / TODO ここは設定したロゴに変更される
+        / img[src="/docs/4.2/assets/brand/bootstrap-solid.svg" width="30" height="30" alt=""]
+        | EC-Next

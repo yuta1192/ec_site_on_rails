@@ -41,7 +41,10 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get 'login', to: 'sessions#login'
+    post 'login', to: 'sessions#login'
+    post 'logout', to: 'sessions#logout'
     get 'dashboard', to: 'dashboards#index'
+    get 'hazimeni', to: 'dashboards#hazimeni'
     resources :informations
     resources :images
     get 'banner_index', to: 'images#banner_index'

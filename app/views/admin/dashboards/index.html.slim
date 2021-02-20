@@ -1,0 +1,109 @@
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+        p.bg-secondary ◎ ステータス
+        / todo パスワードが変更されていない場合のみ表示するように変更(ユーザー管理編集ページ作成必要あり)
+        p.text-danger
+          | パスワードが初期設定のままになっています。
+          = link_to 'ユーザ管理', admin_dashboard_path
+          | より変更してください。
+      / メール障害 todo メール障害発生の有無によってここの表示を変える
+      table.table.table-bordered.bg-light
+        thead
+          tr
+            th □ メール送信障害状況
+        tbody.text-center
+          tr
+            td メール送信障害は発生していません
+      / 新着情報リスト(helperに記載している箇所あり)
+      table.table.table-bordered.bg-light
+        thead
+          tr
+            th[colspan="5"] □ 新着情報リスト
+        tbody
+          tr.text-center
+            th
+            th 受注件数
+            th 受注個数
+            th 受注金額（税別）
+            th 会員登録
+          tr.bg-white
+            td.bg-light
+              | 今月 :
+              = today_year_and_month
+            td
+            td
+            td
+            td
+          tr.bg-white
+            td.bg-light
+              | 昨日 :
+              = Date.yesterday.strftime("%Y/%m/%d")
+              = yesterday_week
+            td
+            td
+            td
+            td
+          tr.bg-white
+            td.bg-light
+              | 今日 :
+              = Date.today.strftime("%Y/%m/%d")
+              = today_week
+            td
+            td
+            td
+            td
+      / 商品の状況
+      table.table.table-bordered.bg-light
+        thead.text-left
+          tr
+            th[colspan="2"] □ 商品の状況
+        tbody
+          tr
+            th.text-left 登録商品数
+            td.bg-white
+          tr
+            th.text-left 公開商品数
+            td.bg-white
+          tr
+            th.text-left 在庫切れ商品数
+            td.bg-white
+      .row
+        .col-sm-6
+          / 2021/2受注個数ベスト5
+          table.table.table-bordered.bg-light
+            thead.text-left
+              tr
+                th[colspan="4"] □ 2021/2受注個数ベスト5
+            tbody
+              tr
+                th.text-center 順位
+                th.text-center 商品名(商品No.)
+                th.text-center 単価（税別）
+                th.text-center 数量
+              / todo ここは受注個数ベスト順で5個まで表示するように処理する。なければある個数までにする。
+              tr.bg-white
+                td
+                td
+                td
+                td
+        .col-sm-6
+          / 2021/2受注金額ベスト5
+          table.table.table-bordered.bg-light
+            thead.text-left
+              tr
+                th[colspan="4"] □ 2021/2受注金額ベスト5
+            tbody
+              tr
+                th.text-center 順位
+                th.text-center 商品名(商品No.)
+                th.text-center 単価（税別）
+                th.text-center 数量
+              / todo ここは受注個数ベスト順で5個まで表示するように処理する。なければある個数までにする。
+              tr.bg-white
+                td
+                td
+                td
+                td

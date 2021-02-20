@@ -1,66 +1,144 @@
-p ページ編集
-= link_to '新着情報', admin_informations_path
-div
-= link_to '画像管理', admin_images_path
-div
-= link_to 'バナー・リンク管理', admin_banner_index_path
-div
-= link_to '商品ページ', admin_product_page_edit_path
-div
-= link_to 'ページ管理', admin_free_pages_path
-div
-= link_to 'よくある質問', new_admin_inquery_path
-div
-p 商品管理
-= link_to '商品一覧', admin_products_path
-div
-= link_to '商品登録', new_admin_product_path
-div
-= link_to 'カテゴリ管理', category_admin_products_path
-div
-p 受注管理
-= link_to '受注入力', admin_order_managements_path
-div
-= link_to '受注管理', order_history_admin_order_managements_path
-div
-p 出荷管理
-= link_to '出荷管理', admin_shipments_path
-div
-p 会員管理
-= link_to '会員一覧', admin_members_path
-div
-= link_to '会員登録', new_admin_member_path
-div
-= link_to '会員グループ一覧', admin_groups_path
-div
-= link_to '会員グループ登録', new_admin_group_path
-div
-= link_to 'お届け先一覧', admin_addresses_path
-div
-= link_to 'お届け先登録', new_admin_address_path
-div
-p 出荷元管理
-= link_to '出荷元一覧', admin_shipping_origins_path
-div
-= link_to '出荷元登録', new_admin_shipping_origin_path
-div
-p 在庫管理
-= link_to '在庫管理', admin_stock_managements_path
-div
-p 基本設定
-= link_to '基本設定', admin_shops_path
-div
-= link_to 'メール設定', admin_mail_settings_path
-div
-= link_to '支払方法設定', admin_payment_method_settings_path
-div
-= link_to '送料設定', admin_shipping_settings_path
-div
-= link_to 'カートの備考欄', edit_admin_cart_memo_path(1)
-div
-= link_to '会員ランク設定', admin_member_ranks_path
-div
-= link_to '祝日設定', admin_shop_holidays_path
-div
-= link_to '休業日設定', admin_holiday_settings_path
-div
+.col-2
+  br
+    div.bg-light
+      div
+        | 処理状況
+        .btn.btn-warning
+          | 更新
+      | 引き当て
+      div
+      | 未処理
+      div
+      | 出荷可能
+      div
+      | 着手
+      div
+      | 入金待ち
+    .mb-2
+    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"]
+      | □ ページ編集
+    #collapseExample.collapse
+      .card.card-body
+        div
+          | →
+          = link_to '新着情報', admin_informations_path
+        div
+          | →
+          = link_to '画像管理', admin_images_path
+        div
+          | →
+          = link_to 'バナー・リンク管理', admin_banner_index_path
+        div
+          | →
+          = link_to '商品ページ', admin_product_page_edit_path
+        div
+          | →
+          = link_to 'ページ管理', admin_free_pages_path
+        div
+          | →
+          = link_to 'よくある質問', new_admin_inquery_path
+    .mb-2
+    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample2"]
+      | □ 商品管理
+    #collapseExample2.collapse
+      .card.card-body
+        div
+          | →
+          = link_to '商品一覧', admin_products_path
+        div
+          | →
+          = link_to '商品登録', new_admin_product_path
+        div
+          | →
+          = link_to 'カテゴリ管理', category_admin_products_path
+    .mb-2
+    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample3"]
+      | □ 受注管理
+    #collapseExample3.collapse
+      .card.card-body
+        div
+          | →
+          = link_to '受注入力', admin_order_managements_path
+        div
+          | →
+          = link_to '受注管理', order_history_admin_order_managements_path
+
+    .mb-2
+    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="false" aria-controls="collapseExample4"]
+      | □ 出荷管理
+    #collapseExample4.collapse
+      .card.card-body
+        div
+          | →
+          = link_to '出荷管理', admin_shipments_path
+    .mb-2
+    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample5" role="button" aria-expanded="false" aria-controls="collapseExample5"]
+      | □ 会員管理
+    #collapseExample5.collapse
+      .card.card-body
+        div
+          | →
+          = link_to '会員一覧', admin_members_path
+        div
+          | →
+          = link_to '会員登録', new_admin_member_path
+        div
+          | →
+          = link_to '会員グループ一覧', admin_groups_path
+        div
+          | →
+          = link_to '会員グループ登録', new_admin_group_path
+        div
+          | →
+          = link_to 'お届け先一覧', admin_addresses_path
+        div
+          | →
+          = link_to 'お届け先登録', new_admin_address_path
+    .mb-2
+    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample6" role="button" aria-expanded="false" aria-controls="collapseExample6"]
+      | □ 出荷元管理
+    #collapseExample6.collapse
+      .card.card-body
+        div
+          | →
+          = link_to '出荷元一覧', admin_shipping_origins_path
+        div
+          | →
+          = link_to '出荷元登録', new_admin_shipping_origin_path
+    .mb-2
+    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample7" role="button" aria-expanded="false" aria-controls="collapseExample7"]
+      | □ 在庫管理
+    #collapseExample7.collapse
+      .card.card-body
+        div
+          | →
+          = link_to '在庫管理', admin_stock_managements_path
+    .mb-2
+    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample8" role="button" aria-expanded="false" aria-controls="collapseExample8"]
+      | □ 基本設定
+    #collapseExample8.collapse
+      .card.card-body
+        div
+          | →
+          = link_to '基本設定', admin_shops_path
+        div
+          | →
+          = link_to 'メール設定', admin_mail_settings_path
+        div
+          | →
+          = link_to '支払方法設定', admin_payment_method_settings_path
+        div
+          | →
+          = link_to '送料設定', admin_shipping_settings_path
+        div
+          | →
+          = link_to 'カートの備考欄', edit_admin_cart_memo_path(1)
+        div
+          | →
+          = link_to '会員ランク設定', admin_member_ranks_path
+        div
+          | →
+          = link_to '祝日設定', admin_shop_holidays_path
+        div
+          | →
+          = link_to '休業日設定', admin_holiday_settings_path
