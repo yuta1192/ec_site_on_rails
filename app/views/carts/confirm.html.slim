@@ -106,12 +106,14 @@
                   th.text-right.bg-info 携帯番号
                   td.border-bottom = "#{@address_attribute[:phone_number_1] + "-" + @address_attribute[:phone_number_2] + "-" + @address_attribute[:phone_number_3]}"
                   = ff.hidden_field :phone_number, value: "#{@address_attribute[:phone_number_1] + "-" + @address_attribute[:phone_number_2] + "-" + @address_attribute[:phone_number_3]}"
+          = f.hidden_field :current_address_flg, 0
         - else
           .border.pt-3
             table.table.table-borderless.mx-auto(style="width:95%;")
               tr
                 th.text-right.bg-info(style="width:30%;") お届け先
                 td.border-bottom お客様情報と同じ住所に配送する
+            = hidden_field_tag :current_address_flg, 1
         br
         p.border-bottom お支払い方法
         .border.pt-3
@@ -120,10 +122,10 @@
               th.text-right.bg-info(style="width:30%;") お届け希望日
               - if params[:date] == "99"
                 td.border-bottom 締め払い
-                = f.hidden_field :payment_method, value: 1
+                = f.hidden_field :payment_method, 1
               - else
                 td.border-bottom 御社規定に従います
-                = f.hidden_field :payment_method, value: 2
+                = hidden_field_tag :payment_method, 2
         br
         p.border-bottom お届け希望日時指定
         .border.pt-3

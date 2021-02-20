@@ -20,7 +20,7 @@ require 'securerandom'
     s.name_sei_kana = "セイ#{i+1}"
     s.name_mei_kana = "メイ#{i+1}"
     s.zip_code = "000-0000"
-    s.prefectures = i+1
+    s.prefectures = 9
     s.municipation = "弥生"
     s.address_1 = "あいウロ"
     s.address_2 = "1-1-#{i+1}"
@@ -70,4 +70,36 @@ end
     a.fax = "0120-00-0000"
     a.delivery_id = p+1
   end
+end
+
+User.seed do |s|
+  s.e_mail = "admin@gmail.com"
+  s.password = "password"
+  s.remember_token = SecureRandom.urlsafe_base64
+  s.company_name = "company"
+  s.department_name = "department"
+  s.phone_number = "000-0000-0000"
+  s.member_code = "member"
+  s.remark = nil
+  s.status = 1
+  s.rank = 1
+  s.name_sei = "名前せい"
+  s.name_mei = "名前名"
+  s.name_sei_kana = "セイカタカナ"
+  s.name_mei_kana = "メイカタカナ"
+  s.zip_code = "000-0000"
+  s.prefectures = 10
+  s.municipation = "弥生"
+  s.address_1 = "あいウロ"
+  s.address_2 = "1-1-10"
+  s.tel = "0120-00-0000"
+  s.fax = "0120-00-0000"
+  s.payment_method = 1
+  s.company_name_kana = "カイシャカナ"
+  s.company_code = "カイシャコード"
+  s.department_name_kana = "デパートメント"
+  s.department_code = "デパートメントコード"
+  s.member_id = "メンバーあいでぃ"
+  s.deadline = true
+  s.admin = true
 end

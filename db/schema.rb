@@ -10,7 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_17_051943) do
+ActiveRecord::Schema.define(version: 2021_01_24_092843) do
+
+  create_table "Delivery_infos", force: :cascade do |t|
+    t.string "company_name"
+    t.string "user_name"
+    t.string "address"
+    t.string "tel"
+    t.string "phone_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.date "delivery_day"
+    t.integer "purchase_history_id"
+    t.integer "order_history_id"
+    t.string "zip_code"
+  end
 
   create_table "Images", force: :cascade do |t|
     t.string "image"
@@ -167,20 +181,6 @@ ActiveRecord::Schema.define(version: 2021_01_17_051943) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_contacts_on_user_id"
-  end
-
-  create_table "delivery_infos", force: :cascade do |t|
-    t.string "company_name"
-    t.string "user_name"
-    t.string "address"
-    t.string "tel"
-    t.string "phone_number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "zip_code"
-    t.date "delivery_day"
-    t.integer "purchase_history_id"
-    t.integer "order_history_id"
   end
 
   create_table "free_pages", force: :cascade do |t|

@@ -1,0 +1,42 @@
+.container
+  .row.pb-5
+    .col-12
+      | ログインIDとパスワードを入力し、「ログイン」ボタンを押してください。
+  .row
+    .col-3
+    .col-6
+      = form_with model: Session, url: login_path, method: :post, local: true do |f|
+        .text-center.border(style="padding:20px;")
+          .form-group.row
+            .col-sm-3.col-form-label.bg-info
+              = f.label "ログインID"
+            .col-sm-9
+              = f.text_field :e_mail, class: 'form-control'
+              .text-left.small.p ※メールアドレスまたは会員コード
+          .form-group.row
+            .col-sm-3.col-form-label.align-middle.bg-info
+                = f.label "パスワード"
+            .col-sm-9
+              = f.password_field :password, class: 'form-control'
+          = f.submit 'ログイン', class: "btn btn-primary pr-5 pl-5"
+    .col-3
+  br
+  .row
+    .col-3
+    .col-6
+      .border(style="padding:20px;")
+        p.border-bottom パスワードをお忘れのかたへ
+        .small メールアドレスを入力して「送信」ボタンを押してください。
+        .small パスワード再設定ページのURLをお送りします。
+        br
+        / todo ここちゃんとメールアドレス忘れた時の送り先にする
+        = form_with model: User do |f|
+          .text-center.border(style="padding:15px 15px 0 5px")
+            .form-group.row.no-gutters
+              .col-sm-3.col-form-label.bg-info
+                = f.label :メールアドレス, class: 'small'
+              .col-sm-8
+                = f.text_field :e_mail, class: 'form-control'
+              .col-sm-1
+                = f.submit '送信'
+    .col-3

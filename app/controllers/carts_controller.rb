@@ -49,7 +49,7 @@ class CartsController < ApplicationController
     @date = @date_array.flatten.first if @date_array != nil
 
     # 宛先新規作成+チェックが付いてた場合アドレス作成
-    if params[:companies].to_i == 0 && params[:address][:address_create] == "true"
+    if params[:companies].to_i == 0 && params[:address][:address_create] == "true" && params[:use_basic_email_flg].to_i == 2
       ActiveRecord::Base.transaction do
         # telとphone_numberは間に"-"を入れてパラメータに入れる
         tel = params[:address][:tel_1] + "-" + params[:address][:tel_2] + "-" + params[:address][:tel_3]
@@ -95,7 +95,14 @@ class CartsController < ApplicationController
       end
 
       # パラメータからDeliveryInfoの作成
-      delivery_info = DeliveryInfo.new(company_name: params[:addresses][:company_name], user_name: params[:addresses][:user_name], zip_code: params[:addresses][:zip_code], address: params[:addresses][:address] ,tel: params[:addresses][:tel], phone_number: params[:addresses][:phone_number], delivery_day: params[:date], purchase_history_id: @purchase_history.id, order_history_id: @order_history.id)
+      if params[:current_address_flg].to_i == 0
+        delivery_info = DeliveryInfo.new(company_name: params[:addresses][:company_name], user_name: params[:addresses][:user_name], zip_code: params[:addresses][:zip_code], address: params[:addresses][:address] ,tel: params[:addresses][:tel], phone_number: params[:addresses][:phone_number], delivery_day: params[:date], purchase_history_id: @purchase_history.id, order_history_id: @order_history.id)
+      else
+        # パラメータをまとめる
+        user_name = @current_user.name_sei + @current_user.name_mei
+        address = @current_user.prefectures + @current_user.municipation + @current_user.address_1 + @current_user.address_2
+        delivery_info = DeliveryInfo.new(company_name: @current_user.company_name, user_name: user_name, zip_code: @current_user.zip_code, address: address ,tel: @current_user.tel, phone_number: @current_user.phone_number, delivery_day: params[:date], purchase_history_id: @purchase_history.id, order_history_id: @order_history.id)
+      end
       delivery_info.save!
 
       # OrderHistoryからCartItem引き出せるようにorder_history_idを作成

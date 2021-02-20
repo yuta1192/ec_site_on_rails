@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   get 'mypage', to: 'mypages#mypage'
 
   namespace :admin do
+    get 'login', to: 'sessions#login'
     get 'dashboard', to: 'dashboards#index'
     resources :informations
     resources :images
