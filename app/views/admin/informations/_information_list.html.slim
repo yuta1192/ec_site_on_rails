@@ -1,0 +1,80 @@
+.col-10
+  br
+    p.bg-secondary ◎ 新着情報
+    div
+      ul.border.border-5.border-muted
+        p トップページの新着情報欄を変更できます。
+        li.small 実際の項目の表示は、日付の降順です。（同じ日付の場合、最後に更新したものが上）
+        li.small 新着情報は公開/非公開合わせて80項目まで登録が可能です。
+
+    / todo informationsの総合タイトルと表示件数のみのモデル作る必要がありそう
+    / informationsの総合タイトルと表示件数のみのモデルのタイトルと表示件数変更
+    = form_with model: @info_title, url: info_title_admin_informations_path, method: :post, local: true do |f|
+      .form-group.row.border.form-inline
+        .col-sm-2.col-form-label.bg-light
+          = f.label "タイトル"
+        .col-sm-6
+          = f.text_field :title, size: '45*10'
+          = f.submit '保存'
+        .col-sm-2.col-form-label.bg-light
+          = f.label "表示件数"
+        .col-sm-2
+          = f.text_field :hyoji_kensu, size: '8*10'
+          = f.submit '保存'
+
+    / 情報一覧表示
+    table.table.table-bordered.bg-light
+      thead
+        tr.text-center
+          th 日付
+          th 掲載期間
+          th 内容
+          th 添付
+          th 公開
+          th 変更
+          th 削除
+      tbody.bg-white
+        - @informations.each do |im|
+          tr.text-center.align-middle
+            td = im.date.to_s.gsub('-', '/')
+            - if im.published_start_yyyymmdd.present? || im.published_end_yyyymmdd.present?
+              td
+                | #{im.published_start_yyyymmdd.to_s.gsub('-', '/')}
+                div
+                | #{im.published_start_hhmm.insert(2, ":")}
+                div
+                | ~
+                div
+                | #{im.published_end_yyyymmdd.to_s.gsub('-', '/')}
+                div
+                | #{im.published_end_hhmm.insert(2, ":")}
+            - else
+              td -
+            td = im.detail
+            - if im.attachment_file1.present?
+              td
+                = im.attachment_file1
+                div
+                = im.attachment_file2
+                div
+                = im.attachment_file3
+                div
+                = im.attachment_file4
+                div
+                = im.attachment_file5
+            - else
+              td -
+            - if im.release_flg == true
+              td = link_to "公開", change_release_admin_information_path(im.id), method: :post
+            - else
+              td = link_to "非公開", change_release_admin_information_path(im.id), method: :post
+            td = link_to "変更", edit_admin_information_path(im.id)
+            td = link_to "削除", admin_information_path(im.id), method: :delete
+
+    br
+    - if params[:action] == "index"
+      = form_with model: @information, url: admin_informations_path, method: :post, local: true do |info|
+        = render partial: 'admin/informations/form', locals: { f: info }
+    - else
+      = form_with model: @information, url: admin_information_path, method: :patch, local: true do |info|
+        = render partial: 'admin/informations/form', locals: { f: info }

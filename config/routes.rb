@@ -45,7 +45,11 @@ Rails.application.routes.draw do
     post 'logout', to: 'sessions#logout'
     get 'dashboard', to: 'dashboards#index'
     get 'hazimeni', to: 'dashboards#hazimeni'
-    resources :informations
+    resources :informations do
+      post 'change_release', on: :member
+      post 'info_title', on: :collection
+    end
+    # post 'informations/change_release/:id', to: 'informations#change_release', as: :informations_change_release
     resources :images
     get 'banner_index', to: 'images#banner_index'
     post 'banner_create', to: 'images#banner_create'

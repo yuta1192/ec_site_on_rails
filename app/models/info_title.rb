@@ -1,0 +1,2 @@
+class InfoTitle < ApplicationRecord
+end

@@ -1,17 +1,38 @@
-= f.label "日付（必須）"
-= f.date_field :date
-div
-= f.label "掲載期間"
-= f.date_field :start_yyyymmdd
-= f.text_field :start_hhmm
-|
-  ～
-= f.date_field :end_yyyymmdd
-= f.text_field :end_hhmm
-p ※「yyyymmdd」の形式で入力してください。（yyyy＝年／mm＝月／dd＝日）　例）20080808
-p ※「hhmm」の形式で入力してください。（hh＝時／mm＝分）　例）0930
-p ※時間未入力の場合は、0時0分が設定されます。
-= f.label "内容（必須）"
-= f.text_field :detail
-div
-= f.label "添付ファイル（5つまで）"
+table.table.table-bordered.bg-light
+  tbody
+    tr
+      th[colspan="2"] 新着情報新規登録
+    tr
+      th.text-nowrap
+        = f.label "日付（必須）"
+      td.bg-white
+        = f.date_field :date
+    tr
+      th = f.label "掲載期間"
+      td.bg-white
+        row
+          = f.date_field :published_start_yyyymmdd, class: 'col-sm-3'
+          = f.text_field :published_start_hhmm, class: 'col-sm-2'
+          |
+           ~
+          = f.date_field :published_end_yyyymmdd, class: 'col-sm-3'
+          = f.text_field :published_end_hhmm, class: 'col-sm-2'
+        div
+        small ※「yyyymmdd」の形式で入力してください。（yyyy＝年／mm＝月／dd＝日）　例）20080808
+        div
+        small ※「hhmm」の形式で入力してください。（hh＝時／mm＝分）　例）0930
+        div
+        small ※ 時間未入力の場合は、0時0分が設定されます。
+    tr
+      th = f.label "内容（必須）"
+      td.bg-white
+        = f.text_area :detail, class: 'text-area'
+    tr
+      th
+        = f.label "添付ファイル"
+        div
+        |（5つまで）
+      td.bg-white
+        = f.file_field :attachment_file, :multiple => true
+    tr.text-center
+      th[colspan="2"] = f.submit '保存'
