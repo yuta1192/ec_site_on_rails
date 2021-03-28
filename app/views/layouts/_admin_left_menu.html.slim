@@ -53,8 +53,17 @@
           = link_to 'カテゴリ管理', category_admin_products_path
     .mb-2
     a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample3"]
-      | □ 受注管理
+      | □ 商品CSV
     #collapseExample3.collapse
+      .card.card-body
+        div
+          | →
+          = link_to 'CSV諸々', admin_order_managements_path
+          / todo CSVを追加しておくこと
+    .mb-2
+    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="false" aria-controls="collapseExample4"]
+      | □ 受注管理
+    #collapseExample4.collapse
       .card.card-body
         div
           | →
@@ -62,19 +71,26 @@
         div
           | →
           = link_to '受注管理', order_history_admin_order_managements_path
-
+        div
+          | →
+          = link_to '受注アップロード', order_history_admin_order_managements_path
+          / todo 受注アップロードは画面なし、routes無し、CSVでアップロードできるような機能作成
     .mb-2
-    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="false" aria-controls="collapseExample4"]
+    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample5" role="button" aria-expanded="false" aria-controls="collapseExample5"]
       | □ 出荷管理
-    #collapseExample4.collapse
+    #collapseExample5.collapse
       .card.card-body
         div
           | →
           = link_to '出荷管理', admin_shipments_path
+        div
+          | →
+          = link_to '出荷アップロード', order_history_admin_order_managements_path
+          / todo アップロードは画面なし、routes無し、CSVでアップロードできるような機能作成
     .mb-2
-    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample5" role="button" aria-expanded="false" aria-controls="collapseExample5"]
+    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample6" role="button" aria-expanded="false" aria-controls="collapseExample6"]
       | □ 会員管理
-    #collapseExample5.collapse
+    #collapseExample6.collapse
       .card.card-body
         div
           | →
@@ -95,9 +111,9 @@
           | →
           = link_to 'お届け先登録', new_admin_address_path
     .mb-2
-    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample6" role="button" aria-expanded="false" aria-controls="collapseExample6"]
+    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample7" role="button" aria-expanded="false" aria-controls="collapseExample7"]
       | □ 出荷元管理
-    #collapseExample6.collapse
+    #collapseExample7.collapse
       .card.card-body
         div
           | →
@@ -106,17 +122,17 @@
           | →
           = link_to '出荷元登録', new_admin_shipping_origin_path
     .mb-2
-    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample7" role="button" aria-expanded="false" aria-controls="collapseExample7"]
+    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample8" role="button" aria-expanded="false" aria-controls="collapseExample8"]
       | □ 在庫管理
-    #collapseExample7.collapse
+    #collapseExample8.collapse
       .card.card-body
         div
           | →
           = link_to '在庫管理', admin_stock_managements_path
     .mb-2
-    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample8" role="button" aria-expanded="false" aria-controls="collapseExample8"]
+    a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample9" role="button" aria-expanded="false" aria-controls="collapseExample9"]
       | □ 基本設定
-    #collapseExample8.collapse
+    #collapseExample9.collapse
       .card.card-body
         div
           | →

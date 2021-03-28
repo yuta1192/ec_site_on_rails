@@ -5,6 +5,7 @@ class Admin::FreePagesController < ApplicationController
 
   def new
     @free_page = FreePage.new
+    @free_page.page_contents.build
   end
 
   def edit

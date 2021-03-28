@@ -1,72 +1,90 @@
-p 商品登録
-p メイン情報の登録の後、サブ情報の登録をします。
-p 画像は一覧に戻ってから登録してください。
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 商品登録
+      div
+        ul.border.border-5.border-muted
+          li.small メイン情報の登録の後、サブ情報の登録をします。
+          li.small 画像は一覧に戻ってから登録してください。
 
-= link_to '一覧に戻る', admin_products_path
+      .text-center
+        = link_to '一覧に戻る', admin_products_path, class: 'btn btn-primary'
+      br
 
-= form_with model: @product, url: admin_products_path, method: :post, local: true do |f|
-  = f.label 'メイン情報'
-  div
-  = f.label '公開状況'
-  = f.check_box :is_release_flg, {class: "check_box"}, true, false
-  = f.label '公開'
-  div
-  = f.label '商品No（必須）'
-  = f.text_field :product_number
-  div
-  = f.label '商品名（必須）'
-  = f.text_field :name
-  div
-  = f.label '商品名（カナ）'
-  = f.text_field :name
-  div
-  = f.label '通知先メールアドレス'
-  = f.text_field :notification_email
-  div
-  = f.label '商品状態'
-  = f.check_box :new_flg, {class: "check_box"}, true, false
-  = f.label '新商品'
-  = f.check_box :popular_flg, {class: "check_box"}, true, false
-  = f.label '人気商品'
-  div
-  = f.label '商品一覧用コメント'
-  = f.text_field :comment
-  div
-  = f.label '説明1'
-  = f.text_field :explanation_1
-  div
-  = f.label '説明2'
-  = f.text_field :explanation_2
-  div
-  = f.label '消費税'
-  = f.radio_button :tax_flg, 1
-  = f.label :tax_flg, "別"
-  = f.radio_button :tax_flg, 2
-  = f.label :tax_flg, "込"
-  div
-  = f.label 'メーカー'
-  = f.text_field :manufacturer
-  div
-  = f.label '離島送料確認'
-  = f.radio_button :remote_island_shipping_confirmation, 1
-  = f.label :remote_island_shipping_confirmation, "不要"
-  = f.radio_button :remote_island_shipping_confirmation, 2
-  = f.label :remote_island_shipping_confirmation, "必要"
-  div
-  = f.label 'カテゴリ（必須）'
-  = f.select :category_first, @category
-  div
-  = f.label '表示期間'
-  = f.text_field :display_period_start_yyyy_mm_dd
-  = f.text_field :display_period_start_hh_mm
-  = f.label '〜'
-  = f.text_field :display_period_end_yyyy_mm_dd
-  = f.text_field :display_period_end_hh_mm
-  div
-  = f.label '購入制限数'
-  = f.number_field :purchase_limit
-  div
-  = f.label '送料コメント'
-  = f.text_field :postage_comment
-  div
-  = f.submit '保存'
+      = form_with model: @product, url: admin_products_path, method: :post, local: true do |f|
+        table.table.table-bordered.bg-light
+          tbody
+            tr
+              th[colspan="2"] = f.label 'メイン情報'
+            tr
+              th.max-width-30 = f.label '公開状況'
+              td.max-width-70.bg-white
+                = f.check_box :is_release_flg, {class: "check_box"}, true, false
+                = f.label '公開'
+            tr
+              th = f.label '商品No（必須）'
+              td.bg-white = f.text_field :product_number
+            tr
+              th = f.label '商品名（必須）'
+              td.bg-white = f.text_field :name
+            tr
+              th = f.label '商品名（カナ）'
+              td.bg-white = f.text_field :name
+            tr
+              th = f.label '通知先メールアドレス'
+              td.bg-white = f.text_field :notification_email
+            tr
+              th = f.label '商品状態'
+              td.bg-white
+                = f.check_box :new_flg, {checked: false}, true, false
+                = f.label '新商品'
+                = f.check_box :popular_flg, {checked: false}, true, false
+                = f.label '人気商品'
+            tr
+              th = f.label '商品一覧用コメント'
+              td.bg-white = f.text_field :comment
+            tr
+              th = f.label '説明1'
+              td.bg-white = f.text_field :explanation_1
+            tr
+              th = f.label '説明2'
+              td.bg-white = f.text_field :explanation_2
+            tr
+              th = f.label '消費税'
+              td.bg-white
+                = f.radio_button :tax_flg, 1
+                = f.label :tax_flg, "別"
+                = f.radio_button :tax_flg, 2
+                = f.label :tax_flg, "込"
+            tr
+              th = f.label 'メーカー'
+              td.bg-white = f.text_field :manufacturer
+            tr
+              th = f.label '離島送料確認'
+              td.bg-white
+                = f.radio_button :remote_island_shipping_confirmation, 1
+                = f.label :remote_island_shipping_confirmation, "不要"
+                = f.radio_button :remote_island_shipping_confirmation, 2
+                = f.label :remote_island_shipping_confirmation, "必要"
+            tr
+              th = f.label 'カテゴリ（必須）'
+              td.bg-white = f.select :name, select_categories, { prompt: '選択してください' }
+            tr
+              th = f.label '表示期間'
+              td.bg-white
+                = f.text_field :display_period_start_yyyy_mm_dd
+                = f.text_field :display_period_start_hh_mm, style: "width:15%;"
+                | 〜
+                = f.text_field :display_period_end_yyyy_mm_dd
+                = f.text_field :display_period_end_hh_mm, style: "width:15%;"
+            tr
+              th = f.label '購入制限数'
+              td.bg-white = f.number_field :purchase_limit
+            tr
+              th = f.label '送料コメント'
+              td.bg-white = f.text_field :postage_comment
+            tr.text-center
+              th[colspan="2"]
+                = f.submit '保存', class: 'btn btn-primary'

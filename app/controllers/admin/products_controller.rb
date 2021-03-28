@@ -1,22 +1,39 @@
 class Admin::ProductsController < ApplicationController
   def index
-    @products = Product.all
-    @category = Product.select(:category_name).distinct
+    params[:page] = params[:page].blank? ? 1 : params[:page]
+    params[:per] = params[:per].blank? ? 50 : params[:per]
+
+    products = Product.all
+    @products_count = products.count
+    @products = products.page(params[:page]).per(params[:per])
+
+    @category = Product.select(:category_id).distinct
   end
 
   def search
-    @products = Product.search(products_search_params[:name]).category_name_search(products_search_params[:category_name]).product_number_search(products_search_params[:product_number]).jan_code_search(products_search_params[:jan_code]).manufacturer_search(products_search_params[:manufacturer]).where(new_flg: products_search_params[:new_flg]).where(popular_flg: products_search_params[:popular_flg]).except_no_stock(products_search_params[:stock])
-    @category = Product.select(:category_name).distinct
+    # 初期値がない場合は設定する
+    params[:page] = params[:page].blank? ? 1 : params[:page]
+    params[:per] = params[:per].blank? ? 50 : params[:per]
+    @page = params[:page]
+    @per = params[:per]
+
+    products = Product.search(products_search_params[:name]).category_name_search(products_search_params[:category_name]).product_number_search(products_search_params[:product_number]).jan_code_search(products_search_params[:jan_code]).manufacturer_search(products_search_params[:manufacturer]).where(new_flg: products_search_params[:new_flg]).where(popular_flg: products_search_params[:popular_flg]).except_no_stock(products_search_params[:stock])
+
+    @products_count = products.count
+    @products = products.page(@page).per(@per)
+
+    @category = Product.select(:category_id).distinct
+    @category_name = select_categories_name
+
+    @params = {product_number: params[:product][:product_number], name: params[:product][:name], jan_code: params[:product][:jan_code], new_flg: params[:product][:new_flg], popular_flg: params[:product][:popular_flg], stock: params[:product][:stock], category_name: params[:product][:category_name], manufacturer: params[:product][:manufacturer]}
   end
 
   def new
     @product = Product.new
-    @category = Category.pluck(:name)
   end
 
   def edit
     @product = Product.find(params[:id])
-    @category = Product.select(:category_name).distinct
   end
 
   def update
@@ -38,7 +55,11 @@ class Admin::ProductsController < ApplicationController
   end
 
   def category
-    @categories = select_categories
+    select_categories_name = []
+    Category.all.each do |c|
+      select_categories_name << [c.name, c.id]
+    end
+    @categories = select_categories_name
   end
 
   def category_edit
@@ -97,12 +118,12 @@ class Admin::ProductsController < ApplicationController
     params.require(:product).permit(:product_number, :name, :jan_code, :new_flg, :popular_flg, :category_name, :manufacturer, :stock)
   end
 
-  def select_categories
-    a = []
-    Category.all.each do |c|
-      a << [c.name, c.id]
-    end
-  end
+  # def select_categories_name
+  #   a = []
+  #   Category.all.each do |c|
+  #     a << [c.name, c.id]
+  #   end
+  # end
 
   def category_params
     params.require(:category).permit(:id, :name, child_categories: [:id, :name])

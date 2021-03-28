@@ -1,25 +1,45 @@
-p ページ管理
-p フロントサイトに表示するページを自由に追加・編集が可能です。
-p ページ名称	URL	リンク表示場所	表示順 [?]	公開	編集	削除
-- @free_pages.each do |fp|
-  = fp.page_title
-  = fp.url
-  - if fp.place == 0
-    p まだ場所なし
-  - elsif fp.place == 1
-    p ヘッダー
-  - elsif fp.place == 2
-    p フッター
-  - elsif fp.place == 3
-    p ヘッダー フッター
-  = fp.place
-  = fp.display_order
-  - if fp.is_release_flg == true
-    公開
-  - else
-    非公開
-  = link_to '編集', edit_admin_free_page_path(fp)
-  = link_to '削除', admin_free_page_path(fp)
-  div
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+        p.bg-secondary ◎ ページ管理
+        div
+          border.border-5.border-muted
+            p フロントサイトに表示するページを自由に追加・編集が可能です。
 
-= link_to '新規登録', new_admin_free_page_path
+        table.table.table-bordered.bg-light
+          thead
+            tr
+              th ページ名称
+              th URL
+              th リンク表示場所
+              th 表示順
+              th 公開
+              th 編集
+              th 削除
+          tbody
+            - @free_pages.each do |fp|
+              tr
+                td = fp.page_title
+                td = fp.url
+                - if fp.place == 0
+                  td p まだ場所なし
+                - elsif fp.place == 1
+                  td p ヘッダー
+                - elsif fp.place == 2
+                  td p フッター
+                - elsif fp.place == 3
+                  td p ヘッダー フッター
+                - else
+                  td
+                td = fp.display_order
+                / todo 公開非公開のフラグ変更のアクション追加(information参考)
+                - if fp.is_release_flg == true
+                  td = link_to '公開', root_path
+                - else
+                  td = link_to '非公開', root_path
+                = link_to '編集', edit_admin_free_page_path(fp)
+                = link_to '削除', admin_free_page_path(fp)
+
+      .text-center = link_to '新規登録', new_admin_free_page_path, class: 'btn btn-primary'

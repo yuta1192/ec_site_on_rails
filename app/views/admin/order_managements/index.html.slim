@@ -1,81 +1,145 @@
-p 受注入力
+/todo このページは全体的に修正必要（後回し)
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 受注入力
+      div
 
-p 受注番号		受注日
-p お支払い方法（必須）		合計	0円
-p カート備考欄
-p お客様情報
-= form_with model: User, url: admin_order_managements_path, local: true, method: :post do |f|
-  p 会員コード
-  p 担当者名
-  = f.label '姓'
-  = f.text_field :name_sei
-  = f.label '名'
-  = f.text_field :name_mei
-  div
-  p 担当者名 フリガナ
-  = f.label '姓'
-  = f.text_field :name_sei_kana
-  = f.label '名'
-  = f.text_field :name_mei_kana
-  p  ※全角カタカナ
-  div
-  = f.label '会社コード'
-  = f.text_field :company_code
-  div
-  = f.label '会社名'
-  = f.text_field :company_name
-  div
-  = f.label '会社名 フリガナ'
-  = f.text_field :company_name_kana
-  div
-  = f.label '部署コード'
-  = f.text_field :department_code
-  div
-  = f.label '部署名'
-  = f.text_field :department_name
-  div
-  = f.label '部署名 フリガナ'
-  = f.text_field :department_name_kana
-  div
-  = f.label '郵便番号'
-  = f.text_field :zip_code
-  p ※半角数字
-  = f.label '都道府県'
-  = f.select :prefectures, Address.prefectures.keys, {prompt: '選択してください'}
-  div
-  = f.label '市区町村'
-  = f.text_field :municipation
-  div
-  = f.label '地番、番地'
-  = f.text_field :address_1
-  div
-  = f.label 'ビル、マンション、アパート名など'
-  = f.text_field :address_2
-  div
-  = f.label '電話番号（必須）'
-  = f.text_field :tel
-  p ※半角数字
-  = f.label '携帯番号'
-  = f.text_field :phone_number
-  p ※半角数字
-  = f.label 'FAX番号'
-  = f.text_field :fax_number
-  p   ※半角数字
-  = f.label 'メールアドレス（必須）'
-  = f.text_field :mail_address
-  div
-  = f.label '会員情報備考'
-  = f.text_field :member_info
-  p お届け先
-  = f.radio_button :place, 1, checked: true
-  = f.label "ご依頼人情報と同じ住所に配送する"
-  div
-  = f.radio_button :place, 2
-  = f.label "1件の異なる住所に配送する"
-  div
-  = f.label 'お届け日'
-  = f.text_field :delivery_day
-  p ※「yyyymmdd」の形式で入力してください。
-  p （yyyy＝年／mm＝月／dd＝日）　例）20080808
+      table.table.table-bordered.bg-light
+        tbody
+          tr
+            = form_with model: User, url: admin_order_managements_path, local: true, method: :post do |f|
+              th[colspan="2"]
+                | お客様情報 ： 検索ワード
+                = f.text_field :search_word
+                = f.submit '検索フォームを開く'
+          = form_with model: User, url: admin_order_managements_path, local: true, method: :post do |f|
+            tr
+              th.max-width-30 会員コード
+              td.max-width-70 todo ここに会員コードが表示される
+            tr
+              th 担当者名
+              td
+                = f.label '姓'
+                = f.text_field :name_sei
+                = f.label '名'
+                = f.text_field :name_mei
+            tr
+              th 担当者名 フリガナ
+              td
+                = f.label '姓'
+                = f.text_field :name_sei_kana
+                = f.label '名'
+                = f.text_field :name_mei_kana
+                | ※全角カタカナ
+            tr
+              th = f.label '会社コード'
+              td = f.text_field :company_code
+            tr
+              th = f.label '会社名'
+              td = f.text_field :company_name
+            tr
+              th = f.label '会社名 フリガナ'
+              td = f.text_field :company_name_kana
+            tr
+              th = f.label '部署コード'
+              td = f.text_field :department_code
+            tr
+              th = f.label '部署名'
+              td = f.text_field :department_name
+            tr
+              th = f.label '部署名 フリガナ'
+              td = f.text_field :department_name_kana
+            tr
+              th = f.label '住所'
+              td
+                = f.label '郵便番号'
+                = f.text_field :zip_code
+                p ※半角数字
+                = f.label '都道府県'
+                = f.select :prefectures, Address.prefectures.keys, {prompt: '選択してください'}
+                div
+                = f.label '市区町村'
+                = f.text_field :municipation
+                div
+                = f.label '地番、番地'
+                = f.text_field :address_1
+                div
+                = f.label 'ビル、マンション、アパート名など'
+                = f.text_field :address_2
+            tr
+              th = f.label '電話番号（必須）'
+              td
+                = f.text_field :tel
+                | ※半角数字
+            tr
+              th = f.label '携帯番号'
+              td
+                = f.text_field :phone_number
+                | ※半角数字
+            tr
+              th = f.label 'FAX番号'
+              td
+                = f.text_field :fax_number
+                | ※半角数字
+            tr
+              th = f.label 'メールアドレス（必須）'
+              td = f.text_field :mail_address
+            tr
+              th = f.label '会員情報備考'
+              td = f.text_field :member_info
 
-  p 商品No.	商品名	単価（税抜）	個数[?]	金額（税抜）	削除
+              table.table.table-bordered.bg-light
+                tbody
+                  th お届け先
+                  td
+                    = f.radio_button :place, 1, checked: true
+                    = f.label "ご依頼人情報と同じ住所に配送する"
+                    div
+                    = f.radio_button :place, 2
+                    = f.label "1件の異なる住所に配送する"
+
+              table.table.table-bordered.bg-light
+                tbody
+                  tr
+                    th = f.label 'お届け日'
+                    td
+                      = f.text_field :delivery_day
+                      p ※「yyyymmdd」の形式で入力してください。
+                      p （yyyy＝年／mm＝月／dd＝日）　例）20080808
+                  tr
+                    th[colspan="2"]
+                      table.table.table-bordered.bg-light
+                        thead
+                          tr
+                            th 商品No.
+                            th 商品名
+                            th 単価（税抜）
+                            th 個数[?]
+                            th 金額（税抜）
+                            th 削除
+                        / todo ここで商品を追加していくごとに表示される、送料なども変更されるようjavascript追加
+                        tbody
+                          tr
+                            td[colspan="3"] 送料
+                            td[colspan="2"] 色々
+                            td 0円
+                  tr
+                    th
+                      table.table.table-bordered.bg-light
+                        thead
+                          tr
+                            th[colspan="2"] 商品追加
+                        tbody
+                          tr
+                            th 商品No.から追加
+                            td todo tekisutofield
+                          tr
+                            th 商品検索から追加
+                            td = f.submit '追加'
+  / todo ここ下部に固定プラスjavascriptで表示を変更していく。
+  p 受注番号		受注日
+  p お支払い方法（必須）		合計	0円
+  p カート備考欄

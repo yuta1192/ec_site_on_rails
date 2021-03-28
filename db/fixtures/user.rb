@@ -59,7 +59,7 @@ end
     a.address_2 = SecureRandom.alphanumeric()
     a.tel = "000-0000-0000"
     a.phone_number = "0120-00-0000"
-    a.user_id = rand(1..10)
+    a.user_id = p+1
     if p == 1
       a.is_select_flag = true
     else

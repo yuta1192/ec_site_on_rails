@@ -1,44 +1,87 @@
-p 商品一覧 ／ 該当データ ： 19件 ／ 最大登録数 ： 3,000件
-p データフォーマット設定で商品一括、商品、商品ロット、商品価格などを設定後、ダウンロードできるようになります。
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 商品一覧 ／ 該当データ ： #{@products_count}件 ／ 最大登録数 ： 3,000件
+      div
+        ul.border.border-5.border-muted
+          li.small データフォーマット設定で商品一括、商品、商品ロット、商品価格などを設定後、ダウンロードできるようになります。
+      = link_to '新規作成', new_admin_product_path, class: 'btn btn-primary image-max-size'
+      div
+      br
+      = form_with model: @products, url: search_admin_products_path, local: true, method: :get do |f|
+        table.table.table-bordered.bg-light
+          tbody
+            tr
+              th = f.label "商品No."
+              td.bg-white = f.text_field :product_number, class: 'image-max-size'
+              th = f.label "商品名"
+              td.bg-white = f.text_field :name, value: '', class: 'image-max-size'
+            tr
+              th = f.label 'JANコード'
+              td.bg-white = f.text_field :jan_code, class: 'image-max-size'
+              th = f.label '商品状態'
+              td.bg-white
+                = f.label '新商品'
+                = f.check_box :new_flg, {class: "check_box"}, 'true', 'false'
+                = f.label '人気商品'
+                = f.check_box :popular_flg, {class: "check_box"}, 'true', 'false'
+                = f.label '在庫切れ'
+                = f.check_box :stock, {class: "check_box"}, 'true', 'false'
+            tr
+              th = f.label 'カテゴリ'
+              td.bg-white = f.select :category_name, select_categories_name, class: 'image-max-size'
+              th = f.label '出荷元'
+              td.bg-white = f.text_field :manufacturer, class: 'image-max-size'
+            tr.text-center
+              th[colspan="4"] = f.submit '検索'
 
-= link_to '新規作成', new_admin_product_path
+      - if params[:per] == "25"
+        p.text-right
+          | 表示件数：
+          | 25件
+          = link_to ' 50件', admin_products_path(per: 50)
+          = link_to ' 100件', admin_products_path(per: 100)
+      - elsif params[:per] == "100"
+        p.text-right
+          | 表示件数：
+          = link_to '25件 ', admin_products_path(per: 25)
+          = link_to '50件 ', admin_products_path(per: 50)
+          | 100件
+      - else
+        p.text-right
+          | 表示件数：
+          = link_to '25件 ', admin_products_path(per: 25)
+          | 50件
+          = link_to ' 100件', admin_products_path(per: 100)
 
-= form_with model: @products, url: search_admin_products_path, local: true, method: :get do |f|
-  = f.label "商品No."
-  = f.text_field :product_number
-  div
-  = f.label "商品名"
-  = f.text_field :name, value: ''
-  div
-  = f.label 'JANコード'
-  = f.text_field :jan_code
-  div
-  = f.label '新商品'
-  = f.check_box :new_flg, {class: "check_box"}, 'true', 'false'
-  = f.label '人気商品'
-  = f.check_box :popular_flg, {class: "check_box"}, 'true', 'false'
-  = f.label '在庫切れ'
-  = f.check_box :stock, {class: "check_box"}, 'true', 'false'
-  = f.label 'カテゴリ'
-  = f.select :category, select_categories
-  = f.label '出荷元'
-  = f.text_field :manufacturer
-  div
-  = f.submit '検索'
-
-p 表示件数： 25件 50件 100件
-
-p 商品ID 商品No. 商品名 登録日 更新日 公開状態 詳細 削除
-- @products.each do |p|
-  = p.id
-  = p.product_number
-  = p.name
-  = p.created_at.strftime('%Y/%m/%d')
-  = p.updated_at.strftime('%Y/%m/%d')
-  - if p.is_release_flg == true
-    = "公開"
-  - else
-    = "非公開"
-  = link_to '詳細', edit_admin_product_path(p)
-  = link_to '削除', admin_product_path(p), method: :delete
-  div
+      table.table.table-bordered.bg-light
+        thead.text-nowrap
+          tr
+            th 商品ID
+            th 商品No.
+            th 商品名
+            th 登録日
+            th 更新日
+            th 公開状態
+            th 詳細
+            th 削除
+        tbody.text-nowrap
+          - @products.each do |p|
+            tr.bg-white
+              td = p.id
+              td = p.product_number
+              td
+                = image_tag(p.image.to_s, class: "admin-image-size")
+                = p.name
+              td = p.created_at.strftime('%Y/%m/%d')
+              td = p.updated_at.strftime('%Y/%m/%d')
+              / todo 公開非公開のボタン作成しリンクで飛ばして変更させる
+              - if p.is_release_flg == true
+                td = "公開"
+              - else
+                td = "非公開"
+              td = link_to '詳細', edit_admin_product_path(p)
+              td = link_to '削除', admin_product_path(p), method: :delete
+      = paginate @products

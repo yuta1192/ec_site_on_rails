@@ -2,9 +2,8 @@ class Product < ApplicationRecord
   belongs_to :category
   belongs_to :stock_management
   belongs_to :shipping_origin
-  belongs_to :child_category
+  # belongs_to :child_category
   mount_uploader :image, ImageUploader
-  #enum category: { オリジナル商品: 1, 食べ物: 2 }
 
   def self.search(search)
     return Product.all unless search
@@ -44,10 +43,12 @@ class Product < ApplicationRecord
     Product.where(['manufacturer LIKE ?', "%#{manufacturer}%"])
   }
 
+  # stock_managementsを左外部結合しwhereで絞る
   scope :except_no_stock, -> stock {
     return Product.all if stock == "false"
-    Product.where("stock = 0")
+    Product.joins("LEFT OUTER JOIN stock_managements ON products.id = stock_managements.product_id").where(stock_managements: {stock: 0})
   }
+
   # scope :search, -> (search_params) do
   #   return if search_params.blank?
   #   name_like(search_params[:name])

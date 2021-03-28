@@ -1,13 +1,24 @@
-p 商品詳細ページ共通の自由領域を編集できます。
-p 商品詳細ページに反映されます（全商品に共通で反映されます）。
-p HTML入力が可能な編集エリアは、HTMLを選択してテキスト入力すると表記が崩れますので、ご注意ください。
-p 編集後は、必ず「保存」ボタンを押してください。
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+        p.bg-secondary ◎ 商品ページ
+        div
+          ul.border.border-5.border-muted
+            p 商品詳細ページ共通の自由領域を編集できます。
+            li.small 商品詳細ページに反映されます（全商品に共通で反映されます）。
+            li.small HTML入力が可能な編集エリアは、HTMLを選択してテキスト入力すると表記が崩れますので、ご注意ください。
+            li.small 編集後は、必ず「保存」ボタンを押してください。
 
-= form_with model: @product_page, url: admin_product_page_create_path, method: :post, local: true do |f|
-  = f.label '上部自由領域'
-  = f.text_field :up_page_text
-  div
-  = f.label '下部自由領域'
-  = f.text_field :bottom_page_text
-  div
-  = f.submit '保存'
+        = form_with model: @product_page, url: admin_product_page_create_path, method: :post, local: true do |f|
+          table.table.table-bordered.bg-light
+            tbody
+              tr
+                th = f.label '上部自由領域'
+                td.bg-white = f.text_area :up_page_text, class: 'text-area'
+              tr
+                th = f.label '下部自由領域'
+                td.bg-white = f.text_area :bottom_page_text, class: 'text-area'
+              tr.text-center
+                th[colspan="2"] = f.submit '保存'

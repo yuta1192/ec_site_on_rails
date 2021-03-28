@@ -7,7 +7,6 @@
         li.small 実際の項目の表示は、日付の降順です。（同じ日付の場合、最後に更新したものが上）
         li.small 新着情報は公開/非公開合わせて80項目まで登録が可能です。
 
-    / todo informationsの総合タイトルと表示件数のみのモデル作る必要がありそう
     / informationsの総合タイトルと表示件数のみのモデルのタイトルと表示件数変更
     = form_with model: @info_title, url: info_title_admin_informations_path, method: :post, local: true do |f|
       .form-group.row.border.form-inline

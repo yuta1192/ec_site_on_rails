@@ -1,19 +1,29 @@
-p 画像管理
-p サイトで使用する画像を一括管理することができます。
-p アップロードした画像は、商品説明などのHTMLに対応した編集欄で使用が可能です。その場合は登録画像一覧に表示されているURLをコピーしてお使いください。
-p 画像ファイルは、png、jpg、gifに対応。ただし、アニメーションGIFやJPEG-2000、Lossless JPEG、CMYK等には対応していません。適切なフォーマットで書き出してください。
-p アップ可能な最大ファイルサイズは、約20.0 MBです。
-p 画像アップロード
-= form_with url: admin_images_path, method: :post, local: true do |f|
-  = f.file_field :image
-  = f.label "ここにファイルをドラッグするか、クリックして選択してください。※ファイル名は半角英数字にしてください。※アップロードできるファイルの形式は、画像ファイル（gif,jpgのみ）です。※画像はそのままのサイズでアップロードされます。"
-  /TODO ここのfile_field修正,アップロードする画像が見えるようにする。(labelが消えてプレビューになるような感じ)
-  = f.submit '登録する'
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+        p.bg-secondary ◎ 画像管理
+        div
+          ul.border.border-5.border-muted
+            p サイトで使用する画像を一括管理することができます。
+            li.small アップロードした画像は、商品説明などのHTMLに対応した編集欄で使用が可能です。その場合は登録画像一覧に表示されているURLをコピーしてお使いください。
+            li.small 画像ファイルは、png、jpg、gifに対応。ただし、アニメーションGIFやJPEG-2000、Lossless JPEG、CMYK等には対応していません。適切なフォーマットで書き出してください。
+            li.small アップ可能な最大ファイルサイズは、約20.0 MBです。
 
+        / todo 画像アップロードフィールド(ここはqiita参考にしながら作成する。)
+        .border
+          p.bg-secondary 画像アップロード
+          = form_with url: admin_images_path, method: :post, local: true do |f|
+            = f.file_field :image
+            = f.label "ここにファイルをドラッグするか、クリックして選択してください。※ファイル名は半角英数字にしてください。※アップロードできるファイルの形式は、画像ファイル（gif,jpgのみ）です。※画像はそのままのサイズでアップロードされます。"
+            /TODO ここのfile_field修正,アップロードする画像が見えるようにする。(labelが消えてプレビューになるような感じ)
+            = f.submit '登録する'
 
-p 登録画像一覧（表示 ： 数字昇順 ＋ ABC順）
-p サムネイル画像	URL	削除
-- @images.each do |i|
-  = i.image
-  = i.url
-  = link_to "削除", admin_image_path(i.id)
+        / todo KAMINARIで表示するように変更
+        p 登録画像一覧（表示 ： 数字昇順 ＋ ABC順）
+        p サムネイル画像	URL	削除
+        - @images.each do |i|
+          = i.image
+          = i.url
+          = link_to "削除", admin_image_path(i.id)

@@ -1,127 +1,85 @@
-p 出荷情報一覧 ／ 該当データ ： 3件
-p 一覧の「詳細」ボタンを押すと、出荷情報の詳細が表示されます。
-p 全商品がキャンセルされた受注情報は背景が灰色で表示されます。
-p 出荷未依頼の受注情報は背景が黄色で表示されます。（ただし検索初期値では未依頼の受注情報は表示されません。）
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 出荷情報一覧 ／ 該当データ ： 3件
+      div
+        ul.border.border-5.border-muted
+          li.small 一覧の「詳細」ボタンを押すと、出荷情報の詳細が表示されます。
+          li.small 全商品がキャンセルされた受注情報は背景が灰色で表示されます。
+          li.small 出荷未依頼の受注情報は背景が黄色で表示されます。（ただし検索初期値では未依頼の受注情報は表示されません。）
 
-- if params[:shipment]
-  - if params[:shipment][:preferred_arrival_date] == "1" && (params[:shipment][:preferred_arrival_start_date].present? || params[:shipment][:preferred_arrival_end_date].present?)
-    p お届け希望日 ： #{params[:shipment][:preferred_arrival_start_date]} ~ #{params[:shipment][:preferred_arrival_end_date]} #{params[:shipment][:preferred_arrival_unspecified] == "true" ? "※未入力を含む" : "" }
-  - elsif params[:shipment][:preferred_arrival_date] == "2"
-    p お届け希望日 ： 未入力のみ
-  - elsif params[:shipment][:preferred_arrival_date] == "3"
-    p お届け希望日 ： 入力済みのみ
+      .border.bg-warning
+        .m-3
+          .d-flex.flex-wrap
+            - if preferred_arrival_date_result.present?
+              .w-50 = preferred_arrival_date_result
+            - if untreated_result.present?
+              .w-50 = untreated_result
+            -if sales_record_date_result.present?
+              .w-50 = sales_record_date_result
+            -if ship_date_result.present?
+              .w-50 = ship_date_result
+            -if download_result.present?
+              .w-50 = download_result
+            -if individual_picking_result.present?
+              .w-50 = individual_picking_result
+            -if cancel_result.present?
+              .w-50 = cancel_result
+            -if keyword_result.present?
+              .w-50 = keyword_result
+            -if expected_shipping_date_result.present?
+              .w-50 = expected_shipping_date_result
+            -if shipping_origin_result.present?
+              .w-50 = shipping_origin_result
+            -if partially_reserved_result.present?
+              .w-50 = partially_reserved_result
+            -if total_picking_result.present?
+              .w-50 = total_picking_result
+            -if prefectures_result.present?
+              .w-50 = prefectures_result
+          br
+          = link_to '検索条件変更', admin_shipments_path, class: 'btn btn-primary'
 
-  - if params[:shipment][:untreated] == "true" && params[:shipment][:can_be_shipped] == "true" && params[:shipment][:undertake] == "true" && params[:shipment][:shipped] == "true"
-    p 出荷状況 ： 未処理、出荷可能、着手、出荷済
-  - elsif params[:shipment][:untreated] == "true" && params[:shipment][:can_be_shipped] == "true" && params[:shipment][:undertake] == "true"
-    p 出荷状況 ： 未処理、出荷可能、着手
-  - elsif params[:shipment][:untreated] == "true" && params[:shipment][:can_be_shipped] == "true" && params[:shipment][:shipped] == "true"
-    p 出荷状況 ： 未処理、出荷可能、出荷済
-  - elsif params[:shipment][:untreated] == "true" && params[:shipment][:undertake] == "true" && params[:shipment][:shipped] == "true"
-    p 出荷状況 ： 未処理、着手、出荷済
-  - elsif params[:shipment][:can_be_shipped] == "true" && params[:shipment][:undertake] == "true" && params[:shipment][:shipped] == "true"
-    p 出荷状況 ： 出荷可能、着手、出荷済
-  - elsif params[:shipment][:untreated] == "true" && params[:shipment][:can_be_shipped] == "true"
-    p 出荷状況 ： 未処理、出荷可能
-  - elsif params[:shipment][:untreated] == "true" && params[:shipment][:undertake] == "true"
-    p 出荷状況 ： 未処理、着手
-  - elsif params[:shipment][:untreated] == "true" && params[:shipment][:shipped] == "true"
-    p 出荷状況 ： 未処理、出荷済
-  - elsif params[:shipment][:can_be_shipped] == "true" && params[:shipment][:undertake] == "true"
-    p 出荷状況 ： 出荷可能、着手
-  - elsif params[:shipment][:can_be_shipped] == "true" && params[:shipment][:shipped] == "true"
-    p 出荷状況 ： 出荷可能、出荷済
-  - elsif params[:shipment][:undertake] == "true" && params[:shipment][:shipped] == "true"
-    p 出荷状況 ： 着手、出荷済
-  - elsif params[:shipment][:untreated] == "true"
-    p 出荷状況 ： 未処理
-  - elsif params[:shipment][:can_be_shipped] == "true"
-    p 出荷状況 ： 出荷可能
-  - elsif params[:shipment][:undertake] == "true"
-    p 出荷状況 ： 着手
-  - elsif params[:shipment][:shipped] == "true"
-    p 出荷状況 ： 出荷済
-
-  - if params[:shipment][:sales_record_date] == "1" && (params[:shipment][:sales_record_start_date].present? || params[:shipment][:sales_record_end_date].present?)
-    p 売上計上日 ： #{params[:shipment][:sales_record_start_date]} ~ #{params[:shipment][:sales_record_end_date]} #{params[:shipment][:sales_record_date_unspecified] == "true" ? "※未入力を含む" : "" }
-  - elsif params[:shipment][:sales_record_date] == "2"
-    p 売上計上日 ： 未入力のみ
-  - elsif params[:shipment][:sales_record_date] == "3"
-    p 売上計上日 ： 入力済みのみ
-
-  - if params[:shipment][:ship_start_date].present? || params[:shipment][:ship_end_date].present?
-    p 売上計上日 ： #{params[:shipment][:ship_start_date]} ~ #{params[:shipment][:ship_end_date]}
-
-  - if params[:shipment][:download] == "1"
-    p データダウンロード ： 未処理
-  - elsif params[:shipment][:download] == "2"
-    p データダウンロード ： 大和B2済み
-  - elsif params[:shipment][:download] == "3"
-    p データダウンロード ： 出荷CSV済み
-
-  - if params[:shipment][:individual_picking] == "1"
-    p 個別ピッキング ： 未処理
-  - elsif params[:shipment][:individual_picking] == "2"
-    p 個別ピッキング ： 済み
-
-  - if params[:shipment][:cancel] == "1"
-    p キャンセル ： あり
-  - elsif params[:shipment][:cancel] == "2"
-    p キャンセル ： なし
-
-
-  - if params[:shipment][:keyword].present?
-    p a
-
-
-  - if params[:shipment][:expected_shipping_date] == "1" && (params[:shipment][:expected_shipping_start_date].present? || params[:shipment][:expected_shipping_end_date].present?)
-    p 売上計上日 ： #{params[:shipment][:expected_shipping_start_date]} ~ #{params[:shipment][:expected_shipping_end_date]} #{params[:shipment][:expected_shipping_date_unspecified] == "true" ? "※未入力を含む" : "" }
-  - elsif params[:shipment][:expected_shipping_date] == "2"
-    p 売上計上日 ： 未入力のみ
-  - elsif params[:shipment][:expected_shipping_date] == "3"
-    p 売上計上日 ： 入力済みのみ
-
-
-
-  - if params[:shipment][:shipping_origin] == "1"
-    p 自社
-
-
-  - if params[:shipment][:partially_reserved] == "true" && params[:shipment][:allocated] == "true"
-    p 引当状況 : 一部引当済、引当済
-  - elsif params[:shipment][:partially_reserved] == "true"
-    p 引当状況 ： 一部引当済
-  - elsif params[:shipment][:allocated] == "true"
-    p 引当状況 ： 引当済
-
-  - if params[:shipment][:total_picking] == "1"
-    p 個別ピッキング ： 未処理
-  - elsif params[:shipment][:total_picking] == "2"
-    p 個別ピッキング ： 済み
-
-  - if params[:shipment][:prefectures].present?
-    p 都道府県 ： a
-
-p 受注番号	会社名（部署名）担当者名	お届け先  	お届け希望日時 	出荷元	商品名	出荷予定日 	出荷日 	ﾋﾟｯｷﾝｸﾞ	CSV	状況	詳細
-div
-- @shipment.each do |f|
-  = f.order_history.order_number
-  = f.order_history.user.addresses.find_by(is_select_flag: true).company_name
-  | (#{f.order_history.user.addresses.find_by(is_select_flag: true).department_name})
-  = f.order_history.user.name
-  = f.order_history.user.addresses.find_by(is_select_flag: true).zip_code
-  = f.order_history.user.addresses.find_by(is_select_flag: true).prefectures
-  = f.order_history.user.addresses.find_by(is_select_flag: true).municipation
-  = f.order_history.user.addresses.find_by(is_select_flag: true).address_1
-  = f.order_history.user.addresses.find_by(is_select_flag: true).address_2
-  = f.order_history.preferred_date_start
-  = f.shipping_origin
-  - f.shipment_products.each do |ff|
-    = ff.product.name
-    = ff.expected_shipping_date.present? ? ff.expected_shipping_date : "-"
-    = ff.ship_date.present? ? ff.ship_date : "-"
-    = ff.picking_flg == "true" ? ff.picking_flg : "-"
-    = ff.csv_flg == "true" ? ff.csv_flg : "-"
-    = ff.status
-  = link_to '詳細', admin_shipment_path(f)
-  div
+      table.table-sm.table-bordered.bg-light
+        thead
+          tr
+            th 受注番号
+            th 会社名（部署名
+            th 担当者名
+            th お届け先
+            th お届け希望日時
+            th 出荷元
+            th 商品名
+            th 出荷予定日
+            th 出荷日
+            th ﾋﾟｯｷﾝｸﾞ
+            th CSV
+            th 状況
+            th 詳細
+        tbody
+         / todo @shipment(検索方法)を修正するまで一旦保留
+          - if @shipment.present?
+            - @shipment.each do |f|
+              = f.order_history.order_number
+              = f.order_history.user.addresses.find_by(is_select_flag: true).company_name
+              | (#{f.order_history.user.addresses.find_by(is_select_flag: true).department_name})
+              = f.order_history.user.name
+              = f.order_history.user.addresses.find_by(is_select_flag: true).zip_code
+              = f.order_history.user.addresses.find_by(is_select_flag: true).prefectures
+              = f.order_history.user.addresses.find_by(is_select_flag: true).municipation
+              = f.order_history.user.addresses.find_by(is_select_flag: true).address_1
+              = f.order_history.user.addresses.find_by(is_select_flag: true).address_2
+              = f.order_history.preferred_date_start
+              = f.shipping_origin
+              - f.shipment_products.each do |ff|
+                = ff.product.name
+                = ff.expected_shipping_date.present? ? ff.expected_shipping_date : "-"
+                = ff.ship_date.present? ? ff.ship_date : "-"
+                = ff.picking_flg == "true" ? ff.picking_flg : "-"
+                = ff.csv_flg == "true" ? ff.csv_flg : "-"
+                = ff.status
+              = link_to '詳細', admin_shipment_path(f)
+          - else
+            p ないよ

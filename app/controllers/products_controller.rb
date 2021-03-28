@@ -172,7 +172,6 @@ class ProductsController < ApplicationController
       Category.all.each do |c|
         a << [c.name, c.id]
       end
-      binding.pry
       a.unshift['選択して下さい', nil]
     end
 

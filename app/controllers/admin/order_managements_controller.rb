@@ -6,8 +6,25 @@ class Admin::OrderManagementsController < ApplicationController
   end
 
   def order_history_search
-    @search_params = order_history_params
-    @order_histories = OrderHistory.joins(user: :addresses, order_history_products: :product).search(@search_params)
+    @order_histories =
+      OrderHistory
+        .joins("LEFT OUTER JOIN users ON order_histories.user_id = users.id")
+        .joins("LEFT OUTER JOIN addresses ON order_histories.user_id = addresses.user_id")
+        .eager_load(order_history_products: :product)
+        .where(addresses: {is_select_flag: true})
+        .select(
+          "order_histories.id,
+          order_histories.order_number,
+          order_histories.preferred_date_flg,
+          order_histories.preferred_date_start,
+          order_histories.preferred_date_end,
+          addresses.*"
+        )
+        .search(order_history_params)
+
+        # todo 出荷系も内部結合joinsしてselectしてviewに表示すること。
+        # todo 住所は変わっている場合もあるため、OrderHistory自体にaddress_idを追加してjoin等をしたほうがいい（例えば同じユーザーでも複数住所登録可能プラスオーダーによって住所変えてるかもだから)
+        # joins(user: :addresses, order_history_products: :product)
   end
 
   private
