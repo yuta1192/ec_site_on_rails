@@ -98,6 +98,10 @@
         div
           | →
           = link_to '会員登録', new_admin_member_path
+        / todo csvアップロード機能追加、route無し、画面無し
+        div
+          | →
+          = link_to '会員アップロード', new_admin_member_path
         div
           | →
           = link_to '会員グループ一覧', admin_groups_path
@@ -110,6 +114,10 @@
         div
           | →
           = link_to 'お届け先登録', new_admin_address_path
+        / todo csvアップロード機能追加、route無し、画面無し
+        div
+          | →
+          = link_to 'お届け先アップロード', new_admin_address_path
     .mb-2
     a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample7" role="button" aria-expanded="false" aria-controls="collapseExample7"]
       | □ 出荷元管理

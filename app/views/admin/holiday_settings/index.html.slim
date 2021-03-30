@@ -1,53 +1,69 @@
-p 祝日設定
-p 休業日設定時の祝日をあらかじめ設定するページです。
-p 毎年同じ日の祝日や、土日に重なる祝日も含め、全ての祝日を入力してください。
-p 年の選択をして「表示」ボタンを押した後、各月にカンマ区切りで祝日を設定して「保存」ボタンを押してください。
-p 月別休業日設定にて保存を行った後、祝日設定をした場合、月別休業日設定が保存された月の休業日は自動で変更されませんのでご注意ください。
-p 今年と来年の２年分の設定ができます。
-p 祝日は前年の2月に決定されます。内閣府のホームページを参照ください。
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 祝日設定
+      div
+        ul.border.border-5.border-muted
+          p 休業日設定時の祝日をあらかじめ設定するページです。
+          li.small 休業日設定時の祝日をあらかじめ設定するページです。
+          li.small 毎年同じ日の祝日や、土日に重なる祝日も含め、全ての祝日を入力してください。
+          li.small 年の選択をして「表示」ボタンを押した後、各月にカンマ区切りで祝日を設定して「保存」ボタンを押してください。
+          li.small 月別休業日設定にて保存を行った後、祝日設定をした場合、月別休業日設定が保存された月の休業日は自動で変更されませんのでご注意ください。
+          li.small 今年と来年の２年分の設定ができます。
+          li.small 祝日は前年の2月に決定されます。内閣府のホームページを参照ください。
 
-= form_with model: HolidaySetting, url: bluk_update_admin_holiday_settings_path, method: :patch, local: true do |f|
-  = f.label '年選択'
-  |
-  = f.select :year, [['2020年', 1], ['2021年',2]]
-  div
-  = f.label '2020年 祝日設定  [?]'
-  = f.label '1月'
-  = f.text_field :january_holiday
-  p ※祝日を半角数字で入力してください。
-  p ※祝日が複数の場合は、カンマ区切りで入力してください。　例）1,12
-  div
-  = f.label '2月'
-  = f.text_field :february_holiday
-  div
-  = f.label '3月'
-  = f.text_field :march_holiday
-  div
-  = f.label '4月'
-  = f.text_field :april_holiday
-  div
-  = f.label '5月'
-  = f.text_field :may_holiday
-  div
-  = f.label '6月'
-  = f.text_field :june_holiday
-  div
-  = f.label '7月'
-  = f.text_field :july_holiday
-  div
-  = f.label '8月'
-  = f.text_field :august_holiday
-  div
-  = f.label '9月'
-  = f.text_field :september_holiday
-  div
-  = f.label '10月'
-  = f.text_field :october_holiday
-  div
-  = f.label '11月'
-  = f.text_field :november_holiday
-  div
-  = f.label '12月'
-  = f.text_field :december_holiday
-  div
-  = f.submit '保存'
+      br
+      table.table-sm.table-bordered.bg-light.image-max-size
+        = form_with model: HolidaySetting, url: bluk_update_admin_holiday_settings_path, method: :patch, local: true do |f|
+          tbody
+            tr
+              th[colspan="2"] = f.label '年選択'
+              td = f.select :year, [['2020年', 1], ['2021年',2]]
+            tr
+              th[rowspan="13"] = f.label '2020年 祝日設定'
+              /todo ここは操作している年を取得して表示
+            tr
+              th = f.label '1月'
+              td
+                = f.text_field :january_holiday
+                div
+                | ※祝日を半角数字で入力してください。
+                div
+                | ※祝日が複数の場合は、カンマ区切りで入力してください。　例）1,12
+            tr
+              th = f.label '2月'
+              td = f.text_field :february_holiday
+            tr
+              th = f.label '3月'
+              td = f.text_field :march_holiday
+            tr
+              th = f.label '4月'
+              td = f.text_field :april_holiday
+            tr
+              th = f.label '5月'
+              td = f.text_field :may_holiday
+            tr
+              th = f.label '6月'
+              td = f.text_field :june_holiday
+            tr
+              th = f.label '7月'
+              th = f.text_field :july_holiday
+            tr
+              th = f.label '8月'
+              td = f.text_field :august_holiday
+            tr
+              th = f.label '9月'
+              td = f.text_field :september_holiday
+            tr
+              th = f.label '10月'
+              td = f.text_field :october_holiday
+            tr
+              th = f.label '11月'
+              td = f.text_field :november_holiday
+            tr
+              th = f.label '12月'
+              td = f.text_field :december_holiday
+            tr.text-center
+              th[colspan="3"] = f.submit '保存'

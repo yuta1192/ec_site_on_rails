@@ -1,35 +1,56 @@
-p 在庫管理
-p 在庫数が豊富（無制限）の場合には、この画面からの変更できません。詳細画面で個別にチェックを外してください。
-p 現在の在庫数に対して追加もしくはマイナスする在庫数を入れてください。マイナスの場合には「-」を付けて保存してください。
-p メモを入れることで、後からの在庫数変動の履歴確認時に役立ちます。
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 在庫管理
+      div
+        ul.border.border-5.border-muted
+          li.small 在庫数が豊富（無制限）の場合には、この画面からの変更できません。詳細画面で個別にチェックを外してください。
+          li.small 現在の在庫数に対して追加もしくはマイナスする在庫数を入れてください。マイナスの場合には「-」を付けて保存してください。
+          li.small メモを入れることで、後からの在庫数変動の履歴確認時に役立ちます。
 
-div
-= link_to '一覧に戻る', admin_stock_managements_path
+      .text-center = link_to '一覧に戻る', admin_stock_managements_path, class: 'btn btn-primary'
 
-= form_with model: StockManagement, url: bluk_update_admin_stock_managements_path, method: :patch, local: true do |f|
-  | 商品No.	商品名	出荷元	在庫
-  = f.radio_button :sabun, 1, checked: true
-  | 差分入力
-  = f.radio_button :sabun, 2
-  | 実数入力 引当[?]	メモ[?]
-  div
-  - @products.each do |p|
-    = p.product_number
-    = p.name
-    = p.shipping_origin.shipping_origin_name
-    - if p.stock_management.unlimited_flg == 'true'
-      | 豊富
-    - else
-      = p.stock_management.stock
-      | +
-      = f.text_field :change_stock
-    - if p.stock_management.unlimited_flg == 'true'
-      | 豊富
-    - else
-      = f.text_field :change_stock_all
-    = p.stock_management.allocate
-    = f.text_field :memo
-    div
-  = f.submit '保存'
-div
-= link_to '一覧に戻る', admin_stock_managements_path
+      br
+      = form_with model: StockManagement, url: bluk_update_admin_stock_managements_path, method: :patch, local: true do |f|
+        table.table-sm.table-bordered.bg-light.image-max-size
+          thead.text-center
+            tr
+              th 商品No.
+              th 商品名
+              th 出荷元
+              th
+                | 在庫
+                div
+                = f.radio_button :sabun, 1, checked: true
+                | 差分入力
+                = f.radio_button :sabun, 2
+                | 実数入力
+              th 引当
+              th メモ
+          tbody
+            - @products.each do |p|
+              tr
+                td = p.product_number
+                td = p.name
+                /td = p.shipping_origin.shipping_origin_name
+                /- if p.stock_management.unlimited_flg == 'true'
+                td 豊富
+                /- else
+                /  td
+                /    = p.stock_management.stock
+                /    | +
+                /    = f.text_field :change_stock
+                /- if p.stock_management.unlimited_flg == 'true'
+                td 豊富
+                /- else
+                /  td = f.text_field :change_stock_all
+                td = p.stock_management.allocate
+                td = f.text_field :memo, class: 'image-max-size'
+            tr.text-center
+              th[colspan="6"] = f.submit '保存'
+            /todo 機能どうなってるのか確認後、ちゃんと動いているのか、正常なのか確認。
+
+      br
+      .text-center = link_to '一覧に戻る', admin_stock_managements_path, class: 'btn btn-primary'

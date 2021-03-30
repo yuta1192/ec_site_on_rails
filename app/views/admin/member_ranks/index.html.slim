@@ -1,25 +1,48 @@
-p 会員ランク設定
-p 会員ランクの設定ができます。
-p ここで設定した名称は「会員管理」＞「会員情報更新」の会員ランク選択で表示されます。
-p 会員ごとの基本の掛け率が設定できます。
-p No.	会員ランク名	参考価格に対する掛け率	既存販売条件の再計算 [?]
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 会員ランク設定
+      div
+        ul.border.border-5.border-muted
+          li.small 会員ランクの設定ができます。
+          li.small ここで設定した名称は「会員管理」＞「会員情報更新」の会員ランク選択で表示されます。
+          li.small 会員ごとの基本の掛け率が設定できます。
 
-= form_with model: @member_ranks, url: bluk_update_admin_member_ranks_path, method: :patch, local: true do |f|
-  = f.radio_button :c, 1
-  | 四捨五入
-  div
-  = f.radio_button :c, 2
-  | 切り捨て
-  div
-  = f.radio_button :c, 3
-  | 切り上げ
-  div
-  | 新規販売条件を作成する [?]
-  div
-  - @member_ranks.each do |mr|
-    = mr.id
-    = f.text_field :name, value: mr.name
-    = f.text_field :multiplication_rate, value: mr.multiplication_rate
-    = f.check_box :a
-    div
-  = f.submit '保存'
+      br
+      table.table-sm.table-bordered.bg-light.image-max-size
+        = form_with model: @member_ranks, url: bluk_update_admin_member_ranks_path, method: :patch, local: true do |f|
+          thead
+            tr
+              th No.
+              th 会員ランク名
+              th 参考価格に対する掛け率
+              th
+                | 既存販売条件の再計算
+                div
+                = f.radio_button :c, 1
+                | 四捨五入
+                div
+                = f.radio_button :c, 2
+                | 切り捨て
+                div
+                = f.radio_button :c, 3
+                | 切り上げ
+                div
+                | 新規販売条件を作成する
+                div
+          tbody
+            - @member_ranks.each do |mr|
+              tr
+                td = mr.id
+                td = f.text_field :name, value: mr.name
+                td
+                  = f.text_field :multiplication_rate, value: mr.multiplication_rate
+                  | %
+                td = f.check_box :a
+            tr.text-right
+              td[colspan="4"] ↑全部選択
+              / todo javascriptでクリックすると全てのチェックボックスがチェック済みになること。
+            tr.text-center
+              td[colspan="4"] = f.submit '保存'

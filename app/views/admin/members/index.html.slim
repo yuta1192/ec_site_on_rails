@@ -1,36 +1,72 @@
-p 会員一覧 ／ 該当データ ： 5件 ／ 最大登録数 ： 3,000件
-p 検索フォームより会員データを検索できます。
-p 検索条件を入力して「検索」ボタンを押してください。検索結果が一覧表示されます。（初期表示：登録順）
-p 会員情報の変更は詳細ページより行ってください。「詳細」ボタンを押すと、会員情報詳細ページが表示されます。
-p お客様へのログイン情報ご案内について：会員登録後は、フロントサイトのURLとログイン用の ログインID（メールアドレスまたは会員コード） をお伝えください。（パスワードはフロントサイトより再発行するようご案内ください。）
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      / todo 検索結果の数等は直すこと
+      p.bg-secondary ◎ 会員一覧 ／ 該当データ ： 5件 ／ 最大登録数 ： 3,000件
+      div
+        ul.border.border-5.border-muted
+          li.small 検索フォームより会員データを検索できます。
+          li.small 検索条件を入力して「検索」ボタンを押してください。検索結果が一覧表示されます。（初期表示：登録順）
+          li.small 会員情報の変更は詳細ページより行ってください。「詳細」ボタンを押すと、会員情報詳細ページが表示されます。
+          li.small お客様へのログイン情報ご案内について：会員登録後は、フロントサイトのURLとログイン用の ログインID（メールアドレスまたは会員コード） をお伝えください。（パスワードはフロントサイトより再発行するようご案内ください。）
 
-= form_with model: User, url: search_admin_members_path, method: :get, local: true do |f|
-  = f.label 'キーワード [?]'
-  = f.text_field :keyword
-  div
-  = f.label '状態'
-  = f.select :status, [['有効',1],['退会',2],['一時停止',3]]
-  = f.label '地域'
-  = f.select :prefectures, User.prefectures.keys, {include_blank: "全て", selected: "全て"}
-  div
-  = f.label '入会日'
-  = f.text_field :start_date, placeholder: 'yyyymmdd'
-  | ~
-  = f.text_field :end_date, placeholder: 'yyyymmdd'
-  = f.label '会員ランク'
-  = f.select :rank, User.ranks.keys, {include_blank: "全て", selected: "全て"}
-  div
-  = f.submit '検索'
+      = form_with model: User, url: search_admin_members_path, method: :get, local: true do |f|
+        table.table-sm.table-bordered.bg-light.image-max-size
+          tbody
+            tr
+              th = f.label 'キーワード [?]'
+              td[colspan="3"] = f.text_field :keyword, class: 'image-max-size'
+            tr
+              th = f.label '状態'
+              td = f.select :status, [['有効',1],['退会',2],['一時停止',3]]
+              th = f.label '地域'
+              td = f.select :prefectures, User.prefectures.keys, {include_blank: "全て", selected: "全て"}
+            tr
+              th = f.label '入会日'
+              td
+                = f.text_field :start_date, placeholder: 'yyyymmdd'
+                | ~
+                = f.text_field :end_date, placeholder: 'yyyymmdd'
+              th = f.label '会員ランク'
+              td = f.select :rank, User.ranks.keys, {include_blank: "全て", selected: "全て"}
+            tr.text-center
+              th[colspan="4"] = f.submit '検索'
 
-p 会社名 （部署名） 	担当者名 	会員コード 	メールアドレス 	会員情報備考 	入会日 	会員ランク	詳細	退会	ログイン
-- @users.each do |user|
-  | #{user.company_name} #{(user.department_name.present? && user.company_name.present?) ? "(#{user.department_name})" : ""}
-  | #{user.name_sei + " " + user.name_mei}
-  = user.member_code
-  = user.e_mail
-  = user.remark
-  = user.created_at.strftime('%Y%m%d')
-  = user.rank
-  = link_to '詳細', admin_member_path(user)
-  = link_to '退会', admin_member_path(user), method: :delete
-  = link_to 'ログイン', admin_members_path
+      br
+      table.table-sm.table-bordered.bg-light.image-max-size.no-gutters
+        thead
+          tr
+            th
+              | 会社名
+              div
+              |（部署名）
+            th 担当者名
+            th 会員コード
+            th メールアドレス
+            th 会員情報備考
+            th 入会日
+            th 会員ランク
+            th 詳細
+            th 退会
+            th ログイン
+        tbody
+          - @users.each do |user|
+            tr
+              td
+                = user.company_name
+                - if user.department_name.present? && user.company_name.present?
+                  div
+                  | (#{user.department_name})
+              td
+                = user.name_sei
+                = user.name_mei
+              td = user.member_code
+              td = user.e_mail
+              td = user.remark
+              td = user.created_at.strftime('%Y%m%d')
+              td = user.rank
+              td = link_to '詳細', admin_member_path(user), class: 'btn btn-primary text-nowrap'
+              td = link_to '退会', admin_member_path(user), method: :delete, class: 'btn btn-primary text-nowrap'
+              td = link_to 'ログイン', admin_members_path, class: 'btn btn-primary text-nowrap'

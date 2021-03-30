@@ -1,59 +1,99 @@
-p 会員グループ登録
-p 会員グループ登録
-= form_with model: @group, url: admin_group_path, method: :patch, local: true do |f|
-  = f.label 'グループ名'
-  = f.text_field :name, value: @group.name
-  = f.submit '保存', name: "group_name"
-
-= form_with model: Group, url: admin_group_path(@group), method: :get, local: true do |f|
-  = f.label '会員コード'
-  = f.text_field :member_code
-  div
-  = f.label '会社名'
-  = f.text_field :company_name
-  = f.label '部署名'
-  = f.text_field :department_name
-  div
-  = f.label '名前	姓'
-  = f.text_field :name_sei
-  = f.label '名'
-  = f.text_field :name_mei
-  = f.label '郵便番号'
-  = f.text_field :zip_code_first
-  | -
-  = f.text_field :zip_code_second
-  div
-  = f.label 'メールアドレス'
-  = f.text_field :e_mail
-  = f.label '電話番号'
-  = f.text_field :tel_first
-  | -
-  = f.text_field :tel_second
-  | -
-  = f.text_field :tel_third
-  div
-  = f.submit '検索'
-
-- if params[:group].present?
-  = form_with model: Group, url: admin_group_path, method: :patch, local: true do |f|
-    p 会社名 （部署名）	お名前	会員コード
-    - @users.each do |user|
-      = check_box_tag 'user[id][]', user.id, false
-      | #{user.company_name}#{user.department_name.present? ? "(#{user.department_name})" : ""}
-      | #{user.name_sei + " " + user.name_mei}
-      = user.member_code
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 会員グループ登録
       div
-    = f.submit '削除', name: "delete"
-    = f.submit '追加', name: "add"
+        ul.border.border-5.border-muted
+          li.small 会員グループ登録
 
-- else
-  = form_with model: Group, url: admin_group_path, method: :patch, local: true do |f|
-    p 会社名 （部署名）	お名前	会員コード
-    - @group_users.each do |group_user|
-      = check_box_tag 'user[id][]', group_user.user.id, false
-      | #{group_user.user.company_name}#{group_user.user.department_name.present? ? "(#{group_user.user.department_name})" : ""}
-      | #{group_user.user.name_sei + " " + group_user.user.name_mei}
-      = group_user.user.member_code
-      div
-    = f.submit '削除', name: "delete"
-    = f.submit '追加', name: "add"
+      table.table-sm.table-bordered.bg-light
+        tbody
+          tr
+            = form_with model: @group, url: admin_group_path, method: :patch, local: true do |f|
+              th = f.label 'グループ名'
+              td = f.text_field :name, value: @group.name
+              td = f.submit '保存', name: "group_name", class: 'btn btn-primary'
+
+      br
+      table.table-sm.table-bordered.bg-light
+        = form_with model: Group, url: admin_group_path(@group), method: :get, local: true do |f|
+          tbody.text-nowrap
+            tr
+              th
+              td
+              th = f.label '会員コード'
+              td = f.text_field :member_code
+            tr
+              th = f.label '会社名'
+              td = f.text_field :company_name
+              th = f.label '部署名'
+              td = f.text_field :department_name
+            tr
+              th = f.label '名前'
+              td
+                | 性
+                = f.text_field :name_sei, class: 'max-width-30'
+                | 名
+                = f.text_field :name_mei, class: 'max-width-30'
+              th = f.label '郵便番号'
+              td
+                = f.text_field :zip_code_first
+                | -
+                = f.text_field :zip_code_second
+            tr
+              th = f.label 'メールアドレス'
+              td = f.text_field :e_mail
+              th = f.label '電話番号'
+              td
+                = f.text_field :tel_first, class: 'max-width-30'
+                | -
+                = f.text_field :tel_second, class: 'max-width-30'
+                | -
+                = f.text_field :tel_third, class: 'max-width-30'
+            tr.text-center
+              th[colspan="4"] = f.submit '検索'
+
+      br
+      - if params[:group].present?
+        = form_with model: Group, url: admin_group_path, method: :patch, local: true do |f|
+          table.table-sm.table-bordered.bg-light.image-max-size.text-center
+            thead
+              tr
+                / todo ここのボタンを押した際全てのボタンをチャック追加、外しをできるようjavascript実装
+                th □
+                th 会社名（部署名）
+                th お名前
+                th 会員コード
+            tbody
+              - @users.each do |user|
+                tr
+                  td = check_box_tag 'user[id][]', user.id, false
+                  td
+                    = user.company_name
+                    - if user.department_name.present?
+                      | (#{user.department_name})
+                  td
+                    = user.name_sei
+                    = user.name_mei
+                  td = user.member_code
+              tr
+                td[colspan="4"]
+                  .row.justify-content-around
+                    = f.submit '削除', name: "delete"
+                    = f.submit '追加', name: "add"
+
+            / todo submitにすると全てのボタンが連動しててキモい、変えよう
+      /todo ここの処理わかってないから一旦流す
+      - else
+        = form_with model: Group, url: admin_group_path, method: :patch, local: true do |f|
+          p 会社名 （部署名）	お名前	会員コード
+          - @group_users.each do |group_user|
+            = check_box_tag 'user[id][]', group_user.user.id, false
+            | #{group_user.user.company_name}#{group_user.user.department_name.present? ? "(#{group_user.user.department_name})" : ""}
+            | #{group_user.user.name_sei + " " + group_user.user.name_mei}
+            = group_user.user.member_code
+            div
+          = f.submit '削除', name: "delete"
+          = f.submit '追加', name: "add"
