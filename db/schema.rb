@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_03_144854) do
+ActiveRecord::Schema.define(version: 2021_03_31_082331) do
 
   create_table "Delivery_infos", force: :cascade do |t|
     t.string "company_name"
@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(version: 2021_03_03_144854) do
     t.text "memo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "position"
   end
 
   create_table "carts", force: :cascade do |t|
@@ -178,6 +179,13 @@ ActiveRecord::Schema.define(version: 2021_03_03_144854) do
     t.boolean "is_release_flg", default: false, null: false
     t.boolean "is_login_flg", default: false, null: false
     t.integer "display_order"
+  end
+
+  create_table "group_addresses", force: :cascade do |t|
+    t.integer "group_id"
+    t.integer "address_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "group_users", force: :cascade do |t|

@@ -37,22 +37,10 @@ end
   end
 end
 
-# 数量
-100.times do |i|
-  StockManagement.seed do |s|
-    s.id = i+1
-    s.stock = 30
-    s.allocate = 1
-    s.unlimited_flg = false
-    s.product_id = i+1
-  end
-end
-
 # productを100個作成
+category = [1,2,3,4,5].sample
 100.times do |i|
-  category = [1,2,3,4,5].sample
   Product.seed do |s|
-    s.id = i+1
     s.name = "sample#{i}"
     s.detail = "samplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesample#{i}"
     s.category_id = category
@@ -87,12 +75,27 @@ end
                         './public/uploads/product/image/3/otaku_fujoshi_winter.png', './public/uploads/product/image/4/bunbougu_nerikeshi.png',
                         './public/uploads/product/image/5/medical_virus_kouseibusshitsu_yakuzai_taiseikin.png'].sample)
   end
+
+  StockManagement.seed do |sm|
+    sm.stock = 100
+    sm.allocate = 1
+    sm.unlimited_flg = [true,false].sample
+    sm.product_id = 1
+  end
+
+  StockFluctuation.seed do |sf|
+    sf.stock = 10
+    sf.allocate = 1
+    sf.unlimited_flg = [true,false].sample
+    sf.stock_management_id = i
+    sf.memo = "memo_#{i}"
+    sf.status = 1
+  end
 end
 
 # OrderHistory作成
 100.times do |i|
   OrderHistory.seed do |s|
-    s.id = i+1
     s.order_number = SecureRandom.alphanumeric()
     s.memo = "memo"
     s.status = 1
@@ -121,5 +124,42 @@ end
         ohp.num = rand(1..10)
       end
     end
+  end
+
+  Shipment.seed do |s|
+    s.shipping_status = [1,2,3,4,nil].sample
+    s.allocation_status = [1,2,3,nil].sample
+    s.expected_shipping_date = Date.today
+    s.shipping_company = [1,2,3,4].sample
+    s.ship_date = Date.today
+    s.shipping_email = [true, false].sample
+    s.billing_date = Date.today
+    s.sales_record_date = Date.today
+    s.data_download = 99
+    s.total_picking = [true, false].sample
+    s.individual_picking = [true, false].sample
+    s.order_history_id = i
+    s.cancel_flg = [true, false].sample
+    s.shipping_origin_id = 1
+    s.prefectures = [1..46].sample
+    s.order_date = Date.today
+    s.preferred_arrival_date = Date.today
+    s.arrival_date_flg = [true, false].sample
+    s.expected_shipping_date_flg = [true, false].sample
+    s.sales_record_date_flg = [true, false].sample
+  end
+
+  ShipmentProduct.seed do |sp|
+    sp.shipment_id = i+1
+    sp.product_id = rand(1..100)
+    sp.num = 10
+    sp.status = 1
+    sp.picking_flg = [true, false].sample
+    sp.csv_flg = [true, false].sample
+    sp.expected_shipping_date = Date.today
+    sp.ship_date = Date.today
+    sp.invoice_number = "string_invoice_number_#{i}"
+    sp.shipping_email_flg = [true, false].sample
+    sp.billing_date = Date.today
   end
 end

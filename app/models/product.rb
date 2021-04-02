@@ -1,6 +1,6 @@
 class Product < ApplicationRecord
   belongs_to :category
-  belongs_to :stock_management
+  has_one :stock_management
   belongs_to :shipping_origin
   # belongs_to :child_category
   mount_uploader :image, ImageUploader

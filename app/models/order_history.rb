@@ -1,4 +1,5 @@
 class OrderHistory < ApplicationRecord
+  # 注文履歴
   # status 1:出荷前、2:出荷中、3:出荷済
   # payment_method 1:一括、2:その会社毎の設定した払い日
   # 1:入金待ち、2:済+確認不要
