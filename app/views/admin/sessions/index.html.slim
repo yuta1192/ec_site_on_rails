@@ -7,6 +7,9 @@
     .col-6
       = form_with model: Session, url: admin_login_path, method: :post, local: true do |f|
         .text-center.border(style="padding:20px;")
+          - if @error.present?
+            .alert
+              = @error
           .form-group.row
             .col-sm-3.col-form-label.bg-info
               = f.label "ログインID"
@@ -29,8 +32,10 @@
         .small メールアドレスを入力して「送信」ボタンを押してください。
         .small パスワード再設定ページのURLをお送りします。
         br
-        / todo ここちゃんとメールアドレス忘れた時の送り先にする
-        = form_with model: User do |f|
+        .notifications
+          - flash.each do |key, value|
+            = content_tag(:div, value, class: key)
+        = form_with model: Session, url: admin_password_reset_path, method: :post, local: true do |f|
           .text-center.border(style="padding:15px 15px 0 5px")
             .form-group.row.no-gutters
               .col-sm-3.col-form-label.bg-info

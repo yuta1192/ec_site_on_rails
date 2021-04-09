@@ -1,14 +1,18 @@
 class OrderHistory < ApplicationRecord
   # 注文履歴
   # status 1:出荷前、2:出荷中、3:出荷済
-  # payment_method 1:一括、2:その会社毎の設定した払い日
+  # payment_method 1:締め払い、2:その店毎の設定した払い日
   # 1:入金待ち、2:済+確認不要
+  # preferred_date_flg お届け希望日 false:希望なし, true:希望あり
+  # preferred_date_start/end 上記がtrueの場合希望日
+
   belongs_to :user
-  has_one :purchase_history
+  # has_one :purchase_history
   has_one :delivery_info
   has_many :cart_items
   has_many :order_history_products
-  has_many :addresses, through: :user
+  has_many :products, through: :order_history_products
+  belongs_to :address
   belongs_to :shipment, optional: true
 
   scope :search, -> (search_params) do
@@ -40,6 +44,7 @@ class OrderHistory < ApplicationRecord
       .postage_confirmation_search(search_params[:postage_confirmation])
       .shipping_origin_search(search_params[:shipping_origin])
       .cancel_search(search_params[:cancel])
+      .memo_search(search_params[:memo])
   end
 
   scope :order_date_start_search, -> start { where('? <= order_date_start', start) if start.present? }
@@ -161,4 +166,9 @@ class OrderHistory < ApplicationRecord
       where(cancel_flg: cancel)
     end
   }
+  scope :memo_search, -> memo { where('memo LIKE ?', "%#{memo}%") if memo.present? }
+
+  scope :range_current_month, -> { where(created_at: Time.now.beginning_of_month..Time.now.end_of_month) }
+  scope :range_yesterday, -> { where(created_at: Time.now.yesterday.beginning_of_day..Time.now.yesterday.end_of_month) }
+  scope :range_today, -> { where(created_at: Time.now.beginning_of_day..Time.now.end_of_month) }
 end

@@ -19,4 +19,20 @@ module ApplicationHelper
   def banner_left
     Banner.where(hyoji_area: 1)
   end
+
+  def shop_name
+    Shop.first.name
+  end
+
+  def header_free_pages
+    FreePage.where(place: [1,3])
+  end
+
+  def cart_product_count
+    @current_user.cart.cart_items.count
+  end
+
+  def footer_free_pages
+    FreePage.where(place: [2,3])
+  end
 end

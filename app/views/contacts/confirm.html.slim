@@ -1,0 +1,18 @@
+.container
+  .row
+    .col-12
+      | 現在位置：
+    / サイドメニュー
+    = render 'layouts/side_menu'
+    .col-9
+      p お問い合わせフォーム
+      br
+      br
+      h2 お問い合わせ内容を確認してください。
+      = form_with model: @contact, url: contacts_path, method: :post, local: true do |f|
+        .border.p-3
+          = simple_format(@contact.contact)
+        = f.hidden_field :contact, value: @contact.contact
+        = f.hidden_field :user_id, value: @current_user.id
+        br
+        .text-center = f.submit '送信', class: 'btn btn-success'

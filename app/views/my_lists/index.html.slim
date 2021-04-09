@@ -12,3 +12,7 @@
     .col-9
       br
       p 左のメニューからマイリストを選択してください。
+      br
+      - if @error.present?
+        .alert
+          = @error

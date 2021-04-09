@@ -38,8 +38,8 @@ end
 end
 
 # productを100個作成
-category = [1,2,3,4,5].sample
 100.times do |i|
+  category = [1,2,3,4,5].sample
   Product.seed do |s|
     s.name = "sample#{i}"
     s.detail = "samplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesample#{i}"
@@ -80,14 +80,14 @@ category = [1,2,3,4,5].sample
     sm.stock = 100
     sm.allocate = 1
     sm.unlimited_flg = [true,false].sample
-    sm.product_id = 1
+    sm.product_id = i+1
   end
 
   StockFluctuation.seed do |sf|
     sf.stock = 10
     sf.allocate = 1
     sf.unlimited_flg = [true,false].sample
-    sf.stock_management_id = i
+    sf.stock_management_id = i+1
     sf.memo = "memo_#{i}"
     sf.status = 1
   end
@@ -115,7 +115,10 @@ end
     s.postage_confirmation = false
     s.shipping_origin_id = nil
     s.cancel_flg = false
-    s.shipment_id = nil
+    s.shipment_id = i+1
+    s.address_id = [1,2,3,4].sample
+    s.price = 10000
+    s.excluding_tax_price = 9000
 
     5.times do |f|
       OrderHistoryProduct.seed do |ohp|
@@ -147,6 +150,7 @@ end
     s.arrival_date_flg = [true, false].sample
     s.expected_shipping_date_flg = [true, false].sample
     s.sales_record_date_flg = [true, false].sample
+    s.order_history_id = i+1
   end
 
   ShipmentProduct.seed do |sp|

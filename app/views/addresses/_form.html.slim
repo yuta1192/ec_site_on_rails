@@ -1,92 +1,81 @@
-.border(style="padding:5px;")
-  .form-group.row
-    .col-sm-4.col-form-label
-      .bg-info = f.label '会社名'
-    .col-md-8 = f.text_field :company_name, class: "form-control"
-  .form-group.row
-    .col-sm-4.col-form-label
-      .bg-info = f.label '部署名'
-    .col-md-8 = f.text_field :department_name, class: "form-control"
-  .form-group.row
-    .col-sm-4.col-form-label
-      .bg-info = f.label 'お名前[全角]'
-    .col-md-1 性
-    .col-md-3 = f.text_field :name_sei, class: "form-control"
-    .col-md-1 名
-    .col-md-3 = f.text_field :name_mei, class: "form-control"
-  .form-group.row
-    .col-sm-4.col-form-label
-      .bg-info = f.label 'お名前フリガナ[全角カタカナ]'
-    .col-md-1 性
-    .col-md-3 = f.text_field :name_sei_kana, class: "form-control"
-    .col-md-1 名
-    .col-md-3 = f.text_field :name_mei_kana, class: "form-control"
-  .form-group.row
-    .col-sm-4.col-form-label
-      .bg-info = f.label '郵便番号'
-      .bg-info = f.label '[半角数字：上3桁-下4桁]'
-      .bg-info = f.label '必須'
-    .col-md-8
-      | 郵便番号を入力して「郵便番号から住所入力」ボタンを押してください。
-      .row
-        - if params[:action] == "new"
-          .col-md-2 = f.number_field :zip_code_1, class: "form-control"
-          | -
-          .col-md-3 = f.number_field :zip_code_2, class: "form-control"
-        - else
-          .col-md-2 = f.number_field :zip_code_1, class: "form-control", value: @address.zip_code.split('-')[0]
-          | -
-          .col-md-3 = f.number_field :zip_code_2, class: "form-control", value: @address.zip_code.split('-')[1]
-        .col-md-6 = link_to '郵便番号から住所入力', root_path
-      | 郵便番号を調べる（新しいウィンドウで表示）
-  .form-group.row
-    .col-sm-4.col-form-label
-      .bg-info = f.label '都道府県'
-    .col-md-4 = f.select :prefectures, Address.prefectures.keys, {include_blank: "選択してください"}, class: "form-control"
-  .form-group.row
-    .col-sm-4.col-form-label
-      .bg-info = f.label '市区郡町村'
-    .col-md-8 = f.text_field :municipation, class: "form-control"
-  .form-group.row
-    .col-sm-4.col-form-label
-      .bg-info = f.label '町域、丁目、番地'
-    .col-md-8 = f.text_field :address_1, class: "form-control"
-  .form-group.row
-    .col-sm-4.col-form-label
-      .bg-info = f.label 'ビル・マンション名、部屋番号など'
-    .col-md-8 = f.text_field :address_2, class: "form-control"
-  .form-group.row
-    .col-sm-4.col-form-label
-      .bg-info = f.label '電話番号[半角数字]'
-      .bg-info 必須
-    .col-md-8
-      | 携帯のみお持ちの方は、こちらに携帯番号を入力してください。
-      .row
-        - if params[:action] == "new"
-          .col-md-3 = f.number_field :tel_1, class: "form-control"
-          | -
-          .col-md-3 = f.number_field :tel_2, class: "form-control"
-          | -
-          .col-md-3 = f.number_field :tel_3, class: "form-control"
-        - else
-          .col-md-3 = f.number_field :tel_1, class: "form-control", value: @address.tel.split('-')[0]
-          | -
-          .col-md-3 = f.number_field :tel_2, class: "form-control", value: @address.tel.split('-')[1]
-          | -
-          .col-md-3 = f.number_field :tel_3, class: "form-control", value: @address.tel.split('-')[2]
-  .form-group.row
-    .col-sm-4.col-form-label
-      .bg-info = f.label '携帯番号[半角数字]'
-    .col-md-8
-      = f.text_field :phone_number, class: "form-control"
-  .form-group.row
-    = f.hidden_field :user_id, value: @current_user.id
-    - if params[:action] == "new"
-      .col-md-4
-      .col-md-4 = f.submit '更新', class: "form-control"
-      .col-md-4
-    - else
-      .col-md-2
-      .col-md-4 = f.submit '削除', class: "form-control"
-      .col-md-4 = f.submit '更新', class: "form-control"
-      .col-md-2
+/.border(style="padding:5px;")
+/  .form-group.row
+/    .col-sm-4.col-form-label
+/      .bg-info = f.label '会社名'
+/    .col-md-8 = f.text_field :company_name, class: "form-control"
+/  .form-group.row
+/    .col-sm-4.col-form-label
+/      .bg-info = f.label '部署名'
+/    .col-md-8 = f.text_field :department_name, class: "form-control"
+/  .form-group.row
+/    .col-sm-4.col-form-label
+/      .bg-info = f.label 'お名前[全角]'
+/    .col-md-1 性
+/    .col-md-3 = f.text_field :name_sei, class: "form-control"
+/    .col-md-1 名
+/    .col-md-3 = f.text_field :name_mei, class: "form-control"
+/  .form-group.row
+/    .col-sm-4.col-form-label
+/      .bg-info = f.label 'お名前フリガナ[全角カタカナ]'
+/    .col-md-1 性
+/    .col-md-3 = f.text_field :name_sei_kana, class: "form-control"
+/    .col-md-1 名
+/    .col-md-3 = f.text_field :name_mei_kana, class: "form-control"
+/  .form-group.row
+/    .col-sm-4.col-form-label
+/      .bg-info = f.label '郵便番号'
+/      .bg-info = f.label '[半角数字：上3桁-下4桁]'
+/      .bg-info = f.label '必須'
+/    .col-md-8
+/      | 郵便番号を入力して「郵便番号から住所入力」ボタンを押してください。
+/      .row
+/        - if params[:action] == "new"
+/          .col-md-5 = f.number_field :zip_code_1, class: "form-control"
+/        - else
+/          .col-md-5 = f.number_field :zip_code_1, class: "form-control", value: @address.zip_code
+/        .col-md-6 = link_to '郵便番号から住所入力', root_path
+/      | 郵便番号を調べる（新しいウィンドウで表示）
+/  .form-group.row
+/    .col-sm-4.col-form-label
+/      .bg-info = f.label '都道府県'
+/    .col-md-4 = f.select :prefectures, Address.prefectures.keys, {include_blank: "選択してください"}, class: "form-control"
+/  .form-group.row
+/    .col-sm-4.col-form-label
+/      .bg-info = f.label '市区郡町村'
+/    .col-md-8 = f.text_field :municipation, class: "form-control"
+/  .form-group.row
+/    .col-sm-4.col-form-label
+/      .bg-info = f.label '町域、丁目、番地'
+/    .col-md-8 = f.text_field :address_1, class: "form-control"
+/  .form-group.row
+/    .col-sm-4.col-form-label
+/      .bg-info = f.label 'ビル・マンション名、部屋番号など'
+/    .col-md-8 = f.text_field :address_2, class: "form-control"
+/  .form-group.row
+/    .col-sm-4.col-form-label
+/      .bg-info = f.label '電話番号[半角数字]'
+/      .bg-info 必須
+/    .col-md-8
+/      | 携帯のみお持ちの方は、こちらに携帯番号を入力してください。
+/      .row
+/        - if params[:action] == "new"
+/          .col-md-12 = f.number_field :tel, class: "form-control"
+/        - else
+/          .col-md-12 = f.number_field :tel, class: "form-control", value: @address.tel
+/  .form-group.row
+/    .col-sm-4.col-form-label
+/      .bg-info = f.label '携帯番号[半角数字]'
+/    .col-md-8
+/      = f.text_field :phone_number, class: "form-control"
+/  .form-group.row
+/    = f.hidden_field :user_id, value: @current_user.id
+/    - if params[:action] == "new"
+/      .col-md-4
+/      .col-md-4 = f.submit '更新', class: "form-control"
+/      .col-md-4
+/    - else
+/      .col-md-2
+/      .col-md-4 = f.submit '削除', class: "form-control"
+/      .col-md-4 = f.submit '更新', class: "form-control"
+/      .col-md-2
+/

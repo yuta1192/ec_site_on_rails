@@ -40,14 +40,14 @@
             .col-md-8 = f.text_field :product_name, class: "form-control"
           .form-group.row
             .col-sm-4.col-form-label
-              .bg-info .
+              .bg-info
               .bg-info = f.label 'カテゴリ'
-              .bg-info .
+              .bg-info
             .col-md-8.pt-2
               = f.collection_select :category_1, @categories, :id, :name, include_blank: '選択してください', class: "form-control"
-              br
+              div
               = f.collection_select :category_2, @categories, :id, :name, include_blank: '選択してください', class: "form-control"
-              br
+              div
               = f.collection_select :category_3, @categories, :id, :name, include_blank: '選択してください', class: "form-control"
           .form-group.row
             .col-sm-4.col-form-label

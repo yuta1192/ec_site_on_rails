@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_31_082331) do
+ActiveRecord::Schema.define(version: 2021_04_09_101353) do
 
   create_table "Delivery_infos", force: :cascade do |t|
     t.string "company_name"
@@ -188,13 +188,6 @@ ActiveRecord::Schema.define(version: 2021_03_31_082331) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "group_users", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "group_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "groups", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -312,6 +305,9 @@ ActiveRecord::Schema.define(version: 2021_03_31_082331) do
     t.integer "shipping_origin_id"
     t.boolean "cancel_flg", default: false, null: false
     t.integer "shipment_id"
+    t.integer "address_id"
+    t.integer "price"
+    t.integer "excluding_tax_price"
     t.index ["cart_id"], name: "index_order_histories_on_cart_id"
     t.index ["user_id"], name: "index_order_histories_on_user_id"
   end
@@ -566,7 +562,7 @@ ActiveRecord::Schema.define(version: 2021_03_31_082331) do
   end
 
   create_table "user_my_list_products", force: :cascade do |t|
-    t.integer "mylist_id"
+    t.integer "my_list_id"
     t.integer "product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

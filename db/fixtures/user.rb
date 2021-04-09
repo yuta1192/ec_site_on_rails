@@ -4,7 +4,6 @@ require 'securerandom'
 # userを10個作成
 10.times do |i|
   User.seed do |s|
-    s.id = i+1
     s.e_mail = "sample#{i+1}@gmail.com"
     s.password = "password"
     s.remember_token = SecureRandom.urlsafe_base64
@@ -37,41 +36,41 @@ require 'securerandom'
   end
 
   Cart.seed do |c|
-    c.id = i+1
     c.cart_number = SecureRandom.alphanumeric(10)
     c.user_id = i+1
   end
-end
 
-# 住所を数個登録
-5.times do |p|
-  Address.seed do |a|
-    a.company_name = SecureRandom.alphanumeric()
-    a.department_name = SecureRandom.alphanumeric()
-    a.name_sei = SecureRandom.alphanumeric(5)
-    a.name_mei = SecureRandom.alphanumeric(5)
-    a.name_sei_kana = "サンプル#{p}"
-    a.name_mei_kana = "サンプル#{p}"
-    a.zip_code = "999-0000"
-    a.prefectures = rand(1..47)
-    a.municipation = SecureRandom.alphanumeric()
-    a.address_1 = SecureRandom.alphanumeric()
-    a.address_2 = SecureRandom.alphanumeric()
-    a.tel = "000-0000-0000"
-    a.phone_number = "0120-00-0000"
-    a.user_id = p+1
-    if p == 1
-      a.is_select_flag = true
-    else
-      a.is_select_flag = false
+  # 住所を数個登録
+  5.times do |p|
+    Address.seed do |a|
+      a.company_name = SecureRandom.alphanumeric()
+      a.department_name = SecureRandom.alphanumeric()
+      a.name_sei = SecureRandom.alphanumeric(5)
+      a.name_mei = SecureRandom.alphanumeric(5)
+      a.name_sei_kana = "サンプル#{p}"
+      a.name_mei_kana = "サンプル#{p}"
+      a.zip_code = "999-0000"
+      a.prefectures = rand(1..47)
+      a.municipation = "アメリカ市ニューヨー区"
+      a.address_1 = SecureRandom.alphanumeric()
+      a.address_2 = SecureRandom.alphanumeric()
+      a.tel = "000-0000-0000"
+      a.phone_number = "0120-00-0000"
+      a.user_id = i+1
+      if p == 1
+        a.is_select_flag = true
+      else
+        a.is_select_flag = false
+      end
+      a.company_code = "company_code_#{i}_#{p}"
+      a.department_code = "department_code_#{i}_#{p}"
+      a.fax = "0120-00-0000"
+      a.delivery_id = p+1
     end
-    a.company_code = SecureRandom.alphanumeric()
-    a.department_code = SecureRandom.alphanumeric()
-    a.fax = "0120-00-0000"
-    a.delivery_id = p+1
   end
 end
 
+# 管理者登録
 User.seed do |s|
   s.e_mail = "admin@gmail.com"
   s.password = "password"

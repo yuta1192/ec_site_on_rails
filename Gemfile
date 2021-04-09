@@ -53,6 +53,9 @@ gem 'rmagick'
 # 表示切り替えや表示個数の指定のため
 gem 'kaminari'
 gem 'kaminari-bootstrap'
+# カレンダー
+gem 'fullcalendar-rails'
+gem 'momentjs-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

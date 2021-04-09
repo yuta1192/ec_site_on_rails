@@ -1,15 +1,24 @@
 .container
   .row
     .col-12
+      | 現在位置：
+    / サイドメニュー
+    = render 'layouts/side_menu'
+    .col-9
       p お問い合わせフォーム
-      
-      p お客さまからのご質問をお問い合わせフォームにて受け付けております。
-      p 必要事項をご記入の上、「入力内容の確認画面へ」を押してください。
-      
+      | お客さまからのご質問をお問い合わせフォームにて受け付けております。
+      div
+      | 必要事項をご記入の上、「入力内容の確認画面へ」を押してください。
+      br
+      br
       h2 お問い合わせ内容を入力してください。
-      
-      = form_with model: @contact, url: contacts_path do |f|
-        = f.text_field :contact
+      br
+      = form_with model: @contact, url: confirm_contacts_path, method: :post, local: true do |f|
+        - if @contact.errors.any?
+          .alert
+            - @contact.errors.full_messages.each do |message|
+              li = message
+        = f.text_area :contact, class: 'text-area'
         = f.hidden_field :user_id, value: @current_user.id
         div
-        = f.submit '送信'
+        .text-center = f.submit '入力内容の確認画面へ', class: 'btn btn-success'

@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get 'login', to: 'sessions#index'
   post 'login', to: 'sessions#login'
   post 'logout', to: 'sessions#logout'
+  post 'password_reset', to: 'sessions#password_reset'
+  get 'complite_message', to: 'sessions#complite_message'
   resources :users do
     resources :order_histories do
       get 'search', on: :collection
@@ -33,16 +35,23 @@ Rails.application.routes.draw do
     end
   end
   resources :free_pages, only: [:index]
-  resources :inqueries, only: [:index]
-  resources :contacts
+  resources :inqueries, only: [:index] do
+    get 'search', on: :collection
+  end
+
+  resources :contacts, only: [:new, :create] do
+    post 'confirm', on: :collection
+  end
   get 'complite', to: 'contacts#complite'
   get 'sitemap', to: 'sitemaps#sitemap'
   get 'mypage', to: 'mypages#mypage'
 
   namespace :admin do
-    get 'login', to: 'sessions#login'
+    get 'login', to: 'sessions#index'
     post 'login', to: 'sessions#login'
     post 'logout', to: 'sessions#logout'
+    post 'password_reset', to: 'sessions#password_reset'
+    get 'complite_message', to: 'sessions#complite_message'
     get 'dashboard', to: 'dashboards#index'
     get 'hazimeni', to: 'dashboards#hazimeni'
     resources :informations do

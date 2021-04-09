@@ -17,6 +17,10 @@
       br
       p.border-bottom 注文履歴 詳細
 
+      - if @error.present?
+        .alert
+          = @error
+
       .border(style="padding:5px;")
         .row
           .col-sm-4
@@ -47,13 +51,13 @@
             p.bg-info.text-center メモ
           .col-sm-8
             .border-bottom
-              = form_with model: @address, url: user_order_history_path, method: :patch do |f|
+              = form_with model: OrderHistory, url: user_order_history_path(@current_user.id, @order_history.id), method: :patch, local: true do |f|
                 = f.text_field :memo, class: "form-control"
                 = f.submit '保存'
       br
       p ■ご注文時の明細
 
-      = form_with url: cart_add_user_order_histories_path(@current_user.id), method: :post do |f|
+      = form_with url: cart_add_user_order_histories_path(@current_user.id), method: :post, local: true do |f|
         table.table
           thead.table-bordered.table-info
             tr
@@ -67,7 +71,7 @@
               th 出荷予定日
               th
                 | 出荷日
-                br
+                div
                 | 送り状番号
           tbody.border-bottom
             - @order_history.order_history_products.each do |pro|
@@ -77,7 +81,7 @@
                 td
                   = link_to pro.product.name, product_path(pro.product)
                   br
-                  = link_to "カートへ", user_order_history_one_cart_add_path(@current_user.id, params[:id], product_id: pro.product_id), method: :post
+                  = link_to "カートへ", user_order_history_one_cart_add_path(@current_user.id, @order_history.id, product_id: pro.product_id), method: :post
                 td 10%
                 td
                   = pro.product.price
@@ -86,11 +90,14 @@
                 td
                   = ((pro.num) * pro.product.price)
                   | 円
-                td = @order_history.order_date_start
+                td = @order_history.shipment.expected_shipping_date
                 td
-                  | -
+                  = @order_history.shipment.ship_date
+                  div
+                  = @order_history.invoice_number
         br
         p すべて選択/解除
+        = f.hidden_field :order_history_id, value: @order_history.id
         = f.submit 'チェックした商品をカートに入れる', class: 'btn btn-light border'
       .row
         .col-md-7
@@ -99,7 +106,8 @@
             .col-md-8.bg-info
               | 商品金額（税抜）10%
             .col-md-4
-              = @price*0.9
+              = @no_zei_price
+              | 円
             .col-md-8.bg-info
               | 送料
             .col-md-4
@@ -107,10 +115,12 @@
             .col-md-8.border-bottom.bg-info
               | 消費税 10%
             .col-md-4.border-bottom
-              = @price*0.1
+              = @zei
+              | 円
             .col-md-8.bg-info
               | 合計金額（税込）
             .col-md-4
               = @price
+              | 円
       br
       .text-center = link_to 'ページトップに戻る', root_path

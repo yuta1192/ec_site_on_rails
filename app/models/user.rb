@@ -78,4 +78,8 @@ class User < ApplicationRecord
   enum rank: {
     一般顧客:1,大口顧客:2,プレミア顧客:3,会員ランク4:4,会員ランク5:5,会員ランク6:6,会員ランク7:7,会員ランク8:8,会員ランク9:9,会員ランク10:10
   }
+
+  scope :range_current_month_user, -> { where(created_at: Time.now.beginning_of_month..Time.now.end_of_month) }
+  scope :range_yesterday_user, -> { where(created_at: Time.now.yesterday.beginning_of_day..Time.now.yesterday.end_of_month) }
+  scope :range_today_user, -> { where(created_at: Time.now.beginning_of_day..Time.now.end_of_month) }
 end

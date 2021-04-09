@@ -3,13 +3,6 @@
     / サイドメニュー
     = render 'layouts/side_menu'
 
-      / TODO ランキングはredisで作成
-      / 商品のランキング
-      h2 ランキング(redisで作る予定)
-      p ランキング
-      p 左に画像image
-      p 第●位(10位まで)
-      p 商品名
     / メインメニュー
     .col-9
       br
@@ -20,9 +13,10 @@
           | 新入荷
         - @new_products.each.with_index(1) do |product, i|
           .col-4
-            | 第#{i}位
-            br
-            = image_tag(product.image.to_s, :size => '200x200')
+            .text-center.text-warning
+              | 第#{i}位
+            .border
+              .text-center = image_tag(product.image.to_s, :size => '200x200')
             br
             = link_to product.name, product_path(product)
             br
@@ -31,40 +25,17 @@
             .text-danger = "参考価格：#{product.price}"
             .text-danger = "会員価格：#{product.member_price}"
 
-
-      /table.table
-      /  thead.thead-light
-      /    tr
-      /      th[scope="col"]
-      /        | 新入荷
-      /      th[scope="col"]
-      /      th[scope="col"]
-      /  / TODO ここの書き方は何度も同じことをしなければならないのか？？
-      /  tbody.table-bordered
-      /    tr
-      /      - @new_products.each.with_index(1) do |product, i|
-      /        th 第#{i}位
-      /    tr
-      /      - @new_products.each.with_index(1) do |product, i|
-      /        td = image_tag(product.image.to_s, :size => '200x200')
-      /    tr
-      /      - @new_products.each.with_index(1) do |product, i|
-      /        td = link_to product.name, product_path(product)
-      /    tr
-      /      - @new_products.each.with_index(1) do |product, i|
-      /        td = product.detail.present? ? product.detail : "詳細がありません"
-      /    tr
-      /      - @new_products.each.with_index(1) do |product, i|
-      /        td.text-danger = "参考価格：#{product.price}"
-      /    tr
-      /      - @new_products.each.with_index(1) do |product, i|
-      /        td.text-danger = "会員価格：#{product.member_price}"
       br
       h2.border-bottom 新着情報
-      - Information.all.each do |info|
+      - @informations.each do |info|
         br
-        p.text-danger = info.created_at.strftime('%Y年%m月%d日')
+        p.text-danger = info.date.strftime('%Y年%m月%d日')
         = info.detail
+        - if info.attachment_file1.present?
+          = info.attachment_file1
+        br
+        br
+        .border-bottom
         br
       br
       /TODO バナー作成
@@ -78,14 +49,3 @@
       /TODO ページトップへ　のボタン作成
       br
       float-right = link_to 'ページトップへ', root_path
-
-
-/　TODO　画面保存よう、消す
-              = form_with model: Product, url: product_path(1), action: :update, method: :patch, local: true do |f|
-                .td = f.label 'カテゴリ'
-                .td = f.file_field :image
-                = f.submit '検索'
-/
-              = form_with model: Banner, url: admin_banner_create_path, method: :post, local: true do |f|
-                = f.file_field :image
-                = f.submit '１検索'

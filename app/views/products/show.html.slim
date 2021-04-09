@@ -16,6 +16,9 @@
       br
       | 今月の注文締め切りは<text-red-color>２０日</text-red-color>です。
       br
+      - if @error.present?
+        .alert
+          = @error
       br
       br
       h2 = @product.name
@@ -23,7 +26,7 @@
       br
 
       / 商品詳細
-      p.text-danger 参考価格：#{@product.price}円/税込#{@product.price * 1.1}円
+      p.text-danger 参考価格：#{@product.price}円/税込#{(@product.price * 1.1).ceil}円
       p.text-danger 会員価格：#{@product.member_price}円
       br
       .row
@@ -56,10 +59,12 @@
                       td.col-6
                         = f.submit "カートに入れる"
 
-          / mylist_selectはhelperで
+          br
           = form_with url: mylist_create_products_path(product_id: @product.id), method: :post, local: true do |f|
-            = f.select :mylist_id, mylist_select
-            = f.number_field :num, value: 1, class: "image-max-size"
+            .form-inline
+              .input-group
+                = f.select :mylist_id, mylist_select, {}, class: "custom-select image-max-size"
+                = f.number_field :num, value: 1, class: 'input-group-append max-width-30'
             = f.submit 'この商品をマイリストに追加する'
         .col-6
           .row
@@ -69,6 +74,13 @@
                   tr.d-flex
                     td.col-5 商品番号
                     td.col-7 = @product.product_number
+                  tr.d-flex
+                    td.col-5 購入制限
+                    td.col-7 = @product.purchase_limit.blank? ? "制限なし" : "お一人様#{@product.purchase_limit}個までです。"
+                  - if @product.set_flg == true
+                    tr.d-flex
+                      td.col-5 セット詳細
+                      td.col-7 = @product.product_number
                   tr.d-flex
                     td.col-5 送料
                     td.col-7
@@ -81,7 +93,7 @@
                     td.col-7 配送設定デモ
                   tr.d-flex
                     td.col-5 参考価格
-                    td.col-7 #{@product.price}円/税込#{@product.price * 1.1}円
+                    td.col-7 #{@product.price}円/税込#{(@product.price * 1.1).ceil}円
                   tr.d-flex
                     td.col-5 会員価格
                     td.col-7 #{@product.member_price}円

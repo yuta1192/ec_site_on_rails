@@ -17,25 +17,37 @@
                   th.col-sm-1 画像
                   th.col-sm-1 商品番号
                   th.col-sm-5 品名
-                  th.col-sm-1 単価（税抜）
+                  th.col-sm-1
+                    | 単価
+                    div
+                    | （税抜）
                   th.col-sm-2 数量
-                  th.col-sm-1 金額（税抜）
+                  th.col-sm-1
+                    | 金額
+                    div
+                    |（税抜）
                   th.col-sm-1 取消
               tbody
                 - @cart_items.each do |cart_item|
                   = f.hidden_field "cart_item_id[][#{cart_item.id}]", value: cart_item.id
                   tr.d-flex.no-gutters
-                    td.col-sm-1 = image_tag(cart_item.product.image.to_s, class: "image-max-size")
+                    td
+                      col-sm-1
+                        h-100
+                          = image_tag(cart_item.product.image.to_s, class: "image-max-size")
                     td.col-sm-1.text-break = cart_item.product.product_number
                     td.col-sm-5 = link_to cart_item.product.name, product_path(cart_item.product)
-                    td.col-sm-1 = cart_item.product.price
+                    td.col-sm-1
+                      = cart_item.product.price
+                      | 円
                     td.col-sm-2
                       .form-inline
                         = f.fields_for :quantity do |ff|
-                          = ff.number_field "product_quantity[#{cart_item.id}][#{cart_item.quantity}]", value: cart_item.quantity, class: "col-sm-8 form-control"
-                          = ff.submit '変更', name: "cart_item_id[#{cart_item.id}]", class: "col-sm-4 form-control"
+                          = ff.number_field "product_quantity[#{cart_item.id}][#{cart_item.quantity}]", value: cart_item.quantity, class: "col-sm-7 form-control"
+                          = ff.submit '変更', name: "cart_item_id[#{cart_item.id}]", class: "col-sm-5 form-control"
                     td.col-sm-1
                       = cart_item.product.price * cart_item.quantity
+                      | 円
                     td.col-sm-1
                       = link_to '取消', user_cart_path(@current_user, cart_item_id: cart_item.id), method: :delete, class: "btn btn-primary"
             .row
@@ -53,7 +65,7 @@
                   .col-md-7.border-bottom.bg-info.text-right
                     | 消費税 10%
                   .col-md-5.border-bottom
-                    | #{@total_price*0.1}円
+                    | #{(@total_price*0.1).ceil}円
                   .col-md-7.bg-info.text-right
                     | 合計金額
                   .col-md-5

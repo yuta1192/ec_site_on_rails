@@ -1,17 +1,33 @@
 class SessionsController < ApplicationController
   before_action :login_user, only: [:login]
-  skip_before_action :require_sign_in!, only: [:index, :login]
+  skip_before_action :require_sign_in!, only: [:index, :login, :password_reset, :complite_message]
 
   def index
   end
 
-  def login
-    if @user.authenticate(login_params[:password])
-      sign_in(@user)
-      redirect_to root_path
+  # パスワード再設定のメール完了したページ用
+  def complite_message
+  end
+
+  # パスワードの再設定をメールアドレスに送る機能
+  def password_reset
+    @emails = User.where(admin: false).pluck(:e_mail)
+    if @emails.include?(params[:session][:e_mail])
+      # todo ここにメール返信処理を追加すること
+      redirect_to complite_message_path
     else
-      flash.now[:danger] = t('.flash.invalid_password')
-      redirect_to '/login'
+      flash.now[:alert] = "メールアドレスを正しく入力してください。"
+      render 'index'
+    end
+  end
+
+  def login
+    if @user.present? && @user.authenticate(login_params[:password])
+        sign_in(@user)
+        redirect_to root_path
+    else
+      @error = "メールアドレスまたはパスワードを正しく入力してください。"
+      render 'index'
     end
   end
 
@@ -23,10 +39,7 @@ class SessionsController < ApplicationController
   private
 
     def login_user
-      @user = User.find_by(e_mail: login_params[:e_mail])
-    rescue
-      flash.now[:danger] = "fuck"
-      render action: 'index'
+      @user = User.find_by(e_mail: login_params[:e_mail], admin: false)
     end
 
     def login_params

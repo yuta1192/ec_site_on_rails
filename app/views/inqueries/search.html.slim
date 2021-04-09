@@ -1,0 +1,63 @@
+.container
+  .row
+    .col-12
+      | 現在位置：
+      = link_to 'トップ', root_path
+      | よくあるご質問
+    = render 'layouts/side_menu'
+    .col-9
+      br
+      h2 よくあるご質問
+      p お客様から寄せられる質問とその回答を掲載しています。
+
+      div class="border" style="padding:10px;"
+        = form_with model: Inquery, url: search_inqueries_path, method: :get, local: true do |f|
+          .form-group.row
+            .col-sm-2.col-form-label
+              = f.label 'タイトル'
+            .col-sm-10.mx-auto
+              = f.collection_select :title, @inqueries, :id, :title, include_blank: '全タイトル'
+            .col-sm-2.col-form-label
+              = f.label 'キーワード'
+            .col-sm-10
+              = f.text_field :key_word, class: "form-control"
+              div
+              | ※キーワードを複数入れる場合は「 」（空白）を間に入れてください。
+          .text-center
+            = f.submit '検索', class: "btn btn-light form-group row justify-content-center"
+
+      br
+      - if @questions.present?
+        h2 ＦＡＱの質問のタイトル
+        ul
+          - @questions.each do |q|
+            li
+              | Q.
+              = q.title
+        .border-bottom
+        br
+        h2 ＦＡＱの質問のタイトル
+        br
+        - @questions.each do |i|
+          .border-bottom.lead = i.title
+          br
+          - i.questions.each do |q|
+            .row
+              .col-1
+              .col-11
+                | Q.
+                = q.question
+              .col-2
+              .col-10
+                | A.
+                = q.answer
+              br
+              br
+            div
+      - else
+        p ねーよ
+
+      br
+      p 上記の回答でお客様の疑問点が解決されない場合は、お手数ですが
+      = link_to 'お問い合わせフォーム', new_contact_path
+      p にてご質問ください。

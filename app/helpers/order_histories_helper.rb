@@ -5,7 +5,7 @@ module OrderHistoriesHelper
   end
 
   def order_count
-    count = @order_query.present? ? @order_query.count : 0
+    count = @order_query_count.present? ? @order_query_count : 0
     return count
   end
 
@@ -35,11 +35,11 @@ module OrderHistoriesHelper
   end
 
   def params_category
-    return "指定なし" unless @categories.present?
+    return "指定なし" unless params[:order_history][:category_1].present? || params[:order_history][:category_2].present? || params[:order_history][:category_3].present?
 
     categories = [params[:order_history][:category_1], params[:order_history][:category_2], params[:order_history][:category_3]].uniq!
-    category = categories.joins(',')
-    return category
+    category_name = Category.where(id: categories).pluck(:name)
+    return category_name
   end
 
   def params_memo

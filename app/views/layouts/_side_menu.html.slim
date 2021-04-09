@@ -34,57 +34,14 @@
   - banner_left.each do |b|
     = image_tag(b.image.to_s, :size => '210x90')
 
-  div
+  .h4.bg-primary 営業日カレンダー
+  /#calendar
+  p.text-danger この日(赤色)は休業日です。
+
+  / todo 商品ランキング作成、購入数でランキング付けするため、購入数取得の方法決まったらここつくる
   br
-  / TODO 営業日カレンダー(未完成 今月と翌月 土日は赤色に)
-  .table.table-bordered
-    .thead.bg-primary
-      .tr
-        .td.h4 営業日カレンダー
-    .tbody
-      / 今月のカレンダー
-      - today = Date.today
-      tr
-        td = today.strftime('%Y年%m月')
-      table.table-sm
-        tr
-          th.text-danger 日
-          th 月
-          th 火
-          th 水
-          th 木
-          th 金
-          th.text-primary 土
-        tr
-          - month = today.strftime('%m')
-          - d = today.at_beginning_of_month.at_beginning_of_week(:sunday)
-          - 1.upto(5).each do|i|
-            tr
-              - (d..d.end_of_week(:sunday)).each do|c|
-                th= (c.strftime('%m') == month)? c.strftime('%d'): "  "
-            - d = d + 1.week
-      / 来月のカレンダー
-      br
-      - next_months = Date.today.next_month
-      tr
-        td = next_months.strftime('%Y年%m月')
-      table.table-sm
-        tr
-          th.text-danger 日
-          th 月
-          th 火
-          th 水
-          th 木
-          th 金
-          th.text-primary 土
-        tr
-          - month = next_months.strftime('%m')
-          - d = next_months.at_beginning_of_month.at_beginning_of_week(:sunday)
-          - 1.upto(5).each do|i|
-            tr
-              - (d..d.end_of_week(:sunday)).each do|c|
-                th= (c.strftime('%m') == month)? c.strftime('%d'): "  "
-            - d = d + 1.week
-    br
-    p.text-danger この日(赤色)は休業日です。
-  div
+  h2 ランキング(redisで作る予定)
+  p ランキング
+  p 左に画像image
+  p 第●位(10位まで)
+  p 商品名

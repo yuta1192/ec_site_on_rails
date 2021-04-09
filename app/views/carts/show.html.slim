@@ -6,23 +6,26 @@
         br
         h3.border-bottom.border-5.border-info Step2 情報入力
         p.text-right カートの情報 - 情報入力 - 最終確認・ご注文
-
+        - if @errors.present?
+          .alert
+            - @errors.each do |message|
+              li = message
         p.border-bottom お客様情報
         .border.pt-3
           table.table.table-borderless.mx-auto(style="width:95%;")
             tr
               th.text-right.bg-info(style="width:30%;") 会社名
-              td.border-bottom = @current_user.company_name
+              td.border-bottom = @now_address.company_name
             tr
               th.text-right.bg-info 部署名
-              td.border-bottom = @current_user.department_name
+              td.border-bottom = @now_address.department_name
             tr
               th.text-right.bg-info 担当者名
               td.border-bottom
-                | #{@current_user.name_sei + @current_user.name_mei}
+                | #{@now_address.name_sei + @now_address.name_mei}
             tr
               th.text-right.bg-info 電話番号
-              td = @current_user.phone_number
+              td = @now_address.phone_number
         br
         / todo (ここjavascript)
         p.border-bottom お届け先情報
@@ -43,7 +46,7 @@
           table.table.table-borderless.mx-auto(style="width:95%;")
             tr
               th.text-right.bg-info(style="width:30%;") お届け先
-              td.border-bottom = f.select :companies, @addresses_name, class: 'form-control'
+              td.border-bottom = f.select :companies, user_address_select, class: 'form-control'
         br
 
         = f.fields_for :address do |ff|
@@ -127,7 +130,7 @@
             table.table.table-borderless.mx-auto(style="width:95%;")
               tr
                 th.bg-info
-                  = f.radio_button :payment_method_flg, 1
+                  = f.radio_button :payment_method_flg, 1, checked: true
                   | 一括代金引換（代引）
               tr
                 td 代引き手数料が別途かかります。
@@ -143,7 +146,7 @@
             table.table.table-borderless.mx-auto(style="width:95%;")
               tr
                 th.text-right.bg-info(style="width:30%;") = f.label 'お届け希望日'
-                td.border-bottom = f.select :date, @date_select
+                td.border-bottom = f.select :date, data_select_box
           br
           p.border-bottom 備考・連絡事項等
           .border.p-2

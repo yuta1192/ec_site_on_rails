@@ -10,6 +10,7 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
+ *= require fullcalendar
  */
 @import "bootstrap";
 
@@ -57,4 +58,50 @@ text-red-color {
 
 .width-50 {
   width: 50%
+}
+
+/* エラーメッセージを出力するCSS */
+
+.alert {
+  color:#262626;
+  background:#FFEBE8;
+  text-align: center;
+  border:2px solid #990000;
+  padding:12px; font-weight:850;
+}
+
+/* flash */
+
+.notifications {
+  color: $white;
+  text-align: center;
+
+  .notice {
+    background-color: lightBlue;
+  }
+
+  .alert {
+    background-color: alert_orange;
+  }
+}
+
+/* nav-link padding delete */
+.navbar-nav .nav-item:first-child .nav-link {
+    padding-left: 0;
+}
+
+/* カレンダー土日 */
+td.fc-sat {
+    background-color: #ffeaea;
+}
+td.fc-sun {
+    background-color: #ffeaea;
+}
+
+.fc-agendaWeek-view tr {
+    height: 10px;
+}
+
+.fc-agendaDay-view tr {
+    height: 10px;
 }
