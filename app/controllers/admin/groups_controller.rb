@@ -8,6 +8,7 @@ class Admin::GroupsController < ApplicationController
   end
 
   def search
+    @groups = Group.where(new_params)
   end
 
   def show
@@ -16,7 +17,7 @@ class Admin::GroupsController < ApplicationController
       @group_users_params = search_params
       @users = User.users_search(@group_users_params)
     else
-      @group_users = @group.group_users
+      @group_users = @group.group_addresses
     end
   end
 

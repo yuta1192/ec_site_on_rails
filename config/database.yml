@@ -22,4 +22,6 @@ test:
 
 production:
   <<: *default
-  database: db/ec_site_on_rails_production.sqlite3
+  adapter: postgresql
+  encoding: unicode
+  pool: 5

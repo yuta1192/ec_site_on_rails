@@ -21,11 +21,6 @@
         = form_with model: Group, url: admin_group_path(@group), method: :get, local: true do |f|
           tbody.text-nowrap
             tr
-              th
-              td
-              th = f.label '会員コード'
-              td = f.text_field :member_code
-            tr
               th = f.label '会社名'
               td = f.text_field :company_name
               th = f.label '部署名'
@@ -39,19 +34,13 @@
                 = f.text_field :name_mei, class: 'max-width-30'
               th = f.label '郵便番号'
               td
-                = f.text_field :zip_code_first
-                | -
-                = f.text_field :zip_code_second
+                = f.text_field :zip_code
             tr
               th = f.label 'メールアドレス'
               td = f.text_field :e_mail
               th = f.label '電話番号'
               td
-                = f.text_field :tel_first, class: 'max-width-30'
-                | -
-                = f.text_field :tel_second, class: 'max-width-30'
-                | -
-                = f.text_field :tel_third, class: 'max-width-30'
+                = f.text_field :tel
             tr.text-center
               th[colspan="4"] = f.submit '検索'
 
@@ -88,12 +77,21 @@
       /todo ここの処理わかってないから一旦流す
       - else
         = form_with model: Group, url: admin_group_path, method: :patch, local: true do |f|
-          p 会社名 （部署名）	お名前	会員コード
-          - @group_users.each do |group_user|
-            = check_box_tag 'user[id][]', group_user.user.id, false
-            | #{group_user.user.company_name}#{group_user.user.department_name.present? ? "(#{group_user.user.department_name})" : ""}
-            | #{group_user.user.name_sei + " " + group_user.user.name_mei}
-            = group_user.user.member_code
-            div
-          = f.submit '削除', name: "delete"
-          = f.submit '追加', name: "add"
+          table.table-sm.table-bordered.bg-light.image-max-size
+            thead
+              tr
+                td
+                td 会社名
+                td 部署名
+                td お名前
+            tbody
+              - @group_users.each do |group_user|
+                tr
+                  td = check_box_tag 'address[id][]', group_user.address.id, false
+                  td = group_user.address.company_name
+                  td = group_user.address.department_name
+                  td #{group_user.address.name_sei + " " + group_user.address.name_mei}
+              tr.text-center
+                td[colspan="4"]
+                  = f.submit '削除', name: "delete", class: 'mr-2'
+                  = f.submit '追加', name: "add", class: 'ml-2'

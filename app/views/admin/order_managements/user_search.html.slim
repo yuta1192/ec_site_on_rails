@@ -1,0 +1,70 @@
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ ユーザー検索
+      div
+
+      table.table.table-bordered.bg-light
+        tbody
+          tr
+            th[colspan="4"] ユーザー検索
+          = form_with model: User, url: user_search_admin_order_managements_path, method: :get, local: true do |f|
+            tr
+              th = f.label '名前 性'
+              td = f.text_field :name_sei
+              th = f.label '名'
+              td = f.text_field :name_mei
+            tr
+              th = f.label '会社名'
+              td = f.text_field :company_name
+              th = f.label '部署名'
+              td = f.text_field :department_name
+            tr
+              th = f.label '郵便番号'
+              td[colspan="3"]
+                = f.text_field :zip_code_first
+                | -
+                = f.text_field :zip_code_second
+            tr
+              th = f.label '住所'
+              td[colspan="3"] = f.text_field :address
+            tr
+              th = f.label 'メールアドレス'
+              td[colspan="3"] = f.text_field :e_mail
+            tr
+              th = f.label '電話番号'
+              td[colspan="3"]
+                = f.text_field :tel_first
+                | -
+                = f.text_field :tel_second
+                | -
+                = f.text_field :tel_third
+            tr
+              th = f.label 'キーワード'
+              td[colspan="3"] = f.text_field :keyword
+            tr.text-center
+              th[colspan="4"] = f.submit '検索'
+        br
+        br
+
+        p ユーザー一覧
+        p.text-right 表示件数 25件 50件 100件
+        table.table.table-bordered.bg-light
+          tbody
+            tr
+              th 姓
+              th 名
+              th メールアドレス
+              th 会社名
+              th 部署名
+              th
+            - @users.each do |u|
+              tr
+                td = u.name_sei
+                td = u.name_mei
+                td = u.e_mail
+                td = u.company_name
+                td = u.department_name
+                td = link_to '選択する', admin_order_managements_path(user: u)

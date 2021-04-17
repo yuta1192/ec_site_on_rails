@@ -1,24 +1,19 @@
 # ロゴ画像系、バナー系(Image, Banner)
 
-5.times do |i|
-  Banner.seed do |b|
-    b.name = "banner_name_#{i}"
-    b.image = File.open(['./public/uploads/product/image/1/something.jpg', './public/uploads/product/image/2/youtuber_mask_sunglass.png',
-                        './public/uploads/product/image/3/otaku_fujoshi_winter.png', './public/uploads/product/image/4/bunbougu_nerikeshi.png',
-                        './public/uploads/product/image/5/medical_virus_kouseibusshitsu_yakuzai_taiseikin.png'].sample)
-    b.comment = "banner_comment_#{i}"
-  end
-end
-
 3.times do |p|
   Image.seed do |i|
-    i.image = File.open(['./public/uploads/product/image/1/something.jpg', './public/uploads/product/image/2/youtuber_mask_sunglass.png',
-                        './public/uploads/product/image/3/otaku_fujoshi_winter.png', './public/uploads/product/image/4/bunbougu_nerikeshi.png',
-                        './public/uploads/product/image/5/medical_virus_kouseibusshitsu_yakuzai_taiseikin.png'].sample)
+    i.image = File.open(["./db/fixtures/image_file/014.jpg","./db/fixtures/image_file/5503321i.jpeg","./db/fixtures/image_file/arm_tablet (1).png","./db/fixtures/image_file/karaoke.png","./db/fixtures/image_file/shopping_supermarket_man.png","./db/fixtures/image_file/shopping_supermarket_family_mother.png","./db/fixtures/image_file/yusyou_champagne_fight.png"].sample)
     i.url = "url_#{p}"
     i.name = "name_#{p}"
     i.is_banner_flg = [true,false].sample
     i.comment = "comment_#{p}"
-    i.banner_id = p+1
+  end
+end
+
+5.times do |i|
+  Banner.seed do |b|
+    b.name = "banner_name_#{i}"
+    b.comment = "banner_comment_#{i}"
+    b.image_id = [1,2,3].sample
   end
 end

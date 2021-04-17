@@ -1,0 +1,31 @@
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 住所選択
+      div
+
+      table.table.table-bordered.bg-light
+        tbody
+          tr
+            th 会社名
+            th 部署名
+            th 住所
+            th 電話番号
+            th
+          - @user_address.each do |ua|
+            tr
+              td = ua.company_name
+              td = ua.department_name
+              td
+                = ua.zip_code
+                div
+                = ua.prefectures
+                = ua.municipation
+                div
+                = ua.address_1
+                div
+                = ua.address_2
+              td = ua.tel
+              td.text-nowrap = link_to '選択する', admin_order_managements_path(user: @user, address: ua)

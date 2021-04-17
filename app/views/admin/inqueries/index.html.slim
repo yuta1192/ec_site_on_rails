@@ -1,0 +1,28 @@
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ よくある質問
+      div
+        ul.border.border-5.border-muted
+          p よくある質問ページに表示されるQ＆Aを登録します。
+          li.small はじめにタイトルを設定します。リストの［新規登録］が選択されている状態で、タイトル編集欄にQ＆Aのタイトルを入力し「タイトル保存」ボタンを押します。タイトルがリストに一時保存されます。
+          li.small 次に保存されたタイトルを選択します。新規Q＆A登録欄が表示されますので、質問（Q.）とそれに対する答え（A.）を編集し「Q＆A保存」ボタンを押します。Q＆Aが一時保存され、一覧に表示されます。（1つのタイトルに対し複数のQ＆Aを設定できますので、必要なだけ作業を繰り返します。）
+          br
+          div.small 例）◇会員登録について（←Q＆Aのタイトルです。）
+          div.small Q．会員登録に費用がかかるのですか？
+          div.small A．会員登録は無料になっております。
+          br
+          li.small タイトルを削除すると、関連するQ＆Aもすべて削除されますのでご注意ください。
+          li.small 最後に「保存」ボタンを押してください。編集内容が保存されよくある質問ページに反映されます。
+
+        = form_with model: Inquery, url: select_admin_inqueries_path, method: :get, local: true do |f|
+          table.table.table-bordered.bg-light
+            tbody
+              tr
+                th.max-width-30 = f.label "タイトル"
+                td.bg-white.max-width-70
+                  = f.select :id, inquery_select_box, prompt: "選択してください"
+                  = f.submit '選択', name: 'select', class: 'ml-2 mr-2'
+                  = f.submit '削除', name: 'destroy'

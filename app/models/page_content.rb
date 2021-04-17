@@ -7,6 +7,6 @@ class PageContent < ApplicationRecord
   # free_page_id 親のFreePageのID
 
   belongs_to :free_page
-  validates :title, presence: true
-  validates :sentence, presence: true
+  # validates :title, presence: true
+  # validates :sentence, presence: true
 end

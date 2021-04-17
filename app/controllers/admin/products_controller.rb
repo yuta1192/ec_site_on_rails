@@ -62,6 +62,13 @@ class Admin::ProductsController < ApplicationController
     @categories = select_categories_name
   end
 
+  def child_category
+    @category = Category.find(params[:category][:id])
+    @category_name = @category.name
+    @child_category = @category.child_categories.find_by(id: params[:category][:child_id])
+    @child_category_name = @child_category.present? ? @child_category.name : ""
+  end
+
   def category_edit
     if params[:category][:id].present?
       @category = Category.find(params[:category][:id])
@@ -72,27 +79,57 @@ class Admin::ProductsController < ApplicationController
 
   def category_update
     @category = Category.find(params[:category][:id])
-    @child_category =
-    @category.child_categories.present? ? @category.child_categories.find(params[:category][:child_categories][:id]) : ChildCategory.new(category_id: @category.id, name: category_params[:child_categories][:name])
     ActiveRecord::Base.transaction do
-      @category.update!(name: category_params[:name])
-      if @child_category.id == nil
+      binding.pry
+      @category.update(name: category_params[:name])
+      if params[:category][:child_id].present?
+        @child_category = @category.child_categories.find_by(id: params[:category][:child_id])
+        @child_category.update(name: category_params[:child_categories][:name])
+      elsif params[:category][:child_id].blank? && params[:category][:child_categories][:name].present?
+        @child_category = @category.child_categories.new(name: category_params[:child_categories][:name])
+        @child_category.save
+      end
+    end
+    redirect_to category_admin_products_path
+  rescue => e
+    render 'child_category'
+  end
+
+  def category_create
+    ActiveRecord::Base.transaction do
+      @category = Category.new(name: category_params[:name])
+      @category.save
+      if category_params[:child_categories].present?
+        @child_category = ChildCategory.new(name: category_params[:child_categories][:name], category_id: @category.id)
         @child_category.save!
-      else
-        @child_category.update!(name: category_params[:child_categories][:name])
       end
     end
     redirect_to category_admin_products_path
   end
 
-  def category_create
-    @category = Category.new(name: category_params[:name])
+  def change_release
+    products = Product.all
+    @products_count = products.count
+    @products = products.page(params[:page]).per(params[:per])
+    @category = Product.select(:category_id).distinct
+
     ActiveRecord::Base.transaction do
-      @category.save!
-      @child_category = ChildCategory.new(name: category_params[:child_categories][:name], category_id: @category.id)
-      @child_category.save!
+      @product = Product.find(params[:id])
+      if @product.blank?
+        @error = "選択したページが見つかりませんでした。画面を更新してください。"
+        redirect_to admin_products_path
+      end
+      release_flg = @product.is_release_flg
+      # release_flgがtrueならfalseに、falseならtrue
+      change_flg = release_flg == true ? false : true
+
+      binding.pry
+      @product.update(is_release_flg: change_flg)
     end
-    redirect_to category_admin_products_path
+      redirect_to admin_products_path
+    rescue => e
+      @error = "システムエラーが発生しました。管理者に問い合わせてください。"
+      render 'index'
   end
 
   private
@@ -118,14 +155,14 @@ class Admin::ProductsController < ApplicationController
     params.require(:product).permit(:product_number, :name, :jan_code, :new_flg, :popular_flg, :category_name, :manufacturer, :stock)
   end
 
-  # def select_categories_name
-  #   a = []
-  #   Category.all.each do |c|
-  #     a << [c.name, c.id]
-  #   end
-  # end
+  def select_categories_name
+    a = []
+    Category.all.each do |c|
+      a << [c.name, c.id]
+    end
+  end
 
   def category_params
-    params.require(:category).permit(:id, :name, child_categories: [:id, :name])
+    params.require(:category).permit(:id, :child_id, :name, child_categories: [:id, :name])
   end
 end

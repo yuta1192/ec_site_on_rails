@@ -6,19 +6,22 @@ class Admin::FreePagesController < ApplicationController
   def new
     @free_page = FreePage.new
     @free_page.page_contents.build
+    @page_count = @page_count.blank? ? 1 : @page_count
   end
 
   def edit
-    if params[:free_page].present?
-      @free_page = FreePage.find(params[:free_page][:id])
-    else
-      @free_page = FreePage.find(params[:id])
-    end
+    @free_page = FreePage.find(params[:id])
     @page_contents = @free_page.page_contents
   end
 
   def destroy
-
+    @free_page = FreePage.find(params[:id])
+    if @free_page.destroy
+      redirect_to admin_free_pages_path
+    else
+      @error = @free_page.errors.first
+      render 'index' and return
+    end
   end
 
   def create
@@ -31,14 +34,16 @@ class Admin::FreePagesController < ApplicationController
     else
       @place = 0
     end
-    free_page = FreePage.new(free_page_attributes)
-    if free_page.save!
-      redirect_to edit_admin_free_page_path(free_page)
+    @free_page = FreePage.new(free_page_attributes)
+    if @free_page.save
+      redirect_to edit_admin_free_page_path(@free_page)
     else
+      render 'new' and return
     end
   end
 
   def update
+    @free_page = FreePage.find(params[:id])
     if (params[:free_page][:place_header] == "true" && params[:free_page][:place_footer] == "true")
       @place = 3
     elsif (params[:free_page][:place_header] == "false" && params[:free_page][:place_footer] == "true")
@@ -48,18 +53,38 @@ class Admin::FreePagesController < ApplicationController
     else
       @place = 0
     end
-    ActiveRecord::Base.transaction do
-      free_page = FreePage.find(params[:id])
-      free_page.update(free_page_attributes)
-      params[:free_page][:page_contents].keys.each do |i|
-        page_content = PageContent.find(i)
-        page_content.update(title: params[:free_page][:page_contents][i][:title], sentence: params[:free_page][:page_contents][i][:sentence])
-      end
+    if @free_page.update(free_page_attributes)
+      redirect_to edit_admin_free_page_path(params[:free_page][:free_page_id])
+    else
+      render 'edit' and return
     end
-
-    redirect_to edit_admin_free_page_path(params[:free_page][:free_page_id])
   end
 
+  def change_release
+    @free_pages = FreePage.all.order(is_release_flg: :desc).order(:place).order(:display_order)
+
+    ActiveRecord::Base.transaction do
+      @free_page = FreePage.find(params[:id])
+      if @free_page.blank?
+        @error = "選択したページが見つかりませんでした。画面を更新してください。"
+        render 'index' and return
+      end
+      release_flg = @free_page.is_release_flg
+      # release_flgがtrueならfalseに、falseならtrue
+      change_flg = release_flg == true ? false : true
+
+      @free_page.update!(is_release_flg: change_flg)
+    end
+      redirect_to admin_free_pages_path
+    rescue => e
+      @error = "システムエラーが発生しました。管理者に問い合わせてください。"
+      render 'index'
+  end
+
+  def edit_change
+    @id = params[:free_page][:id].present? ? params[:free_page][:id] : params[:id]
+    redirect_to edit_admin_free_page_path(@id)
+  end
 
   private
 

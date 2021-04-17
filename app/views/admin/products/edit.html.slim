@@ -30,8 +30,8 @@
               th = f.label '商品名（必須）'
               td.bg-white = f.text_field :name
             tr
-              th = f.label '商品名（カナ）'
-              td.bg-white = f.text_field :name
+              th = f.label '商品詳細'
+              td.bg-white = f.text_area :detail, class: 'text-area'
             tr
               th = f.label '通知先メールアドレス'
               td.bg-white = f.text_field :notification_email

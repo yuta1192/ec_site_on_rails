@@ -218,7 +218,6 @@ class CartsController < ApplicationController
     # 成功時の処理(todo ユーザーにメールを送信する)
     redirect_to user_cart_complite_path(@current_user, @current_user.cart.id, order_history_id: @order_history.id)
   rescue => e
-    binding.pry
     @cart_items = @current_user.cart.cart_items
     @error = "システムエラーが発生しました。管理者に問い合わせください。"
     render :confirm and return

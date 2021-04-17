@@ -5,15 +5,17 @@
         | 処理状況
         .btn.btn-warning
           | 更新
-      | 引き当て
+      = link_to "一部引当済(#{admin_left_menu(1)})", search_admin_shipments_path(shipment: {partially_reserved: true, allocated: false})
       div
-      | 未処理
+      = link_to "引当済(#{admin_left_menu(2)})", search_admin_shipments_path(shipment: {partially_reserved:false, allocated: true})
       div
-      | 出荷可能
+      = link_to "未処理(#{admin_left_menu(3)})", search_admin_shipments_path(shipment: {untreated: true, can_be_shipped: false, undertake: false, shipped: false})
       div
-      | 着手
+      = link_to "出荷可能(#{admin_left_menu(4)})", search_admin_shipments_path(shipment: {untreated: false, can_be_shipped: true, undertake: false, shipped: false})
       div
-      | 入金待ち
+      = link_to "着手(#{admin_left_menu(5)})", search_admin_shipments_path(shipment: {untreated: false, can_be_shipped: false, undertake: true, shipped: false})
+      div
+      = link_to "入金待ち(#{admin_left_menu(6)})", search_admin_shipments_path(shipment: {untreated: false, can_be_shipped: false, undertake: false, shipped: true})
     .mb-2
     a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample"]
       | □ ページ編集
@@ -36,7 +38,7 @@
           = link_to 'ページ管理', admin_free_pages_path
         div
           | →
-          = link_to 'よくある質問', new_admin_inquery_path
+          = link_to 'よくある質問', admin_inqueries_path
     .mb-2
     a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample2"]
       | □ 商品管理
@@ -73,7 +75,7 @@
           = link_to '受注管理', order_history_admin_order_managements_path
         div
           | →
-          = link_to '受注アップロード', order_history_admin_order_managements_path
+          = link_to '受注アップロード', new_admin_order_management_path
           / todo 受注アップロードは画面なし、routes無し、CSVでアップロードできるような機能作成
     .mb-2
     a.w-100.text-left.btn.btn-outline-secondary[data-toggle="collapse" href="#collapseExample5" role="button" aria-expanded="false" aria-controls="collapseExample5"]

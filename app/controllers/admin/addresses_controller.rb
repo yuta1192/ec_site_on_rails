@@ -1,6 +1,6 @@
 class Admin::AddressesController < ApplicationController
   def index
-    @users = User.all
+    @addresses = Address.all
   end
 
   def new

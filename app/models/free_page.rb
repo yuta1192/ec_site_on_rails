@@ -16,7 +16,7 @@ class FreePage < ApplicationRecord
   validates :page_title, presence: true, length: { maximum: 20 }
   validates :url, presence: true
   validates :place, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 3 }, presence: true
-  validates :is_release_flg, presence: true
-  validates :is_login_flg, presence: true
+  validates :is_release_flg, inclusion: { in: [true, false] }
+  validates :is_login_flg, inclusion: { in: [true, false] }
   validates :display_order, presence: true, numericality: { only_integer: true }
 end

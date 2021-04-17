@@ -69,7 +69,7 @@
             th 削除
         tbody.text-nowrap
           - @products.each do |p|
-            tr.bg-white
+            tr class="text-center align-middle release_#{p.is_release_flg}"
               td = p.id
               td = p.product_number
               td
@@ -79,9 +79,9 @@
               td = p.updated_at.strftime('%Y/%m/%d')
               / todo 公開非公開のボタン作成しリンクで飛ばして変更させる
               - if p.is_release_flg == true
-                td = "公開"
+                td = link_to '公開', change_release_admin_product_path(p), method: :post
               - else
-                td = "非公開"
+                td = link_to '非公開', change_release_admin_product_path(p), method: :post
               td = link_to '詳細', edit_admin_product_path(p)
               td = link_to '削除', admin_product_path(p), method: :delete
       = paginate @products

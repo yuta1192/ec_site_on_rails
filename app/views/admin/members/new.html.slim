@@ -12,7 +12,7 @@
           li.small 各会員は、フロントサイトにメールアドレス、もしくは会員コードでログインします。
       .text-center = link_to '一覧に戻る', admin_members_path, class: 'btn btn-primary'
 
-      = form_with model: User, url: new_admin_member_path, local: true do |f|
+      = form_with model: @user, url: admin_members_path, method: :post, local: true do |f|
         br
         table.table-sm.table-bordered.bg-light.image-max-size
           tbody
@@ -75,9 +75,7 @@
                 | 必須
               th = f.label '郵便番号'
               td
-                = f.text_field :zip_code_front
-                | -
-                = f.text_field :zip_code_back
+                = f.text_field :zip_code
                 / todo ボタンから住所検索できるようにすること
                 div
                 | ※半角数字で入力してください。
@@ -100,31 +98,19 @@
             tr
               th[colspan="2"] = f.label '電話番号 （必須）'
               td
-                = f.text_field :tel_first
-                | -
-                = f.text_field :tel_second
-                | -
-                = f.text_field :tel_third
+                = f.text_field :tel
                 div
                 | ※半角数字で入力してください。
             tr
               th[colspan="2"] = f.label '携帯番号'
               td
-                = f.text_field :phone_number_first
-                | -
-                = f.text_field :phone_number_second
-                | -
-                = f.text_field :phone_number_third
+                = f.text_field :phone_number
                 div
                 | ※半角数字で入力してください。
             tr
               th[colspan="2"] = f.label 'FAX番号'
               td
-                = f.text_field :fax_first
-                | -
-                = f.text_field :fax_second
-                | -
-                = f.text_field :fax_third
+                = f.text_field :fax
                 div
                 | ※半角数字で入力してください。
             tr

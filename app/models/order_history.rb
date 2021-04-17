@@ -168,7 +168,7 @@ class OrderHistory < ApplicationRecord
   }
   scope :memo_search, -> memo { where('memo LIKE ?', "%#{memo}%") if memo.present? }
 
-  scope :range_current_month, -> { where(created_at: Time.now.beginning_of_month..Time.now.end_of_month) }
-  scope :range_yesterday, -> { where(created_at: Time.now.yesterday.beginning_of_day..Time.now.yesterday.end_of_month) }
-  scope :range_today, -> { where(created_at: Time.now.beginning_of_day..Time.now.end_of_month) }
+  scope :range_current_month, -> { where(created_at: Time.current.beginning_of_month..Time.current.end_of_month) }
+  scope :range_yesterday, -> { where(created_at: Time.current.yesterday.beginning_of_day..Time.current.yesterday.end_of_day) }
+  scope :range_today, -> { where(created_at: Time.current.beginning_of_day..Time.current.end_of_day) }
 end

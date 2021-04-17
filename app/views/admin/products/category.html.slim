@@ -19,9 +19,11 @@
           li.small サイト表示を「非表示」にした場合、該当カテゴリとその下階層のカテゴリ全てのリンクがサイト表示されなくなります。ただし直接、該当カテゴリの一覧URLにアクセスした場合には表示されます。また該当カテゴリ内の商品も通常どおり表示されます。
           li.small カテゴリを設定（追加、変更、削除いずれも）しても、すぐにサイトに反映されないことがあります。その場合は、１～数時間後に反映されます。
 
-      p 第１階層
       = form_with model: Category, url: category_edit_admin_products_path, local: true, method: :get do |f|
-        = f.collection_select :id, Category.all, :id, :name, prompt: "新規作成"
-        = f.submit '参照'
-
-      / todo　ここはjavascript使って指定した場合新しく表示されるようにするため保留
+        table.table.table-bordered.bg-light
+          tbody
+            tr
+              th 第１階層
+              td
+                = f.collection_select :id, Category.all, :id, :name, prompt: "新規作成"
+                = f.submit '参照', class: 'ml-2 mr-2'

@@ -33,6 +33,11 @@ table.table.table-bordered.bg-light
         div
         |（5つまで）
       td.bg-white
-        = f.file_field :attachment_file, :multiple => true
+        = f.file_field :attachment_file1
+        = f.file_field :attachment_file2
+        = f.file_field :attachment_file3
+        = f.file_field :attachment_file4
+        = f.file_field :attachment_file5
     tr.text-center
+      = f.hidden_field :release_flg, value: true
       th[colspan="2"] = f.submit '保存'

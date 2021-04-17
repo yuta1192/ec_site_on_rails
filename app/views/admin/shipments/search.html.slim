@@ -42,26 +42,46 @@
           br
           = link_to '検索条件変更', admin_shipments_path, class: 'btn btn-primary'
 
-      table.table-sm.table-bordered.bg-light
-        thead
-          tr
-            th 受注番号
-            th 会社名（部署名
-            th 担当者名
-            th お届け先
-            th お届け希望日時
-            th 出荷元
-            th 商品名
-            th 出荷予定日
-            th 出荷日
-            th ﾋﾟｯｷﾝｸﾞ
-            th CSV
-            th 状況
-            th 詳細
-        tbody
-         / todo @shipment(検索方法)を修正するまで一旦保留
-          - if @shipment.present?
-            - @shipment.each do |f|
+      br
+      - if @shipments.present?
+        - if @order_histories.present?
+          - if params[:per] == "50"
+            p.text-right
+              | 表示件数：
+              = link_to '25件 ', admin_products_path(per: 25)
+              | 50件
+              = link_to ' 100件', admin_products_path(per: 100)
+          - elsif params[:per] == "100"
+            p.text-right
+              | 表示件数：
+              = link_to '25件 ', admin_products_path(per: 25)
+              = link_to '50件 ', admin_products_path(per: 50)
+              | 100件
+          - else
+            p.text-right
+              | 表示件数：
+              | 25件
+              = link_to ' 50件', admin_products_path(per: 50)
+              = link_to ' 100件', admin_products_path(per: 100)
+        br
+        table.table-sm.table-bordered.bg-light
+          thead
+            tr
+              th 受注番号
+              th 会社名（部署名
+              th 担当者名
+              th お届け先
+              th お届け希望日時
+              th 出荷元
+              th 商品名
+              th 出荷予定日
+              th 出荷日
+              th ﾋﾟｯｷﾝｸﾞ
+              th CSV
+              th 状況
+              th 詳細
+          tbody
+            - @shipments.each do |f|
               = f.order_history.order_number
               = f.order_history.user.addresses.find_by(is_select_flag: true).company_name
               | (#{f.order_history.user.addresses.find_by(is_select_flag: true).department_name})
@@ -81,5 +101,5 @@
                 = ff.csv_flg == "true" ? ff.csv_flg : "-"
                 = ff.status
               = link_to '詳細', admin_shipment_path(f)
-          - else
-            p ないよ
+      - else
+        p ないよ

@@ -1,4 +1,7 @@
 class Shipment < ApplicationRecord
+  # allocation_status,引当ステータス  1:未処理, 2:一部引当済み, 3:引当済
+  # shipping_status, 出荷状況ステータス 1:未処理, 2:出荷可能, 3:着手 4:出荷済
+
   has_one :order_history
   has_many :shipment_products
 

@@ -15,15 +15,9 @@
           tbody
             tr
               th = f.label "商品No."
-              - if params[:product][:product_number].present?
-                td.bg-white = f.text_field :product_number, value: params[:product][:product_number], class: 'image-max-size'
-              - else
-                td.bg-white = f.text_field :product_number, class: 'image-max-size'
+              td.bg-white = f.text_field :product_number, value: params[:product][:product_number], class: 'image-max-size'
               th = f.label "商品名"
-              - if params[:product][:name].present?
-                td.bg-white = f.text_field :name, value: params[:product][:name], class: 'image-max-size'
-              - else
-                td.bg-white = f.text_field :name, class: 'image-max-size'
+              td.bg-white = f.text_field :name, value: params[:product][:name], class: 'image-max-size'
             tr
               th = f.label 'JANコード'
               - if params[:product][:jan_code].present?
@@ -80,7 +74,7 @@
             th 削除
         tbody.text-nowrap
           - @products.each do |p|
-            tr.bg-white
+            tr class="text-center align-middle release_#{p.is_release_flg}"
               td = p.id
               td = p.product_number
               td

@@ -71,9 +71,7 @@ end
     s.shipping_company = nil
     s.stock_management_id = i+1
     s.child_category_id = ChildCategory.where(category_id: category).present? ? (ChildCategory.where(category_id: category).pluck(:id) << nil).sample : nil
-    s.image = File.open(['./public/uploads/product/image/1/something.jpg', './public/uploads/product/image/2/youtuber_mask_sunglass.png',
-                        './public/uploads/product/image/3/otaku_fujoshi_winter.png', './public/uploads/product/image/4/bunbougu_nerikeshi.png',
-                        './public/uploads/product/image/5/medical_virus_kouseibusshitsu_yakuzai_taiseikin.png'].sample)
+    s.image = File.open(["./db/fixtures/image_file/014.jpg","./db/fixtures/image_file/5503321i.jpeg","./db/fixtures/image_file/arm_tablet (1).png","./db/fixtures/image_file/karaoke.png","./db/fixtures/image_file/shopping_supermarket_man.png","./db/fixtures/image_file/shopping_supermarket_family_mother.png","./db/fixtures/image_file/yusyou_champagne_fight.png"].sample)
   end
 
   StockManagement.seed do |sm|

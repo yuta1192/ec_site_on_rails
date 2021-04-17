@@ -23,61 +23,61 @@
                 | メールごとに個別設定する
                 div
                 | 基本設定メールアドレス（必須）：
-                = f.text_field :basic_email
+                = f.text_field :basic_email, class: 'image-max-size'
           tbody
             tr
               th[colspan="3"] = f.label '【管理者】へ送信されるメール'
             tr
               th[rowspan="2"] = f.label 'パスワード再発行'
               th = f.label '送信元'
-              td = f.text_field :password_reissue_sender
+              td = f.text_field :password_reissue_sender, class: 'image-max-size'
             tr
               th = f.label '宛先'
-              td = f.text_field :password_reissue_destination
+              td = f.text_field :password_reissue_destination, class: 'image-max-size'
             tr
               th[rowspan="2"] = f.label '受注通知・変更通知'
               th = f.label '送信元'
-              td = f.text_field :order_change_sender
+              td = f.text_field :order_change_sender, class: 'image-max-size'
             tr
               th = f.label '宛先'
-              td = f.text_field :order_change_destination
+              td = f.text_field :order_change_destination, class: 'image-max-size'
             tr
               th[rowspan="2"] = f.label '出荷通知'
               th = f.label '送信元'
-              td = f.text_field :shipping_sender
+              td = f.text_field :shipping_sender, class: 'image-max-size'
             tr
               th = f.label '宛先'
-              td = f.text_field :shipping_destination
+              td = f.text_field :shipping_destination, class: 'image-max-size'
             tr
               th[rowspan="2"] = f.label 'キャンセル'
               th = f.label '送信元'
-              td = f.text_field :cancel_sender
+              td = f.text_field :cancel_sender, class: 'image-max-size'
             tr
               th = f.label '宛先'
-              td = f.text_field :cancel_destination
+              td = f.text_field :cancel_destination, class: 'image-max-size'
             tr
               th[rowspan="3"] = f.label '在庫切れ通知'
               th = f.label '送信元'
-              td = f.text_field :stock_notification_sender
+              td = f.text_field :stock_notification_sender, class: 'image-max-size'
             tr
               th = f.label '宛先'
-              td = f.text_field :stock_notification_destination
+              td = f.text_field :stock_notification_destination, class: 'image-max-size'
             tr
               th = f.label '閾値'
               td
                 | 在庫が
-                = f.text_field :stock_notification_num, value: Shop.first.stock_notification_num
+                = f.text_field :stock_notification_num, value: Shop.first.stock_notification_num, size: '10*20'
                 | 個以下になったらメールを送信する。
             tr
               th[colspan="3"] = f.label '【出荷元】へ送信されるメール'
             tr
               th[rowspan="2"] = f.label '出荷依頼・変更'
               th = f.label '送信元'
-              td = f.text_field :shipment_request_change_sender
+              td = f.text_field :shipment_request_change_sender, class: 'image-max-size'
             tr
               th = f.label '宛先'
               td
-                = f.text_field :shipment_request_change_destination
+                = f.text_field :shipment_request_change_destination, class: 'image-max-size'
                 div
                 | 自社に設定している場合に送信されます。
             tr
@@ -85,22 +85,22 @@
             tr
               th = f.label 'パスワード再発行'
               th = f.label '送信元'
-              td = f.text_field :user_password_reissue_sender
+              td = f.text_field :user_password_reissue_sender, class: 'image-max-size'
             tr
               th = f.label 'パスワード変更'
               th = f.label '送信元'
-              td = f.text_field :user_password_change_sender
+              td = f.text_field :user_password_change_sender, class: 'image-max-size'
             tr
               th = f.label 'サンキューメール・変更通知'
               th = f.label '送信元'
-              td = f.text_field :user_thank_you_change_sender
+              td = f.text_field :user_thank_you_change_sender, class: 'image-max-size'
             tr
               th = f.label '出荷通知'
               th = f.label '送信元'
-              td = f.text_field :user_shipping_sender
+              td = f.text_field :user_shipping_sender, class: 'image-max-size'
             tr
               th = f.label 'キャンセル'
               th = f.label '送信元'
-              td = f.text_field :user_cancel_sender
+              td = f.text_field :user_cancel_sender, class: 'image-max-size'
             tr.text-center
               th[colspan="3"] = f.submit '保存'

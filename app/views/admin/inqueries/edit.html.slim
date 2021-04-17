@@ -1,4 +1,3 @@
-/todo 編集できるようになってから修正
 .container
   .row
     = render 'layouts/admin_left_menu'
@@ -18,26 +17,47 @@
           li.small タイトルを削除すると、関連するQ＆Aもすべて削除されますのでご注意ください。
           li.small 最後に「保存」ボタンを押してください。編集内容が保存されよくある質問ページに反映されます。
 
-        = form_with model: @inquery, url: admin_inqueries_path, method: :post, local: true do |f|
+        = form_with model: Inquery, url: select_admin_inqueries_path, method: :get, local: true do |f|
           table.table.table-bordered.bg-light
             tbody
               tr
                 th.max-width-30 = f.label "タイトル"
                 td.bg-white.max-width-70
-                  = f.select :title, @inquery_select, prompt: "選択してください"
-                  div
-                  = f.submit '削除'
+                  = f.select :id, inquery_select_box, prompt: "選択してください"
+                  = f.submit '選択', name: 'select', class: 'ml-2 mr-2'
+                  = f.submit '削除', name: 'destroy'
+        br
+
+        = form_with model: @inquery, url: admin_inquery_path, method: :patch, local: true do |f|
+          table.table.table-bordered.bg-light
+            tbody
               tr
-                th = f.label "タイトル編集"
+                th = f.label "タイトル"
                 td.bg-white
                   = f.text_field :title
-                  = f.submit 'タイトル保存'
-              / todo ここから修正
+                  = f.submit 'タイトル保存', name: 'title_update'
+        br
+
+        = form_with model: @inquery, url: admin_inquery_path, method: :patch, local: true do |f|
+          table.table.table-bordered.bg-light
+            tbody
               tr
                 th = f.label 'Q＆A一覧'
                 td
-              tr
-                th = f.label '新規Q＆A登録'
-                td
-              tr.text-center
-                th[colspan="2"] = f.submit '保存'
+                  table.table.table-bordered.bg-light
+                    tbody.bg-white
+                      = f.fields_for :questions do |ff|
+                        tr
+                          th = ff.label 'Q'
+                          td = ff.text_area :question, class: 'image-max-size'
+                          td[rowspan="2"]
+                            = link_to '編集', edit_admin_question_path(ff.object.id)
+                            div
+                            = link_to '削除', admin_question_path(ff.object.id, inquery_id: params[:id]), method: :delete
+                        tr
+                          th = ff.label 'A'
+                          td = ff.text_area :answer, class: 'image-max-size'
+                  tr
+                    th[colspan="2"] = link_to '本文追加', admin_questions_path(id: params[:id]), method: :post, class: 'btn btn-primary'
+          .text-center = f.submit "保存"
+        br

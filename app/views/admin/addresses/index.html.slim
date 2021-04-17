@@ -10,9 +10,9 @@
 
       table.table-sm.table-bordered.bg-light.image-max-size
         tbody
-          = form_with model: User, url: search_admin_addresses_path, method: :get, local: true do |f|
+          = form_with model: Address, url: search_admin_addresses_path, method: :get, local: true do |f|
             tr
-              th = f.label 'キーワード[?]'
+              th = f.label 'キーワード'
               td = f.text_field :keyword, class: 'image-max-size'
             tr.text-center
               td[colspan="2"] = f.submit '検索'
@@ -20,15 +20,9 @@
       br
       p.text-right 表示件数： 25件 50件 100件
 
-      table.table-sm.table-bordered.bg-light.image-max-size.text-center
+      table.table-sm.table-bordered.bg-light.text-center.table-responsive.no-gutters
         thead
-          tr
-            th.w-50 会員
-            th お届け先
-      table.table-sm.table-bordered.bg-light.image-max-size.text-center
-        thead
-          tr
-            th 会員ID
+          tr.text-nowrap.table-sm
             th 会社名
             th お名前
             th お届け先ID
@@ -39,20 +33,18 @@
             th 詳細
             th 削除
         tbody
-          - @users.each do |user|
+          - @addresses.each do |address|
             tr
-              td = user.member_id
-              td = user.company_name
+              td = address.company_name
               td
-                = user.name_sei
-                = user.name_mei
-              - user.addresses.each do |ad|
-                td = ad.id
-                td = ad.company_name
-                td
-                  = ad.name_sei
-                  = ad.name_mei
-                td = ad.prefectures
-                td = ad.tel
-                td = link_to '詳細', admin_address_path(ad), class: 'btn btn-primary text-nowrap'
-                td = link_to '削除', admin_address_path(ad), method: :delete, class: 'btn btn-primary text-nowrap'
+                = address.name_sei
+                = address.name_mei
+              td = address.id
+              td = address.company_name
+              td
+                = address.name_sei
+                = address.name_mei
+              td = address.prefectures
+              td = address.tel
+              td = link_to '詳細', admin_address_path(address), class: 'btn btn-primary text-nowrap'
+              td = link_to '削除', admin_address_path(address), method: :delete, class: 'btn btn-primary text-nowrap'

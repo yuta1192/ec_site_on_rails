@@ -1,13 +1,33 @@
 class Admin::ImagesController < ApplicationController
   def index
-    @images = Image.all
+    # 初期値がない場合は設定する
+    params[:page] = params[:page].blank? ? 1 : params[:page]
+    params[:per] = params[:per].blank? ? 25 : params[:per]
+    @page = params[:page]
+    @per = params[:per]
+
+    @image = Image.new
+    @images = Image.all.page(@page).per(@per)
   end
 
   def create
-    if Image.create(banner_upload)
-      redirect_to admin_images_path
+    @images = Image.all.page(@page).per(@per)
+    @image = Image.new(
+      image: params[:image][:image],
+      name: params[:image][:image].original_filename,
+      comment: params[:image][:comment],
+      is_banner_flg: params[:image][:is_banner_flg]
+    )
+    if @image.save
+      binding.pry
+      url = @image.image.file.file
+      if @image.update(url: url)
+        redirect_to admin_images_path
+      else
+        render 'index' and return
+      end
     else
-      return render index
+      render 'index' and return
     end
   end
 
@@ -15,8 +35,7 @@ class Admin::ImagesController < ApplicationController
   end
 
   def banner_index
-    # ここセレクトで選ばれたものをidに
-    @images = Image.where(banner_id: 1)
+    @images = Image.all
   end
 
   def banner_create

@@ -23,11 +23,28 @@
 
       br
       - if @order_histories.present?
-        p.text-right 表示件数： 25件 50件 100件
+        - if params[:per] == "50"
+          p.text-right
+            | 表示件数：
+            = link_to '25件 ', admin_products_path(per: 25)
+            | 50件
+            = link_to ' 100件', admin_products_path(per: 100)
+        - elsif params[:per] == "100"
+          p.text-right
+            | 表示件数：
+            = link_to '25件 ', admin_products_path(per: 25)
+            = link_to '50件 ', admin_products_path(per: 50)
+            | 100件
+        - else
+          p.text-right
+            | 表示件数：
+            | 25件
+            = link_to ' 50件', admin_products_path(per: 50)
+            = link_to ' 100件', admin_products_path(per: 100)
 
-        table.table.table-responsive-md.table-bordered.bg-light
+        table.table.table-bordered.bg-light.table-responsive.table-sm
           thead
-            tr
+            tr.text-nowrap
               th 受注番号
               th 会社名（部署名）
               th 担当者名
@@ -42,36 +59,36 @@
               th 状況
               th 詳細
           tbody
-            - @order_histories.each do |f|
+            - @order_histories.each do |oh|
               tr
-                td = f.order_number
+                td = oh.order_number
                 td
-                  = f.addresses.first.company_name
+                  = oh.address.company_name
                   div
-                  | (#{f.addresses.first.department_name})
+                  | (#{oh.address.department_name})
                 td
-                  = f.addresses.first.name_sei
-                  = f.addresses.first.name_mei
+                  = oh.address.name_sei
+                  = oh.address.name_mei
                 td
-                  = f.addresses.first.zip_code
+                  = oh.address.zip_code
                   div
-                  = f.addresses.first.prefectures
-                  = f.addresses.first.municipation
+                  = oh.address.prefectures
+                  = oh.address.municipation
                   div
-                  = f.addresses.first.address_1
-                  = f.addresses.first.address_2
-                - if f.preferred_date_flg == true
+                  = oh.address.address_1
+                  = oh.address.address_2
+                - if oh.preferred_date_flg == true
                   td
-                    = f.preferred_date_start
+                    = oh.preferred_date_start
                     | ~
-                    = f.preferred_date_end
+                    = oh.preferred_date_end
                 - else
                   td
                     | -
                 / todo ここの出荷系を追加しておくこと
                 td -
                 td
-                  - f.order_history_products.each do |ohp|
+                  - oh.order_history_products.each do |ohp|
                     | [#{ohp.product.product_number}]
                     div
                     = ohp.product.name
@@ -82,6 +99,7 @@
                 td -
                 td -
                 td = link_to '詳細'
+        = paginate @order_histories
       - else
         p 取得できませんでした。
         p 検索条件を変更してください。

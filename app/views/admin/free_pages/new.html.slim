@@ -3,8 +3,9 @@
     = render 'layouts/admin_left_menu'
     .col-10
       br
-        p ここformがeditと一緒だからパーシャルで統一させた方がいい。だからeditからコピペして後に回すわ
-
+        - if @error.present?
+          .alert
+            = @error
         p.bg-secondary ◎ ページ編集
         div
           ul.border.border-5.border-muted
@@ -14,7 +15,6 @@
             li.small ・ページ設定タイトル：${pageData.getTitle()}
             li.small ・ページ設定H1：${pageData.getH1()}
 
-        / todo フリーページで作成できるテンプレをセレクトで表示
         .bg-secondary.text-center
           = form_with model: FreePage, url: admin_free_pages_path, method: :post, local: true do |f|
             = f.text_field :id
@@ -24,6 +24,8 @@
         = form_with model: @free_page, url: admin_free_pages_path, method: :post, local: true do |f|
           table.table-sm.table-bordered.bg-light
             tbody
+              tr
+                th[colspan="2"] ページ詳細
               tr
                 th.max-width-30 = f.label '公開'
                 td.bg-white.max-width-70
@@ -57,27 +59,5 @@
               tr
                 th = f.label "表示順 [?]"
                 td.bg-white = f.number_field :display_order
-          br
-          table.table.table-bordered.bg-light
-            tbody
-              = f.fields_for :page_contents do |ff|
-                tr
-                  th = ff.label "1"
-                  td.bg-white
-                    table.table.table-bordered.bg-light
-                      tr
-                        th = ff.label "タイトル"
-                        td = ff.text_area :title, class: 'text-area'
-                      tr
-                        th = ff.label "本文"
-                        td = ff.text_area :sentence, class: 'text-area'
-                      tr
-                        th[colspan="2"] = ff.submit "削除"
-                tr
-                  th[colspan="2"] = ff.submit '本文追加'
-          = f.submit "保存"
-
-// これ新規作成だから使えない。jsとかで表示させる処理とか書くしかないかも。
-// = form_with model: PageContent, url: admin_page_contents_path, method: :post, local: true do |f|
-//   = f.hidden_field :free_page_id, value: params[:id]
-//   = f.submit "本文追加"
+              tr.text-center
+                th[colspan="2"] = f.submit '登録', class: 'btn btn-primary'

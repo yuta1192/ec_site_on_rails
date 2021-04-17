@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_09_101353) do
+ActiveRecord::Schema.define(version: 2021_04_10_083624) do
 
   create_table "Delivery_infos", force: :cascade do |t|
     t.string "company_name"
@@ -24,17 +24,6 @@ ActiveRecord::Schema.define(version: 2021_04_09_101353) do
     t.integer "purchase_history_id"
     t.integer "order_history_id"
     t.string "zip_code"
-  end
-
-  create_table "Images", force: :cascade do |t|
-    t.string "image"
-    t.string "url"
-    t.string "name"
-    t.boolean "is_banner_flg", default: false, null: false
-    t.text "comment"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "banner_id"
   end
 
   create_table "Inqueries", force: :cascade do |t|
@@ -117,9 +106,9 @@ ActiveRecord::Schema.define(version: 2021_04_09_101353) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "image"
     t.text "comment"
     t.integer "hyoji_area"
+    t.integer "image_id"
   end
 
   create_table "cart_items", force: :cascade do |t|
@@ -212,6 +201,16 @@ ActiveRecord::Schema.define(version: 2021_04_09_101353) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "images", force: :cascade do |t|
+    t.string "image"
+    t.string "url"
+    t.string "name"
+    t.boolean "is_banner_flg", default: false, null: false
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "info_titles", force: :cascade do |t|
     t.string "title"
     t.integer "hyoji_count"
@@ -224,16 +223,20 @@ ActiveRecord::Schema.define(version: 2021_04_09_101353) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "release_flg", default: true, null: false
-    t.string "attachment_file1"
-    t.string "attachment_file2"
-    t.string "attachment_file3"
-    t.string "attachment_file4"
-    t.string "attachment_file5"
     t.date "date"
     t.date "published_start_yyyymmdd"
     t.string "published_start_hhmm"
     t.date "published_end_yyyymmdd"
     t.string "published_end_hhmm"
+  end
+
+  create_table "information_attachment_files", force: :cascade do |t|
+    t.integer "information_id"
+    t.string "attachment_file"
+    t.string "filename"
+    t.string "filepath"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "items", force: :cascade do |t|

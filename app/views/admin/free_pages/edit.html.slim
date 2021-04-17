@@ -1,56 +1,84 @@
-/ todo フォームに全部打ちまける。 んで編集押した時にフリーページとうを表示できるように変える
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+        - if @error.present?
+          .alert
+            = @error
+        p.bg-secondary ◎ ページ編集
+        div
+          ul.border.border-5.border-muted
+            p フロントサイトに表示するページを自由に編集が可能です。
+            li.small 本文において、以下のタグが利用可能です。
+            li.small ・サイト名：${siteName}
+            li.small ・ページ設定タイトル：${pageData.getTitle()}
+            li.small ・ページ設定H1：${pageData.getH1()}
 
-p ページ編集
-p フロントサイトに表示するページを自由に編集が可能です。
-p 本文において、以下のタグが利用可能です。
-p ・サイト名：${siteName}
-p ・ページ設定タイトル：${pageData.getTitle()}
-p ・ページ設定H1：${pageData.getH1()}
+      .bg-secondary.text-center
+        = form_with model: FreePage, url: edit_change_admin_free_page_path, method: :post, local: true do |f|
+          = f.collection_select :id, FreePage.all, :id, :page_title, include_blank: "選択して下さい"
+          = f.submit "変更"
+      br
 
-= form_with model: FreePage, url: edit_admin_free_page_path, method: :get, local: true do |f|
-  = f.collection_select :id, FreePage.all, :id, :page_title, include_blank: "選択して下さい"
-  = f.submit "変更"
+      = form_with model: @free_page, url: admin_free_page_path, method: :patch, local: true do |f|
+        table.table-sm.table-bordered.bg-light
+          tbody
+            tr
+              th[colspan="2"] ページ詳細
+            tr
+              th.max-width-30 = f.label '公開'
+              td.bg-white.max-width-70
+                = f.hidden_field :free_page_id, value: @free_page.id
+                = f.check_box :is_release_flg, {class: "check_box"}, true, false
+                | 公開
+            tr
+              th = f.label "ログイン状態"
+              td.bg-white
+                = f.check_box :is_login_flg, {class: "check_box"}, true, false
+                | 非ログイン状態の場合非表示にする
+            tr
+              th = f.label "ページ名称（必須）"
+              td.bg-white = f.text_field :page_title, class: 'image-max-size'
+            tr
+              th = f.label "H1タグ[?]"
+              td.bg-white = f.text_field :h1_tag, class: 'image-max-size'
+            tr
+              th = f.label "URL（必須） [?]"
+              td.bg-white
+                = f.text_field :url, class: 'image-max-size'
+                div
+                | ※http://やhttps://から始まる絶対パスのURLか、EC-Nextトップページからの相対パスを入力してください。
+            tr
+              th = f.label "リンク表示場所"
+              td.bg-white
+                = f.check_box :place_header, {class: "check_box"}, true, false
+                | ヘッダー
+                = f.check_box :place_footer, {class: "check_box"}, true, false
+                | フッター
+            tr
+              th = f.label "表示順 [?]"
+              td.bg-white = f.number_field :display_order
+            tr.text-center
+              th[colspan="2"] = f.submit '登録', class: 'btn btn-primary'
+      br
 
-= form_with model: @free_page, url: admin_free_page_path, method: :patch, local: true do |f|
-  = f.hidden_field :free_page_id, value: @free_page.id
-  = f.label "公開"
-  = f.check_box :is_release_flg, {class: "check_box"}, true, false
-  = f.label "公開"
-  div
-  = f.label "ログイン状態"
-  = f.check_box :is_login_flg, {class: "check_box"}, true, false
-  = f.label "非ログイン状態の場合非表示にする"
-  div
-  = f.label "ページ名称（必須）"
-  = f.text_field :page_title
-  div
-  = f.label "H1タグ[?]"
-  = f.text_field :h1_tag
-  div
-  = f.label "URL（必須） [?]"
-  = f.text_field :url
-  p ※http://やhttps://から始まる絶対パスのURLか、EC-Nextトップページからの相対パスを入力してください。
-  = f.label "リンク表示場所"
-  = f.check_box :place_header, {class: "check_box"}, true, false
-  = f.label "ヘッダー"
-  = f.check_box :place_footer, {class: "check_box"}, true, false
-  = f.label "フッター"
-  div
-  = f.label "表示順 [?]"
-  = f.number_field :display_order
-  div
-  - @page_contents.each do |page_content|
-    = f.fields_for "page_contents[]", page_content do |ff|
-      = ff.label "タイトル"
-      = ff.text_field :title
-      div
-      = ff.label "本文"
-      = ff.text_field :sentence
-      div
-      = link_to "削除", admin_page_content_path(free_page_id: params[:id]), method: :delete
-      div
-  = f.submit "保存"
-
-= form_with model: PageContent, url: admin_page_contents_path, method: :post, local: true do |f|
-  = f.hidden_field :free_page_id, value: params[:id]
-  = f.submit "本文追加"
+      = form_with model: @free_page, url: admin_page_content_path, method: :patch, local: true do |f|
+        table.table.table-bordered.bg-light
+          tbody
+            = f.fields_for :page_contents do |ff|
+              tr
+                th = ff.label ff.index+1
+                td.bg-white
+                  table.table.table-bordered.bg-light
+                    tr
+                      th = ff.label "タイトル"
+                      td = ff.text_field :title, class: 'image-max-size'
+                    tr
+                      th = ff.label "本文"
+                      td = ff.text_area :sentence, class: 'text-area'
+                    tr
+                      td[colspan="2"] = link_to '削除', admin_page_content_path(id: ff.object.id, free_page_id: @free_page.id), method: :delete
+            tr
+              th[colspan="2"] = link_to '本文追加', admin_page_contents_path(id: @free_page.id), method: :post, class: 'btn btn-primary'
+        .text-center = f.submit "保存"

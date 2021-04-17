@@ -17,19 +17,21 @@
           li.small タイトルを削除すると、関連するQ＆Aもすべて削除されますのでご注意ください。
           li.small 最後に「保存」ボタンを押してください。編集内容が保存されよくある質問ページに反映されます。
 
-        = form_with model: @inquery, url: admin_inqueries_path, method: :post, local: true do |f|
+        = form_with model: Inquery, url: select_admin_inqueries_path, method: :get, local: true do |f|
           table.table.table-bordered.bg-light
             tbody
               tr
                 th.max-width-30 = f.label "タイトル"
                 td.bg-white.max-width-70
-                  = f.select :title, @inquery_select, prompt: "選択してください"
-                  div
-                  = f.submit '削除'
+                  = f.select :id, inquery_select_box, prompt: "選択してください"
+                  = f.submit '選択', name: 'select', class: 'ml-2 mr-2'
+                  = f.submit '削除', name: 'destroy'
+        br
+        = form_with model: @inquery, url: admin_inqueries_path, method: :post, local: true do |f|
+          table.table.table-bordered.bg-light
+            tbody
               tr
-                th = f.label "タイトル編集"
-                td.bg-white
-                  = f.text_field :title
-                  = f.submit 'タイトル保存'
+                th = f.label "質問"
+                td.bg-white = f.text_field :title, class: 'image-max-size'
               tr.text-center
-                th[colspan="2"] = f.submit '保存'
+                th[colspan="2"] = f.submit '新規作成'

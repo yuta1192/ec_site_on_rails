@@ -51,10 +51,11 @@
             tr
               td = p.product_number
               td = p.name
-              td todo joinやeager_loadで取得するようにする。
-              / todo = ShippingOrigin.find_by(id: p.shipping_origin_id).shipping_origin_name
-              td todo 上記同様
-              / = OrderHistoryProduct.where(product_id: p.id).sum(:num)
+              - if p.shipping_origin.present?
+                td = p.shipping_origin.shipping_origin_name
+              - else
+                td
+              td = p.stock_management.stock
               td 引き当て
               td = link_to '詳細', admin_stock_management_path(p)
 

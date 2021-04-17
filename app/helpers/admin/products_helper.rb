@@ -26,4 +26,15 @@ module Admin::ProductsHelper
     end
     return all_category
   end
+
+  def child_category
+    category = Category.find(params[:category][:id])
+    child_categories = category.child_categories
+    child_categories_select = []
+    child_categories.each do |cc|
+      child_categories_select << [cc.name, cc.id]
+    end
+    child_categories_select.unshift(["新規作成または親のみ更新", 99])
+    return child_categories_select
+  end
 end

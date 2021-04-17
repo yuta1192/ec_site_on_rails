@@ -9,7 +9,28 @@ class Admin::PageContentsController < ApplicationController
   end
 
   def create
-    PageContent.create(free_page_id: params[:page_content][:free_page_id])
-    redirect_to edit_admin_free_page_path(params[:page_content][:free_page_id])
+    @page_content = PageContent.new(free_page_id: params[:id])
+    if @page_content.save
+      redirect_to edit_admin_free_page_path(params[:id])
+    else
+      @error = "エラー"
+      redirect_to edit_admin_free_page_path(params[:id])
+    end
+  end
+
+  def update
+    ActiveRecord::Base.transaction do
+      params[:free_page][:page_contents_attributes].keys.each do |i|
+        @page_content = PageContent.find(params[:free_page][:page_contents_attributes][i][:id])
+        @page_content.update(
+          title: params[:free_page][:page_contents_attributes][i][:title],
+          sentence: params[:free_page][:page_contents_attributes][i][:sentence]
+        )
+      end
+    end
+    redirect_to edit_admin_free_page_path(params[:id])
+  rescue => e
+    @error = "error"
+    redirect_to edit_admin_free_page_path(params[:id])
   end
 end

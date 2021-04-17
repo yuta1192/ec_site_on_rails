@@ -6,13 +6,13 @@ class Admin::InformationsController < ApplicationController
   end
 
   def info_title
-    info_title = InfoTitle.first
-    if info_title.update!(title: params[:info_title][:title].present? ? params[:info_title][:title] : info_title.title,
-                          hyoji_count: params[:info_title][:hyoji_count].present? ? params[:info_title][:hyoji_count] : info_title.hyoji_count)
+    @informations = Information.all
+    @information = Information.new
+    @info_title = InfoTitle.first
+    if @info_title.update(info_title_params)
       redirect_to admin_informations_path
     else
-      # todo エラーの場合
-      render
+      render 'index'
     end
   end
 
@@ -23,66 +23,44 @@ class Admin::InformationsController < ApplicationController
   end
 
   def update
-    info = Information.find(params[:id])
-    ActiveRecord::Base.transaction do
-      info.update!(
-        date: params[:information][:date],
-        detail: params[:information][:detail],
-        release_flg: false,
-        published_start_yyyymmdd: params[:information][:published_start_yyyymmdd],
-        published_start_hhmm: params[:information][:published_start_hhmm],
-        published_end_yyyymmdd: params[:information][:published_end_yyyymmdd],
-        published_end_hhmm: params[:information][:published_end_hhmm],
-        # todo 添付ファイルを送信できるように修正する（複数送信できること)
-        # if params[:information][:attachment_file].present?
-        #   attachment_file1: params[:information][:attachment_file1],
-        #   attachment_file2: params[:information][:attachment_file2],
-        #   attachment_file3: params[:information][:attachment_file3],
-        #   attachment_file4: params[:information][:attachment_file4],
-        #   attachment_file5: params[:information][:attachment_file5]
-        # end
-      )
+    @info_title = InfoTitle.first
+    @informations = Information.all
+    @infomation = Information.find(params[:id])
+    if @infomation.update(info_params)
+      if attachment_files_add(@infomation, params)
+        redirect_to edit_admin_information_path(@infomation)
+      else
+        render 'edit' and return
+      end
+    else
+      render 'edit'
     end
-      redirect_to edit_admin_information_path(info)
-    rescue => e
-      # todo エラーの場合をかく
-      render 'information/index'
   end
 
   def create
-    ActiveRecord::Base.transaction do
-      info = Information.new(
-        date: params[:information][:date],
-        detail: params[:information][:detail],
-        release_flg: false,
-        published_start_yyyymmdd: params[:information][:published_start_yyyymmdd],
-        published_start_hhmm: params[:information][:published_start_hhmm],
-        published_end_yyyymmdd: params[:information][:published_end_yyyymmdd],
-        published_end_hhmm: params[:information][:published_end_hhmm],
-        # todo 添付ファイルを送信できるように修正する（複数送信できること)
-        # if params[:information][:attachment_file].present?
-        #   attachment_file1: params[:information][:attachment_file1],
-        #   attachment_file2: params[:information][:attachment_file2],
-        #   attachment_file3: params[:information][:attachment_file3],
-        #   attachment_file4: params[:information][:attachment_file4],
-        #   attachment_file5: params[:information][:attachment_file5]
-        # end
-      )
-      info.save!
+    @info_title = InfoTitle.first
+    @informations = Information.all
+    @infomation = Information.new(info_params)
+    if @infomation.save
+      if attachment_files_new(@infomation, params)
+        redirect_to edit_admin_information_path(@infomation)
+      else
+        render 'index' and return
+      end
+    else
+      render 'index'
     end
-      redirect_to admin_informations_path
-    rescue => e
-      # todo エラーの場合をかく
-      render 'information/index'
   end
 
   def destroy
-    info = Information.find(params[:id])
-    if info.destroy!
+    @info_title = InfoTitle.first
+    @informations = Information.all
+    @infomation = Information.find(params[:id])
+
+    if @infomation.destroy
       redirect_to admin_informations_path
     else
-      # todo エラーの場合をかく
-      render 'information/edit'
+      render 'index'
     end
   end
 
@@ -105,4 +83,111 @@ class Admin::InformationsController < ApplicationController
       render 'information/index'
   end
 
+  def download
+    @informetion = InformationAttachmentFile.find(params[:id])
+    # ref: https://github.com/carrierwaveuploader/carrierwave#activerecord
+    filepath = @informetion.attachment_file.current_path
+    stat = File::stat(filepath)
+    send_file(filepath, :filename => @informetion.filename, :length => stat.size)
+  end
+
+  private
+
+    def info_params
+      params.require(:information).permit(:detail, :release_flg, :date, :published_start_yyyymmdd, :published_start_hhmm, :published_end_yyyymmdd, :published_end_hhmm)
+    end
+
+    def info_title_params
+      params.require(:info_title).permit(:title, :hyoji_count)
+    end
+
+    def attachment_files_new(info, params)
+      binding.pry
+      begin
+        if params[:information][:attachment_file1].present?
+          InformationAttachmentFile.create(
+            information_id: info.id,
+            attachment_file:  params[:information][:attachment_file1],
+            filename: params[:information][:attachment_file1].original_filename
+          )
+        end
+        if params[:information][:attachment_file2].present?
+          InformationAttachmentFile.create(
+            information_id: info.id,
+            attachment_file:  params[:information][:attachment_file2],
+            filename: params[:information][:attachment_file2].original_filename
+          )
+        end
+        if params[:information][:attachment_file3].present?
+          InformationAttachmentFile.create(
+            information_id: info.id,
+            attachment_file:  params[:information][:attachment_file3],
+            filename: params[:information][:attachment_file3].original_filename
+          )
+        end
+        if params[:information][:attachment_file4].present?
+          InformationAttachmentFile.create(
+            information_id: info.id,
+            attachment_file:  params[:information][:attachment_file4],
+            filename: params[:information][:attachment_file4].original_filename
+          )
+        end
+        if params[:information][:attachment_file5].present?
+          InformationAttachmentFile.create(
+            information_id: info.id,
+            attachment_file:  params[:information][:attachment_file5],
+            filename: params[:information][:attachment_file5].original_filename
+          )
+        end
+        return true
+      rescue
+        return false
+      end
+    end
+
+    def attachment_files_add(info, params)
+      begin
+        if params[:information][:attachment_file1].present? || params[:information][:attachment_file2].present? || params[:information][:attachment_file3].present? || params[:information][:attachment_file4].present? || params[:information][:attachment_file5].present?
+          InformationAttachmentFile.where(information_id: info.id).destroy
+        end
+        if params[:information][:attachment_file1].present?
+          InformationAttachmentFile.create(
+            information_id: info.id,
+            attachment_file:  params[:information][:attachment_file1],
+            filename: params[:information][:attachment_file1].original_filename
+          )
+        end
+        if params[:information][:attachment_file2].present?
+          InformationAttachmentFile.create(
+            information_id: info.id,
+            attachment_file:  params[:information][:attachment_file2],
+            filename: params[:information][:attachment_file2].original_filename
+          )
+        end
+        if params[:information][:attachment_file3].present?
+          InformationAttachmentFile.create(
+            information_id: info.id,
+            attachment_file:  params[:information][:attachment_file3],
+            filename: params[:information][:attachment_file3].original_filename
+          )
+        end
+        if params[:information][:attachment_file4].present?
+          InformationAttachmentFile.create(
+            information_id: info.id,
+            attachment_file:  params[:information][:attachment_file4],
+            filename: params[:information][:attachment_file4].original_filename
+          )
+        end
+        if params[:information][:attachment_file5].present?
+          InformationAttachmentFile.create(
+            information_id: info.id,
+            attachment_file:  params[:information][:attachment_file5],
+            filename: params[:information][:attachment_file5].original_filename
+          )
+        end
+        return true
+      rescue
+        return false
+      end
+    end
 end

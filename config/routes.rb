@@ -57,6 +57,7 @@ Rails.application.routes.draw do
     resources :informations do
       post 'change_release', on: :member
       post 'info_title', on: :collection
+      get 'download', on: :member
     end
     # post 'informations/change_release/:id', to: 'informations#change_release', as: :informations_change_release
     resources :images
@@ -65,24 +66,34 @@ Rails.application.routes.draw do
     patch 'banner_update', to: 'images#banner_update'
     get 'product_page_edit', to: 'product_pages#edit'
     post 'product_page_create', to: 'product_pages#create'
-    resources :free_pages
-    resources :page_contents, only: [:destroy, :create]
-    resources :inqueries
+    resources :free_pages do
+      post 'change_release', on: :member
+      post 'edit_change', on: :member
+    end
+    resources :page_contents, only: [:destroy, :create, :update]
+    resources :inqueries do
+      get 'select', on: :collection
+    end
     resources :questions
     resources :products do
       collection do
         get 'search'
         get 'category'
         get 'category_edit'
+        get 'child_category'
         post 'category_create'
         patch 'category_update'
       end
+      post 'change_release', on: :member
     end
     resources :order_managements do
       collection do
         get 'user_search'
+        get 'address_search'
+        get 'product_search'
         get 'order_history'
         get 'order_history_search'
+        post 'select_product_delete'
       end
     end
     resources :shipments do

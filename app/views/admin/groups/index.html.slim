@@ -13,7 +13,7 @@
           = form_with model: Group, url: search_admin_groups_path, method: :get, local: true do |f|
             tr
               th = f.label 'グループ名'
-              td = f.text_field :group_name
+              td = f.text_field :name, value: ''
             tr.text-center
               th[colspan="2"] = f.submit '検索'
 
@@ -34,7 +34,7 @@
               td = group.id
               td = group.name
               td = group.created_at.strftime('%Y%m%d')
-              td = group.group_users.count
+              td = group.group_addresses.count
               td 0
               td = link_to '詳細', admin_group_path(group)
               td = link_to '削除', admin_group_path(group), method: :delete
