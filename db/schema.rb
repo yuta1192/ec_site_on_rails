@@ -202,13 +202,13 @@ ActiveRecord::Schema.define(version: 2021_04_10_083624) do
   end
 
   create_table "images", force: :cascade do |t|
-    t.string "image"
     t.string "url"
     t.string "name"
     t.boolean "is_banner_flg", default: false, null: false
     t.text "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.binary "image"
   end
 
   create_table "info_titles", force: :cascade do |t|
