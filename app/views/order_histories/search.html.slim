@@ -1,20 +1,110 @@
-p serach_paramsで表示させる
+.container
+  .row
+    .col-12
+      | 現在位置：
+      = link_to 'トップ', root_path
+      | >
+      = link_to '会員ページ', mypage_path
+      | >
+      = link_to '注文履歴 検索', user_order_histories_path
+      | > 注文履歴 検索結果
+    / サイドメニュー
+    = render 'layouts/mypage_side_menu'
 
-h2 ひとかたまり上
-p 注文履歴 検索結果 〇〇件
-p 期間指定 #{@params[:order_history]["start_date(1i)"]}年#{@params[:order_history]["start_date(2i)"]}月#{@params[:order_history]["start_date(3i)"]}日〜#{@params[:order_history]["end_date(1i)"]}年#{@params[:order_history]["end_date(2i)"]}月#{@params[:order_history]["end_date(3i)"]}日までの注文履歴
-p 注文番号 #{@params[:order_history][:order_number]}
-p 商品番号 #{@params[:order_history][:product_number]}
-p 商品名 #{@params[:order_history][:product_name]}
-p カテゴリ #{@params[:order_history][:category]}
-p メモ #{@params[:order_history][:memo]}
+    .col-9
+      br
+      p.border-bottom 注文履歴　検索結果
 
-h2 ひとかたまり下 ここはデータ作ったらにしよう
-p 注文日時
-p 注文番号
-p お届け先
-p 出荷状況
-p 出荷予定日
-p 出荷日
-p 商品名
-p 詳細
+      .border(style="padding:5px;")
+        .row
+          .col-sm-4
+            p.bg-info.text-center 検索結果
+          .col-sm-8
+            .border-bottom #{order_count}件
+          .col-sm-4
+            p.bg-info.text-center 注文日
+          .col-sm-8
+            .border-bottom
+              = start_dates
+              | 〜
+              = end_dates
+              | までの注文履歴
+          .col-sm-4
+            p.bg-info.text-center 注文番号
+          .col-sm-8
+            .border-bottom = params_order_number
+          .col-sm-4
+            p.bg-info.text-center 商品番号
+          .col-sm-8
+            .border-bottom = params_product_number
+          .col-sm-4
+            p.bg-info.text-center 商品名
+          .col-sm-8
+            .border-bottom = params_product_name
+          .col-sm-4
+            p.bg-info.text-center カテゴリ
+          .col-sm-8
+            .border-bottom = params_category
+          .col-sm-4
+            p.bg-info.text-center キャンセル
+          .col-sm-8
+            .border-bottom = params_cancel
+          .col-sm-4
+            p.bg-info.text-center メモ
+          .col-sm-8
+            .border-bottom = params_memo
+      br
+      / p.text-right
+      /   - if params[:per].to_i == 25
+      /     | 表示件数 25件
+      /     = f.submit '50件' per: 50), class: 'pl-2'
+      /     = f.submit '100件', search_user_order_histories_path(@current_user.id, order_history: params[:params], per: 100), class: 'pl-2'
+      /   -elsif params[:per].to_i == 50
+      /     | 表示件数
+      /     = f.submit '25件', search_user_order_histories_path(@current_user.id, order_history: params[:params], per: 25), class: 'pl-2'
+      /     | 50件
+      /     = f.submit '100件', search_user_order_histories_path(@current_user.id, order_history: params[:params], per: 100), class: 'pl-2'
+      /   -elsif params[:per].to_i == 100
+      /     | 表示件数
+      /     = f.submit '25件', search_user_order_histories_path(@current_user.id, order_history: params[:params], per: 25), class: 'pl-2'
+      /     = f.submit '50件', search_user_order_histories_path(@current_user.id, order_history: params[:params], per: 50), class: 'pl-2'
+      /     | 100件
+
+      table.table
+        thead.table-bordered.table-info
+          tr.text-center
+            th 注文日時
+            th 注文番号
+            th お届け先
+            th 出荷状況
+            th 出荷予定日
+            th 出荷日
+            th 送り状
+            th 商品名
+            th 詳細
+        tbody.border-bottom
+          - @order_query.each do |oq|
+            tr
+              td = oq.order_date_start
+              td = oq.order_number
+              td
+                = oq.address.zip_code
+                div
+                = oq.address.prefectures
+                = oq.address.municipation
+                = oq.address.address_1
+                = oq.address.address_2
+              td = oq.status
+              td = oq.shipment.expected_shipping_date
+              - if oq.shipment.ship_date.present?
+                td = oq.shipment.ship_date
+              - else
+                td 未定
+              td = oq.invoice_number
+              td
+                - oq.order_history_products.each do |p|
+                  = p.product.name
+                  br
+              td.text-nowrap = link_to '詳細', user_order_history_path(@current_user.id, oq), class: 'btn border'
+      br
+      = paginate @order_query

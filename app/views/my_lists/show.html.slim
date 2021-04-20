@@ -1,0 +1,104 @@
+.container
+  .row
+    .col-12
+      | 現在位置：
+      = link_to 'トップ', root_path
+      | >
+      = link_to '会員ページ', mypage_path
+      | > マイリスト
+    / サイドメニュー
+    = render 'layouts/mylist_side_menu'
+
+    .col-9
+      br
+      .border-bottom = @mylist.name
+      br
+      - if flash[:error].present?
+        .alert
+          = flash[:error]
+      - if @mylist_products.present?
+        = form_with model: MyList, url: product_add_cart_user_my_lists_path(@current_user) , method: :post, local: true do |f, id|
+          table.table.table-bordered
+            thead.table-info
+              tr.d-flex.no-gutters.text-center
+                th.col-1 = check_box_tag :check1
+                th.col-6 商品（商品番号／品名）
+                th.col-3 価格
+                th.col-1 数量
+                th.col-1 削除
+            tbody
+              - @mylist_products.each.with_index(1) do |mylist, id|
+                tr.d-flex.no-gutters.h-100
+                  td.col-1.d-flex.align-items-center.justify-content-center = f.fields_for :check_product do |ff|
+                    = ff.check_box "[id_#{id}]check", {}, "true", "false"
+                    = ff.hidden_field "[id_#{id}]product_id", value: mylist.product.id
+                  td.col-1.d-flex.align-items-center
+                      - if mylist.product.image.present?
+                        = image_tag(mylist.product.image.to_s, class: "image-max-size")
+                      - else
+                        = image_tag('/no_image_square.jpg', class: "image-max-size")
+                  td.col-5.d-flex.align-items-center = link_to product_path(mylist.product) do
+                    = mylist.product.product_number
+                    br
+                    = mylist.product.name
+                  td.col-3
+                    |
+                    .text-danger 参考価格：#{mylist.product.price}円/税込#{(mylist.product.price * 1.1).ceil}円
+                    .text-danger 会員価格：#{mylist.product.member_price}円
+                  td.col-1.d-flex.align-items-center.justify-content-center = f.fields_for :check_product do |ff|
+                    = ff.text_field "[id_#{id}]quantity", value: mylist.quantity, class: 'form-control'
+                  td.col-1.d-flex.align-items-center.justify-content-center
+                    button class="d-flex no-gutters btn btn-link" style="padding-right: 0px;padding-left: 0px;margin-bottom: 0px;padding-top: 0px;padding-bottom: 0px;"
+                      = link_to '削除', user_my_list_product_delete_path(@current_user.id, params[:id], product_id: mylist.product.id), method: :delete, class: 'btn btn-danger text-nowrap'
+              tr
+                td.col-12 全て選択/解除
+              tr.table-info
+                td.col-12.text-center
+                  = f.hidden_field :my_list_id, value: @mylist.id
+                  = f.submit 'カートに入れる'
+          = paginate @mylist_products
+      - else
+        table.table.table-bordered
+          thead.table-info
+            tr.d-flex.no-gutters.text-center
+              th.col-1 選択
+              th.col-6 商品（商品番号／品名）
+              th.col-3 価格
+              th.col-1 数量
+              th.col-1 削除
+          tbody
+            tr.d-flex.no-gutters.justify-content-center
+              td.col-12.d-flex.align-items-center.justify-content-center
+                | － 現在、マイリストへの登録はありません －
+
+        p.d-flex.align-items-center.justify-content-center 前へ | 1 | 次へ
+
+      table.table.table-bordered
+        thead.table-info
+          tr.d-flex.no-gutters.text-center
+            th.col-12 フォルダ名を変更
+        tbody
+          tr.d-flex.no-gutters
+            td.col-12.d-flex
+              = form_with model: @mylist, url: user_my_list_path(used_id: @current_user.id, id: @mylist.id), method: :patch, local: true do |f|
+                = f.text_field :name, value: @mylist.name
+                = f.submit '保存'
+
+      |【ご利用方法】
+      .row
+        .col-1
+        .col-11
+          | よく注文される商品を登録しておくことで、すばやく必要な商品にたどりつけます。
+          br
+          | 各商品ページの「この商品をマイリストへ追加する」ボタンをクリックするとお客様のマイリストに商品が追加されます。
+          br
+          | マイリストから商品を注文するには、注文する商品の選択欄にチェックを入れ、「カートに入れる」ボタンを押してください。選択した商品がカートに追加されます。
+          br
+          | マイリストから商品を削除する場合は、該当する商品欄の「削除」ボタンを押してください。マイリストより削除されます。
+      |【ご注意】
+      .row
+        .col-1
+        .col-11
+          | マイリストのページを切り替えると選択欄のチェックが外れます。
+          br
+          | 1ページごとに「カートに入れる」ボタンを押してください。（1ページ最大50件まで表示されます。）

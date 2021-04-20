@@ -1,23 +1,50 @@
-p お届け先一覧/該当データ：10件
-p お届け先リストの確認・編集ができます。
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ お届け先一覧/該当データ：10件
+      div
+        ul.border.border-5.border-muted
+          li.small お届け先リストの確認・編集ができます。
 
-= form_with model: User, url: search_admin_addresses_path, method: :get, local: true do |f|
-  = f.label 'キーワード[?]'
-  = f.text_field :keyword
-  div
-  = f.submit '検索'
+      table.table-sm.table-bordered.bg-light.image-max-size
+        tbody
+          = form_with model: Address, url: search_admin_addresses_path, method: :get, local: true do |f|
+            tr
+              th = f.label 'キーワード'
+              td = f.text_field :keyword, class: 'image-max-size'
+            tr.text-center
+              td[colspan="2"] = f.submit '検索'
 
-- @users.each do |user|
-  p 会員	お届け先
-  p 会員ID 	会社名 	お名前 	お届け先ID 	会社名 	お名前 	地域 	電話番号 	詳細	削除
-  = user.member_id
-  = user.company_name
-  | #{%W(#{user.name_sei} #{user.name_mei}).join}
-  - user.addresses.each do |ad|
-    = ad.id
-    = ad.company_name
-    | #{%W(#{ad.name_sei} #{ad.name_mei}).join}
-    = ad.prefectures
-    = ad.tel
-    = link_to '詳細', admin_address_path(ad)
-    = link_to '削除', admin_address_path(ad), method: :delete
+      br
+      p.text-right 表示件数： 25件 50件 100件
+
+      table.table-sm.table-bordered.bg-light.text-center.table-responsive.no-gutters
+        thead
+          tr.text-nowrap.table-sm
+            th 会社名
+            th お名前
+            th お届け先ID
+            th 会社名
+            th お名前
+            th 地域
+            th 電話番号
+            th 詳細
+            th 削除
+        tbody
+          - @addresses.each do |address|
+            tr
+              td = address.company_name
+              td
+                = address.name_sei
+                = address.name_mei
+              td = address.id
+              td = address.company_name
+              td
+                = address.name_sei
+                = address.name_mei
+              td = address.prefectures
+              td = address.tel
+              td = link_to '詳細', admin_address_path(address), class: 'btn btn-primary text-nowrap'
+              td = link_to '削除', admin_address_path(address), method: :delete, class: 'btn btn-primary text-nowrap'

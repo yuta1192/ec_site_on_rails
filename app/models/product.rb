@@ -1,10 +1,9 @@
 class Product < ApplicationRecord
   belongs_to :category
-  belongs_to :stock_management
+  has_one :stock_management
   belongs_to :shipping_origin
-  belongs_to :child_category
-  #mount_uploader :image, ImageUploader
-  #enum category: { オリジナル商品: 1, 食べ物: 2 }
+  # belongs_to :child_category
+  mount_uploader :image, ImageUploader
 
   def self.search(search)
     return Product.all unless search
@@ -15,14 +14,14 @@ class Product < ApplicationRecord
     return Product.all unless category_name
     return Product.all if category_name.blank?
     return Product.all if category_name == "選択して下さい"
-    # 子カテゴリと親カテゴリで検索条件分け
-    if category_name.include? "/"
-      category_id = ChildCategory.find_by(name: "#{category_name.partition('/').last}").category_id
-      child_category_id = ChildCategory.find_by(name: "#{category_name.partition('/').last}").id
-      Product.where(category_id: category_id).where(child_category_id: child_category_id)
+
+    # カテゴリーで検索した場合と子カテゴリーで検索した場合で分ける
+    category = Category.find_by(name: "#{category_name}")
+    if category.present?
+      Product.where(category_id: category.id)
     else
-      category_id = Category.find_by(name: "#{category_name}").id
-      Product.where(category_id: category_id)
+      child_category = ChildCategory.find_by(name: "#{category_name}")
+      Product.where(category_id: child_category.category_id, child_category_id: child_category.id)
     end
   }
 
@@ -44,10 +43,12 @@ class Product < ApplicationRecord
     Product.where(['manufacturer LIKE ?', "%#{manufacturer}%"])
   }
 
+  # stock_managementsを左外部結合しwhereで絞る
   scope :except_no_stock, -> stock {
     return Product.all if stock == "false"
-    Product.where("stock = 0")
+    Product.joins("LEFT OUTER JOIN stock_managements ON products.id = stock_managements.product_id").where(stock_managements: {stock: 0})
   }
+
   # scope :search, -> (search_params) do
   #   return if search_params.blank?
   #   name_like(search_params[:name])

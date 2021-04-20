@@ -1,5 +1,32 @@
 class Address < ApplicationRecord
+  PHONE_REGEX = /\A[0-9][-0-9]+\z/ #先頭ハイフン以外かつ半角数字とハイフンのみ
+
   belongs_to :user
+
+  # バリデーション
+  validates :company_name, presence: true
+  validates :zip_code, presence: true
+  validates :prefectures, presence: true
+  validates :municipation, presence: true
+  validates :address_1, presence: true
+  validates :tel, presence: true
+  validates :phone_number, format: { with: PHONE_REGEX, message: '先頭ハイフン以外かつ半角数字と半角ハイフン(-)以外は使用できません。'}
+  validate :zip_code_valid?
+
+  # zip_codeのカスタムバリデーション
+  def zip_code_valid?
+    if zip_code.present? # zip_codeがない場合はvalidatesの方でエラーだす。
+      if zip_code.include?('-')
+        if zip_code.split('-')[0].present? && zip_code.split('-')[1].present?
+          if zip_code.split('-')[0].length != 3 || zip_code.split('-')[1].length != 4
+            errors.add(:zip_code, '郵便番号のフォーマットが間違っています。')
+          end
+        end
+      else
+        errors.add(:zip_code, '郵便番号のフォーマットが間違っています。')
+      end
+    end
+  end
 
   scope :address_search, -> (address_params) do
     return if address_params.blank?

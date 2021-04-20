@@ -1,24 +1,36 @@
 .container
   .row
     .col-12
+      | 現在位置：
+      = link_to 'トップ', root_path
+      | >サイトマップ
+    / サイドメニュー
+    = render 'layouts/side_menu'
+
+    .col-9
+      br
       h1 サイトマップ
       h2 ホーム
-      = link_to 'トップ', root_path
-      div
-      - if @freepages.present?
-        - @freepages.each do |fp|
-          = link_to fp.page_title, free_pages_path(url_value: fp.url)
-          div
-      = link_to 'よくある質問', inqueries_path
-      div
-      = link_to 'サイトマップ', sitemap_path
-      div
+      ul
+        li = link_to 'トップ', root_path
+        - if @freepages.present?
+          - @freepages.each do |fp|
+            li = link_to fp.page_title, free_pages_path(url_value: fp.url)
+        li = link_to 'よくある質問', inqueries_path
+        li サイトマップ
+      br
       h2 商品情報
-      p 全カテゴリ一覧
+      ul
+        li = link_to '全カテゴリ一覧',search_products_path(product: {category: nil})
+      br
       h2 商品カテゴリ
-      - if @categories.present?
-        - @categories.each do |c|
-          = c.name
-          div
+      ul
+        - product_categories.each do |parent_category|
+          - if Product.where(category_id: parent_category.id).count == 0
+            li = "#{parent_category.name}(#{Product.where(category_id: parent_category.id).count})"
+          - else
+            li = link_to "#{parent_category.name}(#{Product.where(category_id: parent_category.id).count})", search_products_path(product: {category: parent_category.name})
+      br
       h2 会員サービス
-      = link_to '会員ページ', mypage_path
+      ul
+        li = link_to '会員ページ', mypage_path

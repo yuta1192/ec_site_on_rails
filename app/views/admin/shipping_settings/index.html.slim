@@ -1,186 +1,311 @@
-p 送料設定
-p ショップの基本となる送料を設定します。
-p 商品登録時に、「基本設定に従う」を選択した商品に適用されます。
-p 送料が有料の場合は、全国一律送料または地域別送料（送料表1～10）のいずれかが適用されます。
-p 同一梱包設定欄に入力した場合は、入力個数までを同一送料にします。
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 送料設定
+      div
+        ul.border.border-5.border-muted
+          li.small ショップの基本となる送料を設定します。
+          li.small 商品登録時に、「基本設定に従う」を選択した商品に適用されます。
+          li.small 送料が有料の場合は、全国一律送料または地域別送料（送料表1～10）のいずれかが適用されます。
+          li.small 同一梱包設定欄に入力した場合は、入力個数までを同一送料にします。
 
-= form_with model: @shipping_setting, url: admin_shipping_setting_path(@shipping_setting), method: :patch, local: true do |f|
-  = f.label '送料無料サービス'
-  div
-  | ご注文商品の合計が
-  = f.text_field :free_shipping_service
-  |  円 （税抜）以上の場合、送料を無料にする。
-  p ※空欄の場合には適用されません。
-  = f.submit '保存'
+      br
+      = form_with model: @shipping_setting, url: admin_shipping_setting_path(@shipping_setting), method: :patch, local: true do |f|
+        table.table-sm.table-bordered.bg-light.image-max-size
+          thead
+            tr
+              th = f.label '送料無料サービス'
+          tbody
+            tr
+              td
+                | ご注文商品の合計が
+                = f.text_field :free_shipping_service
+                |  円 （税抜）以上の場合、送料を無料にする。
+                div
+                | ※空欄の場合には適用されません。
+            tr
+              th = f.submit '保存'
 
-  div
-  = f.label '基本設定'
-  p ショップ全体の基本となる送料を設定してください。商品管理にて商品毎に設定することもできます。
-  |
-  = f.radio_button :a, 1, checked: true
-  | 送料無料
-  div
-  = f.radio_button :a, 2
-  | 全国一律
-  = f.text_field :aiueo
-  | 円
-  div
-  = f.radio_button :a, 3
-  | 地域別　（
-  = f.select :postage_id, postage_select
-  | を適用する）
-  div
-  p 選択した送料表に従って地域別の送料を適用します。
-  p ※送料表（1～10）を、このページ下部の＜送料表＞より設定してください。
-  div
-  p ［ 同一送料設定 ］
-  | ご注文商品
-  = f.text_field :nu
-  | 個ごとに送料を加算する。
-  p ※上記設定で、「全国一律」または「地域別」を選択した場合に設定してください。
-  p ※空欄の場合は1個ごとの設定になります。
-  p ※注文数に関係なく送料を固定にする場合には、0 を入力してください。
-  p ※この設定は商品登録の送料設定で「基本設定に従う」を選んだ商品に適用されます。
-  = f.submit '保存'
-  div
+        br
+        table.table-sm.table-bordered.bg-light.image-max-size
+          tbody
+            tr
+              th = f.label '基本設定'
+            tr
+              td
+                | ショップ全体の基本となる送料を設定してください。商品管理にて商品毎に設定することもできます。
+                div
+                = f.radio_button :a, 1, checked: true
+                | 送料無料
+                div
+                = f.radio_button :a, 2
+                | 全国一律
+                = f.text_field :aiueo
+                | 円
+                div
+                = f.radio_button :a, 3
+                | 地域別　（
+                = f.select :postage_id, postage_select
+                | を適用する）
+                div
+                br
+                | 選択した送料表に従って地域別の送料を適用します。
+                div
+                | ※送料表（1～10）を、このページ下部の＜送料表＞より設定してください。
+                br
+                border-bottom
+                | ［ 同一送料設定 ］
+                div
+                | ご注文商品
+                = f.text_field :nu
+                | 個ごとに送料を加算する。
+                div
+                | ※上記設定で、「全国一律」または「地域別」を選択した場合に設定してください。
+                div
+                | ※空欄の場合は1個ごとの設定になります。
+                div
+                | ※注文数に関係なく送料を固定にする場合には、0 を入力してください。
+                div
+                | ※この設定は商品登録の送料設定で「基本設定に従う」を選んだ商品に適用されます。
+                div
+            tr
+              th = f.submit '保存'
 
-  = f.label '送料表'
-  p 全国47都道府県別に送料を設定します。（送料表は10種類まで登録できます。）
-  p 設定する送料表（1～10）を選択し、都道府県ごとに送料を設定してください。
-  p このページ上の「基本送料設定」で「地域別」を選択する場合または＜商品管理／商品登録＞で商品個別の送料設定をする際にあらかじめ設定が必要です。
-  div
-  | ●送料表を選択してください。 ・・・・・
-  = f.select :postage_id, postage_select
-  div
-  | 北海道
-  = f.text_field :a_1
-  | 円
-  | 青森県
-  = f.text_field :a_2
-  | 円
-  | 岩手県
-  = f.text_field :a_3
-  | 円
-  | 宮城県
-  = f.text_field :a_4
-  | 円
-  div
-  | 秋田県
-  = f.text_field :a_5
-  | 円
-  | 山形県
-  = f.text_field :a_6
-  | 円	福島県
-  = f.text_field :a_7
-  | 円	茨城県
-  = f.text_field :a_8
-  | 円
-  div
-  | 栃木県
-  = f.text_field :a_9
-  | 円	群馬県
-  = f.text_field :a_10
-  | 円	埼玉県
-  = f.text_field :a_11
-  | 円	千葉県
-  = f.text_field :a_12
-  | 円
-  div
-  | 東京都
-  = f.text_field :a_13
-  | 円	神奈川県
-  = f.text_field :a_14
-  | 円	新潟県
-  = f.text_field :a_15
-  | 円	富山県
-  = f.text_field :a_16
-  | 円
-  div
-  | 石川県
-  = f.text_field :a_17
-  | 円	福井県
-  = f.text_field :a_18
-  | 円	山梨県
-  = f.text_field :a_19
-  | 円	長野県
-  = f.text_field :a_20
-  | 円
-  div
-  | 岐阜県
-  = f.text_field :a_21
-  | 円	静岡県
-  = f.text_field :a_22
-  | 円	愛知県
-  = f.text_field :a_23
-  | 円	三重県
-  = f.text_field :a_24
-  | 円
-  div
-  | 滋賀県
-  = f.text_field :a_25
-  | 円	京都府
-  = f.text_field :a_26
-  | 円	大阪府
-  = f.text_field :a_27
-  | 円	兵庫県
-  = f.text_field :a_28
-  | 円
-  div
-  | 奈良県
-  = f.text_field :a_29
-  | 円	和歌山県
-  = f.text_field :a_30
-  | 円	鳥取県
-  = f.text_field :a_31
-  | 円	島根県
-  = f.text_field :a_32
-  | 円
-  div
-  | 岡山県
-  = f.text_field :a_33
-  | 円	広島県
-  = f.text_field :a_34
-  | 円	山口県
-  = f.text_field :a_35
-  | 円	徳島県
-  = f.text_field :a_36
-  | 円
-  div
-  | 香川県
-  = f.text_field :a_37
-  | 円	愛媛県
-  = f.text_field :a_38
-  | 円	高知県
-  = f.text_field :a_39
-  | 円	福岡県
-  = f.text_field :a_40
-  | 円
-  div
-  | 佐賀県
-  = f.text_field :a_41
-  | 円	長崎県
-  = f.text_field :a_42
-  | 円	熊本県
-  = f.text_field :a_43
-  | 円	大分県
-  = f.text_field :a_44
-  | 円
-  div
-  | 宮崎県
-  = f.text_field :a_45
-  | 円	鹿児島県
-  = f.text_field :a_46
-  | 円	沖縄県
-  = f.text_field :a_47
-  | 円
-  div
-  = f.submit '保存'
+        br
+        table.table-sm.table-bordered.bg-light.image-max-size
+          thead
+            tr
+              th = f.label '送料表'
+            tr
+              td
+                | 全国47都道府県別に送料を設定します。（送料表は10種類まで登録できます。）
+                div
+                | 設定する送料表（1～10）を選択し、都道府県ごとに送料を設定してください。
+                div
+                | このページ上の「基本送料設定」で「地域別」を選択する場合または＜商品管理／商品登録＞で商品個別の送料設定をする際にあらかじめ設定が必要です。
+                div
+                border
+                  | ●送料表を選択してください。 ・・・・・
+                  = f.select :postage_id, postage_select
+                table.table-sm.table-bordered.bg-light.text-nowrap
+                  tr
+                    th 北海道
+                    td
+                      = f.text_field :a_1, style: 'width: 80%;'
+                      | 円
+                    th 青森県
+                    td
+                      = f.text_field :a_2, style: 'width: 80%;'
+                      | 円
+                    th 岩手県
+                    td
+                      = f.text_field :a_3, style: 'width: 80%;'
+                      | 円
+                    th 宮城県
+                    td
+                      = f.text_field :a_4, style: 'width: 80%;'
+                      | 円
+                  tr
+                    th 秋田県
+                    td
+                      = f.text_field :a_5, style: 'width: 80%;'
+                      | 円
+                    th 山形県
+                    td
+                      = f.text_field :a_6, style: 'width: 80%;'
+                      | 円
+                    th 福島県
+                    td
+                      = f.text_field :a_7, style: 'width: 80%;'
+                      | 円
+                    th 茨城県
+                    td
+                      = f.text_field :a_8, style: 'width: 80%;'
+                      | 円
+                  tr
+                    th 栃木県
+                    td
+                      = f.text_field :a_9, style: 'width: 80%;'
+                      | 円
+                    th 群馬県
+                    td
+                      = f.text_field :a_10, style: 'width: 80%;'
+                      | 円
+                    th 埼玉県
+                    td
+                      = f.text_field :a_11, style: 'width: 80%;'
+                      | 円
+                    th 千葉県
+                    td
+                      = f.text_field :a_12, style: 'width: 80%;'
+                      | 円
+                  tr
+                    th 東京都
+                    th
+                      = f.text_field :a_13, style: 'width: 80%;'
+                      | 円
+                    th 神奈川県
+                    td
+                      = f.text_field :a_14, style: 'width: 80%;'
+                      | 円
+                    th 新潟県
+                    td
+                      = f.text_field :a_15, style: 'width: 80%;'
+                      | 円
+                    th 富山県
+                    td
+                      = f.text_field :a_16, style: 'width: 80%;'
+                      | 円
+                  tr
+                    th 石川県
+                    td
+                      = f.text_field :a_17, style: 'width: 80%;'
+                      | 円
+                    th 福井県
+                    td
+                      = f.text_field :a_18, style: 'width: 80%;'
+                      | 円
+                    th 山梨県
+                    td
+                      = f.text_field :a_19, style: 'width: 80%;'
+                      | 円
+                    th 長野県
+                    td
+                      = f.text_field :a_20, style: 'width: 80%;'
+                      | 円
+                  tr
+                    th 岐阜県
+                    td
+                      = f.text_field :a_21, style: 'width: 80%;'
+                      | 円
+                    th 静岡県
+                    td
+                      = f.text_field :a_22, style: 'width: 80%;'
+                      | 円
+                    th 愛知県
+                    td
+                      = f.text_field :a_23, style: 'width: 80%;'
+                      | 円
+                    th 三重県
+                    td
+                      = f.text_field :a_24, style: 'width: 80%;'
+                      | 円
+                  tr
+                    th 滋賀県
+                    td
+                      = f.text_field :a_25, style: 'width: 80%;'
+                      | 円
+                    th 京都府
+                    td
+                      = f.text_field :a_26, style: 'width: 80%;'
+                      | 円
+                    th 大阪府
+                    td
+                      = f.text_field :a_27, style: 'width: 80%;'
+                      | 円
+                    th 兵庫県
+                    td
+                      = f.text_field :a_28, style: 'width: 80%;'
+                      | 円
+                  tr
+                    th 奈良県
+                    td
+                      = f.text_field :a_29, style: 'width: 80%;'
+                      | 円
+                    th 和歌山県
+                    td
+                      = f.text_field :a_30, style: 'width: 80%;'
+                      | 円
+                    th 鳥取県
+                    td
+                      = f.text_field :a_31, style: 'width: 80%;'
+                      | 円
+                    th 島根県
+                    td
+                      = f.text_field :a_32, style: 'width: 80%;'
+                      | 円
+                  tr
+                    th 岡山県
+                    td
+                      = f.text_field :a_33, style: 'width: 80%;'
+                      | 円
+                    th 広島県
+                    td
+                      = f.text_field :a_34, style: 'width: 80%;'
+                      | 円
+                    th 山口県
+                    td
+                      = f.text_field :a_35, style: 'width: 80%;'
+                      | 円
+                    th 徳島県
+                    td
+                      = f.text_field :a_36, style: 'width: 80%;'
+                      | 円
+                  tr
+                    th 香川県
+                    td
+                      = f.text_field :a_37, style: 'width: 80%;'
+                      | 円
+                    th 愛媛県
+                    td
+                      = f.text_field :a_38, style: 'width: 80%;'
+                      | 円
+                    th 高知県
+                    td
+                      = f.text_field :a_39, style: 'width: 80%;'
+                      | 円
+                    th 福岡県
+                    td
+                      = f.text_field :a_40, style: 'width: 80%;'
+                      | 円
+                  tr
+                    th 佐賀県
+                    td
+                      = f.text_field :a_41, style: 'width: 80%;'
+                      | 円
+                    th 長崎県
+                    td
+                      = f.text_field :a_42, style: 'width: 80%;'
+                      | 円
+                    th 熊本県
+                    td
+                      = f.text_field :a_43, style: 'width: 80%;'
+                      | 円
+                    th 大分県
+                    td
+                      = f.text_field :a_44, style: 'width: 80%;'
+                      | 円
+                  tr
+                    th 宮崎県
+                    td
+                      = f.text_field :a_45, style: 'width: 80%;'
+                      | 円
+                    th 鹿児島県
+                    td
+                      = f.text_field :a_46, style: 'width: 80%;'
+                      | 円
+                    th 沖縄県
+                    td
+                      = f.text_field :a_47, style: 'width: 80%;'
+                      | 円
+                br
+            tr.text-center
+              th = f.submit '保存'
 
-  div
-  = f.label '送料消費税[?]'
-  = f.radio_button :e, 1, checked: true
-  | 税込
-  = f.radio_button :e, 2
-  | 税別
-  div
-  = f.submit '保存'
+
+        br
+        table.table-sm.table-bordered.bg-light.image-max-size
+          thead
+            tr
+              th = f.label '送料消費税[?]'
+          tbody
+            tr
+              td
+                = f.radio_button :e, 1, checked: true
+                | 税込
+                = f.radio_button :e, 2
+                | 税別
+            tr
+              th = f.submit '保存'

@@ -1,0 +1,61 @@
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 住所選択
+      div
+
+      = form_with model: @products, url: product_search_admin_order_managements_path(user: @user.id, address: @address.id), local: true, method: :get do |f|
+        = f.hidden_field :user, value: @user.id
+        = f.hidden_field :address, value: @address.id
+        table.table.table-bordered.bg-light
+          tbody
+            tr
+              th = f.label "商品No."
+              td.bg-white = f.text_field :product_number, class: 'image-max-size'
+              th = f.label "商品名"
+              td.bg-white = f.text_field :name, value: '', class: 'image-max-size'
+            tr
+              th = f.label 'JANコード'
+              td.bg-white = f.text_field :jan_code, class: 'image-max-size'
+              th = f.label '商品状態'
+              td.bg-white
+                = f.label '新商品'
+                = f.check_box :new_flg, {class: "check_box"}, 'true', 'false'
+                = f.label '人気商品'
+                = f.check_box :popular_flg, {class: "check_box"}, 'true', 'false'
+                = f.label '在庫切れ'
+                = f.check_box :stock, {class: "check_box"}, 'true', 'false'
+            tr
+              th = f.label 'カテゴリ'
+              td.bg-white = f.select :category_name, select_categories_name, class: 'image-max-size'
+              th = f.label '出荷元'
+              td.bg-white = f.text_field :manufacturer, class: 'image-max-size'
+            tr.text-center
+              th[colspan="4"] = f.submit '検索'
+
+      table.table.table-bordered.bg-light
+        thead.text-nowrap
+          tr
+            th 商品ID
+            th 商品No.
+            th 商品名
+            th 在庫
+            th 値段
+            th 
+        tbody.text-nowrap
+          = form_with url: admin_order_managements_path, method: :get, local: true do |f|
+            - @products.each do |p|
+              tr
+                td = p.id
+                td = p.product_number
+                td
+                  = image_tag(p.image.to_s, class: "admin-image-size")
+                  = p.name
+                td = p.stock_management.stock
+                td
+                  = p.price
+                  | 円
+                td
+                  = link_to '選択', admin_order_managements_path(user: @user.id, address: @address.id, product_id: p.id)

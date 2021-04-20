@@ -1,102 +1,117 @@
 .container
   .row
-    .col-12
-      p 出荷情報検索
-      p 出荷情報を検索することができます。
-      p 検索条件を入力して「検索」ボタンを押してください。次ページにて検索結果が受注番号別に一覧表示されます。
-      p 指定期間内に売れた商品全てを確認したい場合は、期間設定以外の項目は設定せずに検索してください。
-      p データフォーマット設定でB2・出荷CSV・出荷商品を設定後、ダウンロードできるようになります。
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 出荷情報検索
+      div
+        ul.border.border-5.border-muted
+          li.small 出荷情報を検索することができます。
+          li.small 検索条件を入力して「検索」ボタンを押してください。次ページにて検索結果が受注番号別に一覧表示されます。
+          li.small 指定期間内に売れた商品全てを確認したい場合は、期間設定以外の項目は設定せずに検索してください。
+          li.small データフォーマット設定でB2・出荷CSV・出荷商品を設定後、ダウンロードできるようになります。
 
       = form_with model: Shipment, url: search_admin_shipments_path, method: :get, local: true do |f|
-        = f.label 'お届け希望日'
-        = f.radio_button :preferred_arrival_date, 1, checked: true
-        | 期間指定
-        = f.text_field :preferred_arrival_start_date, placeholder: "yyyymmdd"
-        | ～
-        = f.text_field :preferred_arrival_end_date, placeholder: "yyyymmdd"
-        = f.check_box :preferred_arrival_unspecified, {class: "check_box"}, 'true', 'false'
-        | 未入力を含む
-        = f.radio_button :preferred_arrival_date, 2
-        | 未入力のみ
-        = f.radio_button :preferred_arrival_date, 3
-        | 入力済みのみ
-        div
-        = f.label '受注日'
-        = f.text_field :order_start_date, placeholder: "yyyymmdd"
-        | ～
-        = f.text_field :order_end_date, placeholder: "yyyymmdd"
-        div
-        = f.label 'キーワード [?]'
-        = f.text_field :keyword
-        div
-        /これはAddress
-        = f.label '都道府県'
-        = f.select :prefectures, Address.prefectures.keys, {prompt: '選択してください'}
-        div
-        /これshipping_originはorderhistory
-        = f.label '出荷元'
-        = f.select :shipping_origin, shipping_origin
-        div
-        = f.label '引当状況'
-        = f.check_box :partially_reserved, {class: "check_box"}, 'true', 'false'
-        | 一部引当済[?]
-        = f.check_box :allocated, {class: "check_box"}, 'true', 'false'
-        | 引当済[?]
-        div
-        = f.label '出荷状況'
-        = f.check_box :untreated, {class: "check_box"}, 'true', 'false'
-        | 未処理
-        = f.check_box :can_be_shipped, {class: "check_box"}, 'true', 'false'
-        | 出荷可能
-        = f.check_box :undertake, {class: "check_box"}, 'true', 'false'
-        | 着手
-        = f.check_box :shipped, {class: "check_box"}, 'true', 'false'
-        | 出荷済
-        div
-        = f.label '出荷予定日'
-        = f.radio_button :expected_shipping_date , 1, checked: true
-        | 期間指定
-        = f.text_field :expected_shipping_start_date, placeholder: "yyyymmdd"
-        | ～
-        = f.text_field :expected_shipping_end_date, placeholder: "yyyymmdd"
-        = f.check_box :expected_shipping_date_unspecified, {class: "check_box"}, 'true', 'false'
-        | 未指定も含む
-        = f.radio_button :expected_shipping_date ,2
-        | 未入力のみ
-        = f.radio_button :expected_shipping_date ,3
-        | 入力済みのみ
-        div
-        = f.label '出荷日'
-        = f.text_field :ship_start_date , placeholder: "yyyymmdd"
-        | ～
-        = f.text_field :ship_end_date , placeholder: "yyyymmdd"
-        = f.check_box :ship_date_unspecified, {class: "check_box"}, 'true', 'false'
-        | 未入力を含む
-        div
-        = f.label '売上計上日'
-        = f.radio_button :sales_record_date , 1, checked: true
-        | 期間指定
-        = f.text_field :sales_record_start_date , placeholder: "yyyymmdd"
-        | ～
-        = f.text_field :sales_record_end_date , placeholder: "yyyymmdd"
-        = f.check_box :sales_record_date_unspecified, {class: "check_box"}, 'true', 'false'
-        | 未指定も含む
-        = f.radio_button :sales_record_date ,2
-        | 未入力のみ
-        = f.radio_button :sales_record_date ,3
-        | 入力済みのみ
-        div
-        = f.label 'データダウンロード'
-        = f.select :data_download, data_download
-        | トータルピッキング
-        = f.select :total_picking, total_picking
-        | 個別ピッキング
-        = f.select :individual_picking, individual_picking
-        div
-        = f.label 'キャンセル'
-        = f.select :cancel, cancel
-        div
-        = f.label '表示順序'
-        = f.select :order_display, order_display
-        div
-        = f.submit '検索'
+        table.table-sm.table-bordered.bg-light
+          tbody
+            tr
+              th = f.label 'お届け希望日'
+              td
+                = f.radio_button :preferred_arrival_date, 1, checked: true
+                | 期間指定
+                = f.text_field :preferred_arrival_start_date, placeholder: "yyyymmdd"
+                | ～
+                = f.text_field :preferred_arrival_end_date, placeholder: "yyyymmdd"
+                = f.check_box :preferred_arrival_unspecified, {class: "check_box"}, 'true', 'false'
+                | 未入力を含む
+                = f.radio_button :preferred_arrival_date, 2
+                | 未入力のみ
+                = f.radio_button :preferred_arrival_date, 3
+                | 入力済みのみ
+            tr
+              th = f.label '受注日'
+              td
+                = f.text_field :order_start_date, placeholder: "yyyymmdd"
+                | ～
+                = f.text_field :order_end_date, placeholder: "yyyymmdd"
+            tr
+              th = f.label 'キーワード [?]'
+              td = f.text_field :keyword
+            tr
+              /todo これはAddress
+              th = f.label '都道府県'
+              td = f.select :prefectures, Address.prefectures.keys, {prompt: '選択してください'}
+            tr
+              /todo これshipping_originはorderhistory
+              th = f.label '出荷元'
+              td = f.select :shipping_origin, shipping_origin
+            tr
+              th = f.label '引当状況'
+              td
+                = f.check_box :partially_reserved, {class: "check_box"}, 'true', 'false'
+                | 一部引当済[?]
+                = f.check_box :allocated, {class: "check_box"}, 'true', 'false'
+                | 引当済[?]
+            tr
+              th = f.label '出荷状況'
+              td
+                = f.check_box :untreated, {class: "check_box"}, 'true', 'false'
+                | 未処理
+                = f.check_box :can_be_shipped, {class: "check_box"}, 'true', 'false'
+                | 出荷可能
+                = f.check_box :undertake, {class: "check_box"}, 'true', 'false'
+                | 着手
+                = f.check_box :shipped, {class: "check_box"}, 'true', 'false'
+                | 出荷済
+            tr
+              th = f.label '出荷予定日'
+              td
+                = f.radio_button :expected_shipping_date , 1, checked: true
+                | 期間指定
+                = f.text_field :expected_shipping_start_date, placeholder: "yyyymmdd"
+                | ～
+                = f.text_field :expected_shipping_end_date, placeholder: "yyyymmdd"
+                = f.check_box :expected_shipping_date_unspecified, {class: "check_box"}, 'true', 'false'
+                | 未指定も含む
+                = f.radio_button :expected_shipping_date ,2
+                | 未入力のみ
+                = f.radio_button :expected_shipping_date ,3
+                | 入力済みのみ
+            tr
+              th = f.label '出荷日'
+              td
+                = f.text_field :ship_start_date , placeholder: "yyyymmdd"
+                | ～
+                = f.text_field :ship_end_date , placeholder: "yyyymmdd"
+                = f.check_box :ship_date_unspecified, {class: "check_box"}, 'true', 'false'
+                | 未入力を含む
+            tr
+              th = f.label '売上計上日'
+              td
+                = f.radio_button :sales_record_date , 1, checked: true
+                | 期間指定
+                = f.text_field :sales_record_start_date , placeholder: "yyyymmdd"
+                | ～
+                = f.text_field :sales_record_end_date , placeholder: "yyyymmdd"
+                = f.check_box :sales_record_date_unspecified, {class: "check_box"}, 'true', 'false'
+                | 未指定も含む
+                = f.radio_button :sales_record_date ,2
+                | 未入力のみ
+                = f.radio_button :sales_record_date ,3
+                | 入力済みのみ
+            tr
+              th = f.label 'データダウンロード'
+              td
+                = f.select :data_download, data_download
+                | トータルピッキング
+                = f.select :total_picking, total_picking
+                | 個別ピッキング
+                = f.select :individual_picking, individual_picking
+            tr
+              th = f.label 'キャンセル'
+              td = f.select :cancel, cancel
+            tr
+              th = f.label '表示順序'
+              td = f.select :order_display, order_display
+            tr.text-center
+              th[colspan="2"] = f.submit '検索', class: 'btn btn-primary'

@@ -1,57 +1,105 @@
-p 受注情報一覧  ／ 該当データ ： 1件
-p 受注情報の検索結果一覧ページです。
-p 一覧の「詳細」ボタンを押すと、受注情報の詳細が表示されます。
-p 全商品がキャンセルされた受注情報は背景が灰色で表示されます。
-p 「出荷日」は、入力されている出荷日で異なるものがある場合は、早い出荷日を表示し（※）が付きます。
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 受注情報一覧  ／ 該当データ ： 1件
+      div
+        ul.border.border-5.border-muted
+          li.small 受注情報の検索結果一覧ページです。
+          li.small 一覧の「詳細」ボタンを押すと、受注情報の詳細が表示されます。
+          li.small 全商品がキャンセルされた受注情報は背景が灰色で表示されます。
+          li.small 「出荷日」は、入力されている出荷日で異なるものがある場合は、早い出荷日を表示し（※）が付きます。
 
-div
-p
-  |
-    受注日 #{search_order_date}
-    お届け希望日 #{search_preferred_date}
-p
-  |
-    受注番号 #{search_order_number}
-    決済方式 #{search_payment_method}
-p
-  |
-    送り状番号 #{search_invoice_number}
-    入金 #{search_payment}
-p
-  |
-    出荷状況 #{shipping_status}
-    引当状況 #{allocation_status}
-p
-  |
-    送料確認 #{search_postage_confirmation}
-    商品No. #{search_product_number}
-p
-  |
-    商品名 #{search_product_name}
-    メーカー #{search_manufacturer}
-p
-  |
-    送り状番号 #{search_invoice_number}
-    会社名 #{search_company_name}
-p
-  |
-    部署コード #{search_department_code}
-    部署名 #{search_department_name}
-p
-  |
-    会員コード #{search_member_code}
-    担当者名 #{search_contact_name}
-p
-  |
-    出荷元 #{search_shipping_origin}
-    電話番号 #{search_tel}
-p
-  |
-    メールアドレス #{search_mail_address}
-    キャンセル #{search_cancel}
-p
-  |
-    表示順序 #{search_order_display}
+      .border.bg-warning
+        .m-3
+          p 受注日 : #{search_order_date} / お届け希望日 : #{search_preferred_date} / 受注番号 : #{search_order_number} / 決済方式 : #{search_payment_method}
+          p 送り状番号 : #{search_invoice_number} / 入金 : #{search_payment} / 出荷状況 : #{shipping_status} / 引当状況 : #{allocation_status}
+          p 送料確認 #{search_postage_confirmation} / 商品No. #{search_product_number} / 商品名 #{search_product_name} / メーカー #{search_manufacturer}
+          p 送り状番号 #{search_invoice_number} / 会社名 #{search_company_name} / 部署コード #{search_department_code} / 部署名 #{search_department_name}
+          p 会員コード #{search_member_code} / 担当者名 #{search_contact_name} / 出荷元 #{search_shipping_origin} / 電話番号 #{search_tel}
+          p メールアドレス #{search_mail_address} / キャンセル #{search_cancel} / 表示順序 #{search_order_display}
+          = link_to '検索条件変更', order_history_admin_order_managements_path, class: 'btn btn-primary'
 
-- @order_histories.each do |f|
-  = f.id
+      br
+      - if @order_histories.present?
+        - if params[:per] == "50"
+          p.text-right
+            | 表示件数：
+            = link_to '25件 ', admin_products_path(per: 25)
+            | 50件
+            = link_to ' 100件', admin_products_path(per: 100)
+        - elsif params[:per] == "100"
+          p.text-right
+            | 表示件数：
+            = link_to '25件 ', admin_products_path(per: 25)
+            = link_to '50件 ', admin_products_path(per: 50)
+            | 100件
+        - else
+          p.text-right
+            | 表示件数：
+            | 25件
+            = link_to ' 50件', admin_products_path(per: 50)
+            = link_to ' 100件', admin_products_path(per: 100)
+
+        table.table.table-bordered.bg-light.table-responsive.table-sm
+          thead
+            tr.text-nowrap
+              th 受注番号
+              th 会社名（部署名）
+              th 担当者名
+              th お届け先
+              th お届け希望日時
+              th 出荷元
+              th 商品名
+              th 出荷予定日
+              th 出荷日
+              th ﾋﾟｯｷﾝｸﾞ
+              th CSV
+              th 状況
+              th 詳細
+          tbody
+            - @order_histories.each do |oh|
+              tr
+                td = oh.order_number
+                td
+                  = oh.address.company_name
+                  div
+                  | (#{oh.address.department_name})
+                td
+                  = oh.address.name_sei
+                  = oh.address.name_mei
+                td
+                  = oh.address.zip_code
+                  div
+                  = oh.address.prefectures
+                  = oh.address.municipation
+                  div
+                  = oh.address.address_1
+                  = oh.address.address_2
+                - if oh.preferred_date_flg == true
+                  td
+                    = oh.preferred_date_start
+                    | ~
+                    = oh.preferred_date_end
+                - else
+                  td
+                    | -
+                / todo ここの出荷系を追加しておくこと
+                td -
+                td
+                  - oh.order_history_products.each do |ohp|
+                    | [#{ohp.product.product_number}]
+                    div
+                    = ohp.product.name
+                    div
+                td -
+                td -
+                td -
+                td -
+                td -
+                td = link_to '詳細'
+        = paginate @order_histories
+      - else
+        p 取得できませんでした。
+        p 検索条件を変更してください。

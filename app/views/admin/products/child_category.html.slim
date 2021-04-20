@@ -1,0 +1,26 @@
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      - if params[:category][:id].present?
+        p.bg-secondary ◎ 更新
+        div
+        = form_with model: @category, url: category_update_admin_products_path, method: :patch, local: true do |f|
+          = f.hidden_field :id, value: @category.id
+          = f.hidden_field :child_id, value: @child_category.present? ? @child_category.id : nil
+          table.table.table-bordered.bg-light
+            tbody
+              tr
+                th[colspan="2"] 第１階層
+              tr
+                th = f.label 'カテゴリー名'
+                td.bg-white = f.text_field :name, value: @category_name
+              tr
+                th[colspan="2"] 第２階層
+              tr
+                = f.fields_for :child_categories do |ff|
+                  th = ff.label '小カテゴリー名'
+                  td.bg-white = ff.text_field :name, value: @child_category_name
+              tr.text-center
+                th[colspan="2"] = f.submit '更新'

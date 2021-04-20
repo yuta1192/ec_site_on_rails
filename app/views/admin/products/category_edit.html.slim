@@ -1,18 +1,45 @@
-- if params[:category][:id].present?
-  = form_with model: @category, url: category_update_admin_products_path, method: :patch, local: true do |f|
-    = f.hidden_field :id
-    = f.label 'カテゴリー名'
-    = f.text_field :name
-    = f.fields_for :child_categories do |ff|
-      / = ff.hidden_field :id, value: 6 ここは前の画面でカテゴリ、小カテゴリ両方選ばせるようにする。
-      = ff.label '小カテゴリー名'
-      = ff.text_field :name
-    = f.submit '登録'
-- else
-  = form_with model: @category, url: category_create_admin_products_path, method: :post, local: true do |f|
-    = f.label 'カテゴリー名'
-    = f.text_field :name
-    = f.fields_for :child_categories do |ff|
-      = ff.label '小カテゴリー名'
-      = ff.text_field :name
-    = f.submit '登録'
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      - if params[:category][:id].present?
+        p.bg-secondary ◎ 更新
+        div
+        = form_with model: @category, url: child_category_admin_products_path, method: :get, local: true do |f|
+          = f.hidden_field :id
+          table.table.table-bordered.bg-light
+            tbody
+              tr
+                th[colspan="2"] 第１階層
+              tr
+                th = f.label 'カテゴリー名'
+                td.bg-white = f.label :name
+              tr
+                th[colspan="2"] 第２階層
+              tr
+                = f.fields_for :child_categories do |ff|
+                  th = ff.label '小カテゴリー名'
+                  td.bg-white = f.select :child_id, child_category
+              tr.text-center
+                th[colspan="2"] = f.submit '参照'
+
+      - else
+        p.bg-secondary ◎ 新規作成
+        div
+        = form_with model: @category, url: category_create_admin_products_path, method: :post, local: true do |f|
+          table.table.table-bordered.bg-light
+            tbody
+              tr
+                th[colspan="2"] 第１階層
+              tr
+                th = f.label 'カテゴリー名'
+                td.bg-white = f.text_field :name
+              tr
+                th 第２階層
+              tr
+                = f.fields_for :child_categories do |ff|
+                  th = ff.label '小カテゴリー名'
+                  td.bg-white = ff.text_field :name
+              tr.text-center
+                th[colspan="2"] = f.submit '登録'

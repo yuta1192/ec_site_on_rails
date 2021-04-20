@@ -1,7 +1,17 @@
-p 会員グループ登録
-p 会員グループ登録
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 会員グループ登録
+      div
+        ul.border.border-5.border-muted
+          li.small 会員グループ登録
 
-= form_with model: @group, url: admin_groups_path, method: :post, local: true do |f|
-  = f.label 'グループ名'
-  = f.text_field :name
-  = f.submit '保存'
+      table.table-sm.table-bordered.bg-light
+        tbody
+          tr
+            = form_with model: @group, url: admin_groups_path, method: :post, local: true do |f|
+              th = f.label 'グループ名'
+              td = f.text_field :name
+              td = f.submit '保存', class: 'btn btn-primary'

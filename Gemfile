@@ -1,12 +1,13 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.5.1'
+ruby '2.7.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.4'
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+gem 'sqlite3', groups: %w(test development), require: false
+gem 'pg', groups: %w(production), require: false
 # Use Puma as the app server
 gem 'puma', '~> 3.12'
 # Use SCSS for stylesheets
@@ -37,6 +38,8 @@ gem "actionpack", ">= 5.2.4.3"
 gem "activestorage", ">= 5.2.4.3"
 gem 'bootstrap', '~> 4.5.0'
 gem 'jquery-rails'
+# seed
+gem 'seed-fu'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
@@ -48,6 +51,12 @@ gem 'html2slim'
 # 画像系
 gem 'carrierwave'
 gem 'rmagick'
+# 表示切り替えや表示個数の指定のため
+gem 'kaminari'
+gem 'kaminari-bootstrap'
+# カレンダー
+gem 'fullcalendar-rails'
+gem 'momentjs-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

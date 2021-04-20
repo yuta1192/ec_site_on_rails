@@ -1,1 +1,17 @@
-p 完了しました。
+.container
+  .row
+    .col-12
+      | 現在位置：
+    / サイドメニュー
+    = render 'layouts/side_menu'
+    .col-9
+      - if @error.present?
+        .alert
+          - @error.full_messages.each do |message|
+          li = message
+      p お問い合わせフォーム
+      br
+      br
+      h2 お問い合わせが完了しました。
+      br
+      .text-center = link_to 'トップへ戻る', root_path

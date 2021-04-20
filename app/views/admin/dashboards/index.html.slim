@@ -1,0 +1,117 @@
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+        p.bg-secondary ◎ ステータス
+        / todo パスワードが変更されていない場合のみ表示するように変更(ユーザー管理編集ページ作成必要あり)
+        p.text-danger
+          | パスワードが初期設定のままになっています。
+          = link_to 'ユーザ管理', admin_dashboard_path
+          | より変更してください。
+      / メール障害 todo メール障害発生の有無によってここの表示を変える。gemを導入する。
+      table.table.table-bordered.bg-light
+        thead
+          tr
+            th □ メール送信障害状況
+        tbody.text-center
+          tr
+            td メール送信障害は発生していません
+      / 新着情報リスト(helperに記載している箇所あり)
+      table.table.table-bordered.bg-light
+        thead
+          tr
+            th[colspan="5"] □ 新着情報リスト
+        tbody
+          tr.text-center
+            th
+            th 受注件数
+            th 受注個数
+            th 受注金額（税別）
+            th 会員登録
+          tr.bg-white
+            td.bg-light
+              | 今月 :
+              = today_year_and_month
+            td = @order_histories_current_month.count
+            td = @month_order_products
+            td = @month_total_price
+            td = @month_add_user
+          tr.bg-white
+            td.bg-light
+              | 昨日 :
+              = Date.yesterday.strftime("%Y/%m/%d")
+              = yesterday_week
+            td = @order_histories_yesterday.count
+            td = @yesterday_order_products
+            td = @yesterday_total_price
+            td = @yesterday_add_user
+          tr.bg-white
+            td.bg-light
+              | 今日 :
+              = Date.today.strftime("%Y/%m/%d")
+              = today_week
+            td = @order_histories_today.count
+            td = @today_order_products
+            td = @today_total_price
+            td = @today_add_user
+      / 商品の状況
+      table.table.table-bordered.bg-light
+        thead.text-left
+          tr
+            th[colspan="2"] □ 商品の状況
+        tbody
+          tr
+            th.text-left.max-width-30 登録商品数
+            td.bg-white
+              = @total_products
+          tr
+            th.text-left 公開商品数
+            td.bg-white
+              = @release_total_products
+          tr
+            th.text-left 在庫切れ商品数
+            td.bg-white
+              = @out_of_stock
+      .row
+        .col-sm-6
+          / 2021/2受注個数ベスト5
+          table.table.table-bordered.bg-light
+            thead.text-left
+              tr
+                th[colspan="4"] □ 2021/2受注個数ベスト5
+            tbody
+              tr
+                th.text-center 順位
+                th.text-center 商品名(商品No.)
+                th.text-center 単価（税別）
+                th.text-center 数量
+              - @best_five.each.with_index(1) do |bf, i|
+                tr.bg-white
+                  td
+                    | #{i}位
+                  td
+                    = bf.product.name
+                    div
+                    = "(#{bf.product.product_number})"
+                  td = bf.product.price
+                  td = OrderHistoryProduct.where(product_id: bf.product_id).sum(:num)
+                    / todo 直接書くのダメダメだめダメ
+        .col-sm-6
+          / 2021/2受注金額ベスト5
+          table.table.table-bordered.bg-light
+            thead.text-left
+              tr
+                th[colspan="4"] □ 2021/2受注金額ベスト5
+            tbody
+              tr
+                th.text-center 順位
+                th.text-center 商品名(商品No.)
+                th.text-center 単価（税別）
+                th.text-center 数量
+              / todo ここは受注個数ベスト順で5個まで表示するように処理する。なければある個数までにする。わかんねえええええ
+              tr.bg-white
+                td
+                td
+                td
+                td

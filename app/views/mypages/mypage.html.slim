@@ -1,35 +1,45 @@
 .container
   .row
-    .col-4
-      p マイページ
+    .col-12
+      | 現在位置：
+      = link_to 'トップ', root_path
+      | > 会員ページ
+    / サイドメニュー
+    = render 'layouts/mypage_side_menu'
 
-      h2 会員メニュー
-      p 左
-      = "#{@current_user.name_sei + @current_user.name_mei}"
-      p さま
-      = link_to 'マイページトップ', mypage_path
-      div
+    .col-9
+      br
+      h2.bg-secondary 会員ページ
+      / list
+      br
       = link_to 'マイリスト', user_my_lists_path(@current_user)
-      div
+      .border-bottom
+      .col-1
+      .col-11
+        | マイリスト（お気に入り）に登録されている商品を確認することができます。
+        br
+        | マイリストから、商品を注文することができます。
+      br
       = link_to '注文履歴', user_order_histories_path(@current_user)
-      div
+      .border-bottom
+      .col-1
+      .col-11
+        | お客様のこれまでのご注文履歴をご確認いただけます。
+      br
       = link_to 'アドレス帳', user_addresses_path(@current_user)
-      div
+      .border-bottom
+      .col-1
+      .col-11
+        | お届け先をあらかじめご登録いただけます。
+      br
       = link_to 'パスワード変更', password_edit_user_path(@current_user)
-      div
+      .border-bottom
+      .col-1
+      .col-11
+        | ショップ名会員サービスのログインに使用するパスワードが変更できます。
+      br
       = link_to 'ログアウト', logout_path, method: :post
-
-    .col-8
-      h2 マイページ
-      p 右
-      = link_to 'マイリスト', user_my_lists_path(@current_user)
-      p マイリスト（お気に入り）に登録されている商品を確認することができます。
-      p マイリストから、商品を注文することができます。
-      = link_to '注文履歴', user_order_histories_path(@current_user)
-      p お客様のこれまでのご注文履歴をご確認いただけます。
-      = link_to 'アドレス帳', user_addresses_path(@current_user)
-      p お届け先をあらかじめご登録いただけます。
-      = link_to 'パスワード変更', password_edit_user_path(@current_user)
-      p ショップ名会員サービスのログインに使用するパスワードが変更できます。
-      = link_to 'ログアウト', logout_path, method: :post
-      p 公共のパソコンでご利用されているお客様は、必ずログアウトしてください。
+      .border-bottom
+      .col-1
+      .col-11
+        | 公共のパソコンでご利用されているお客様は、必ずログアウトしてください。

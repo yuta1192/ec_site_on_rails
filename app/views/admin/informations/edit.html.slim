@@ -1,6 +1,12 @@
-p 新着情報編集
-= form_with model: Information, url: admin_informations_path, method: :post, local: true do |f|
-  = f.label "タイトル"
-  = f.text_field :title
-
-  = render partial: 'admin/informations/form', locals: { f: f }
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    = render 'admin/informations/information_list'
+    .col-2
+    .col-10
+      - if @information.errors.any?
+        .alert
+          - @information.errors.full_messages.each do |message|
+            li = message
+      = form_with model: @information, url: admin_information_path, method: :patch, local: true do |info|
+        = render partial: 'form', locals: { f: info, edit: true }

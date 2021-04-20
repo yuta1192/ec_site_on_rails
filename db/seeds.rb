@@ -8,7 +8,6 @@
 
 Product.create!(
   name: "商品A",
-  category_name: "オリジナル商品",
   category_id: 1,
   price: 1000,
   member_price: 900,
@@ -36,7 +35,6 @@ Product.create!(
 
 Product.create!(
   name: "商品BBBBBBBB",
-  category_name: "悲しみの書品",
   category_id: 2,
   price: 3000,
   member_price: 100,

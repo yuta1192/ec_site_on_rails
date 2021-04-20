@@ -1,0 +1,45 @@
+/ todo コントローラに検索機能追加、indexとview同じなので統合すること
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 会員グループ一覧
+      br
+
+      table.table-sm.table-bordered.bg-light
+        tbody
+          tr
+            th[colspan="2"] 会員グループ検索
+          = form_with model: Group, url: search_admin_groups_path, method: :get, local: true do |f|
+            tr
+              th = f.label 'グループ名'
+              td = f.text_field :name,  value: ''
+            tr.text-center
+              th[colspan="2"] = f.submit '検索'
+
+      br
+      table.table-sm.table-bordered.bg-light.image-max-size
+        thead
+          tr
+            th ID
+            th グループ名
+            th 登録日
+            th 会員数
+            th サブ商品数
+            th 詳細
+            th 削除
+        tbody
+          - if @groups.present?
+            - @groups.each do |group|
+              tr
+                td = group.id
+                td = group.name
+                td = group.created_at.strftime('%Y%m%d')
+                td = group.group_addresses.count
+                td 0
+                td = link_to '詳細', admin_group_path(group)
+                td = link_to '削除', admin_group_path(group), method: :delete
+          - else
+            tr
+              td[colspan="7"] 検索したグループは存在しませんでした。

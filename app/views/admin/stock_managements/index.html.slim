@@ -1,38 +1,65 @@
-p 在庫管理
-p 在庫数の編集、履歴の確認ができます。
-p 「一括更新」ボタンから在庫数の調整が行えます。検索後に「一括更新」ボタンを押した場合には、検索結果の在庫編集になります。
-p 「詳細」ボタンから、在庫数変動の履歴が確認できます。
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 在庫管理
+      div
+        ul.border.border-5.border-muted
+          li.small 在庫数の編集、履歴の確認ができます。
+          li.small 「一括更新」ボタンから在庫数の調整が行えます。検索後に「一括更新」ボタンを押した場合には、検索結果の在庫編集になります。
+          li.small 「詳細」ボタンから、在庫数変動の履歴が確認できます。
 
-= form_with model: Product, url: search_admin_stock_managements_path, method: :get, local: true do |f|
-  = f.label 'キーワード [?]'
-  = f.text_field :keyword
-  div
-  = f.label '商品状態'
-  = f.check_box :new_flg, {}, true, false
-  | 新商品
-  = f.check_box :popular_flg, {}, true, false
-  | 人気商品
-  = f.check_box :stock, {}, true, false
-  | 在庫切れ
-  = f.label 'カテゴリ'
-  = f.select :category, select_categories
-  div
-  = f.label '出荷元'
-  = f.select :shipping_origin, select_shipping_origin
-  div
-  = f.submit '検索'
+      br
+      = form_with model: Product, url: search_admin_stock_managements_path, method: :get, local: true do |f|
+        table.table-sm.table-bordered.bg-light.image-max-size
+          tr
+            th = f.label 'キーワード [?]'
+            td[colspan="3"] = f.text_field :keyword, class: 'image-max-size'
+          tr
+            th = f.label '商品状態'
+            td
+              = f.check_box :new_flg, {}, true, false
+              | 新商品
+              = f.check_box :popular_flg, {}, true, false
+              | 人気商品
+              = f.check_box :stock, {}, true, false
+              | 在庫切れ
+            th = f.label 'カテゴリ'
+            td = f.select :category, select_categories
+          tr
+            th = f.label '出荷元'
+            td[colspan="3"] = f.select :shipping_origin, select_shipping_origin
+          tr.text-center
+            th[colspan="4"] = f.submit '検索'
 
-div
-= link_to '一括更新', bluk_edit_admin_stock_managements_path(previous_action: params[:action])
+      br
+      .text-center = link_to '一括更新', bluk_edit_admin_stock_managements_path(previous_action: params[:action]), class: 'btn btn-primary'
 
-p 商品No. 	商品名 	出荷元	在庫 	引当  [?]	詳細
-- @products.each do |p|
-  = p.product_number
-  = p.name
-  = ShippingOrigin.find_by(id: p.shipping_origin_id).shipping_origin_name
-  = OrderHistoryProduct.where(product_id: p.id).sum(:num)
-  = link_to '詳細', admin_stock_management_path(p)
-  div
+      br
+      table.table-sm.table-bordered.bg-light.image-max-size
+        thead
+          tr
+            th 商品No.
+            th 商品名
+            th 出荷元
+            th 在庫
+            th 引当
+            th 詳細
+        tbody
+          - @products.each do |p|
+            tr
+              td = p.product_number
+              td = p.name
+              - if p.shipping_origin.present?
+                td = p.shipping_origin.shipping_origin_name
+              - else
+                td
+              td = p.stock_management.stock
+              td 引き当て
+              td = link_to '詳細', admin_stock_management_path(p)
 
-div
-= link_to '一括更新', bluk_edit_admin_stock_managements_path(previous_action: params[:action])
+
+      br
+      .text-center = link_to '一括更新', bluk_edit_admin_stock_managements_path(previous_action: params[:action]), class: 'btn btn-primary'
+      / todo 一括更新は現ページで表示されている情報をそのまま一括ページで表示させる。なので機能合っているか確認。

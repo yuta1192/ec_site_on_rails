@@ -2,159 +2,168 @@
   .row
     .col-12
       = form_with url: user_carts_path, method: :post, local: true do |f|
-        p Step3 最終確認
+        br
+        h3.border-bottom.border-5.border-info Step3 最終確認
         p.text-right カートの情報 - 情報入力 - 最終確認・ご注文
 
         p 以下の内容でよろしければ、下の「この内容で注文する」ボタンを押してください。
-        p.text-danger ※他の画面に遷移するとご入力いただいた情報が失われてしまうことがありますのでご注意ください。
+        .text-danger
+          | ※他の画面に遷移するとご入力いただいた情報が失われてしまうことがありますのでご注意ください。
 
-        .row
-          .col-2
-            p 商品番号
-          .col-2
-            p 品名
-          .col-2
-            p 税率
-          .col-2
-            p 単価（税抜）
-          .col-2
-            p 数量
-          .col-2
-            p 金額（税抜）
-        - @cart_items.each do |cart_item|
+        - if @error.present?
+          .alert
+            = @error
+
+        .border.pt-3
+          table.table.table-bordered.mx-auto(style="width:95%;")
+            tr.bg-secondary
+              th 商品番号
+              th 品名
+              th 税率
+              th 単価（税抜）
+              th 数量
+              th 金額（税抜）
+            - @cart_items.each do |cart_item|
+              tr
+                td = cart_item.product.product_number
+                td = cart_item.product.name
+                td 10%
+                td
+                  = cart_item.product.price
+                  | 円
+                td = cart_item.quantity
+                td
+                  = cart_item.product.price * cart_item.quantity
+                  | 円
+                  = f.hidden_field "cart_item[][product_id]", value: cart_item.product_id
+                  = f.hidden_field "cart_item[][quantity]", value: cart_item.quantity
+          br
           .row
-            .col-2
-              = cart_item.product.product_number
-            .col-2
-              = cart_item.product.name
-            .col-2
-              | 10%
-            .col-2
-              = cart_item.product.price
-              | 円
-            .col-2
-              = cart_item.quantity
-            .col-2
-              = cart_item.product.price * cart_item.quantity
-              | 円
-              = f.hidden_field "cart_item[][product_id]", value: cart_item.product_id
-              = f.hidden_field "cart_item[][quantity]", value: cart_item.quantity
-
-        p.text-right 商品金額（税抜）#{@total_price}円
-        p.text-right 送料 1000円
-        p.text-right 消費税 1000円
-        p.text-right.font-weight-bolder 合計金額 #{@total_price + 1000 + 1000}円
-
-        p お客様情報
-        .row
-          .col-4.text-right
-            p 会社名
-          .col-8
-            p #{@current_user.company_name}
-        .row
-          .col-4.text-right
-            p 部署名
-          .col-8
-            p #{@current_user.department_name}
-        .row
-          .col-4.text-right
-            p 担当者名
-          .col-8
-            p #{@current_user.name_sei + @current_user.name_mei}
-        .row
-          .col-4.text-right
-            p 電話番号
-          .col-8
-            #{@current_user.phone_number}
-
-        p お届け先情報
-        - if params[:companies]
+            .col-md-7
+            .col-md-5
+              table.table.table-borderless
+                tbody
+                  tr
+                    th.bg-info 商品金額（税抜）10%
+                    td
+                      = @product_total_price
+                      | 円
+                  tr
+                    th.bg-info 送料
+                    td 1000円
+                  tr
+                    th.bg-info 代引手数料
+                    td 無料
+                  tr
+                    th.bg-info 消費税 10%
+                    td
+                      = @shouhi_zei
+                      | 円
+                  tr.border-top
+                    th.bg-info 合計金額
+                    td
+                      = @total_price
+                      | 円
+        br
+        p.border-bottom お客様情報
+        .border.pt-3
+          table.table.table-borderless.mx-auto(style="width:95%;")
+            tr
+              th.text-right.bg-info(style="width:30%;") 会社名
+              td.border-bottom = @current_user.company_name
+            tr
+              th.text-right.bg-info 部署名
+              td.border-bottom = @current_user.department_name
+            tr
+              th.text-right.bg-info 担当者名
+              td.border-bottom
+                | #{@current_user.name_sei + @current_user.name_mei}
+            tr
+              th.text-right.bg-info 電話番号
+              td.border-bottom = @current_user.phone_number
+        br
+        p.border-bottom お届け先情報
+        - if params[:use_basic_email_flg].to_i == 2
           = f.fields_for :addresses do |ff|
-            .row
-              .col-4.text-right
-                = ff.label "会社名 #{@address_attribute[:company_name]}"
-              .col-8
-                = ff.hidden_field :company_name, value: @address_attribute[:company_name]
-            .row
-              .col-4.text-right
-                = ff.label "お名前 #{@address_attribute[:name_sei]} #{@address_attribute[:name_mei]}"
-              .col-8
-                = ff.hidden_field :user_name, value: "#{@address_attribute[:name_sei]}#{@address_attribute[:name_mei]}"
-            .row
-              .col-4.text-right
-                = ff.label "郵便番号 #{@address_attribute[:zip_code]}"
-              .col-8
-                = ff.hidden_field :zip_code, value: @address_attribute[:zip_code]
-            .row
-              .col-4.text-right
-                = ff.label "住所 #{@address_attribute[:prefectures]} #{@address_attribute[:municipation]} #{@address_attribute[:address_1]} #{@address_attribute[:address_2]}"
-              .col-8
-                = ff.hidden_field :address, value: "#{@address_attribute[:prefectures]} #{@address_attribute[:municipation]} #{@address_attribute[:address_1]} #{@address_attribute[:address_2]}"
-            .row
-              .col-4.text-right
-                = ff.label "電話番号 #{@address_attribute[:tel]}"
-              .col-8
-                = ff.hidden_field :tel, value: @address_attribute[:tel]
-            .row
-              .col-4.text-right
-                = ff.label "携帯番号 #{@address_attribute[:phone_number]}"
-              .col-8
-                = ff.hidden_field :phone_number, value: @address_attribute[:phone_number]
+            .border.pt-3
+              table.table.table-borderless.mx-auto(style="width:95%;")
+                tr
+                  th.text-right.bg-info(style="width:30%;") 会社名
+                  td.border-bottom = @address_attribute[:company_name]
+                  = ff.hidden_field :company_name, value: @address_attribute[:company_name]
+                tr
+                  th.text-right.bg-info お名前
+                  td.border-bottom = "#{@address_attribute[:name_sei] + @address_attribute[:name_mei]}"
+                  = ff.hidden_field :user_name, value: "#{@address_attribute[:name_sei]}#{@address_attribute[:name_mei]}"
+                tr
+                  th.text-right.bg-info 郵便番号
+                  td.border-bottom = "#{@address_attribute[:zip_code_1] + "-" + @address_attribute[:zip_code_2]}"
+                  = ff.hidden_field :zip_code, value: "#{@address_attribute[:zip_code_1] + "-" + @address_attribute[:zip_code_2]}"
+                tr
+                  th.text-right.bg-info 住所
+                  td.border-bottom = "#{@address_attribute[:prefectures] + @address_attribute[:municipation] + @address_attribute[:address_1] + @address_attribute[:address_2]}"
+                  = ff.hidden_field :prefectures, value: @address_attribute[:prefectures]
+                  = ff.hidden_field :municipation, value: @address_attribute[:municipation]
+                  = ff.hidden_field :address_1, value: @address_attribute[:address_1]
+                  = ff.hidden_field :address_2, value: @address_attribute[:address_2]
+                tr
+                  th.text-right.bg-info 電話番号
+                  td.border-bottom = "#{@address_attribute[:tel_1] + "-" + @address_attribute[:tel_2] + "-" + @address_attribute[:tel_3]}"
+                  = ff.hidden_field :tel, value: "#{@address_attribute[:tel_1] + "-" + @address_attribute[:tel_2] + "-" + @address_attribute[:tel_3]}"
+                tr
+                  th.text-right.bg-info 携帯番号
+                  td.border-bottom = "#{@address_attribute[:phone_number_1] + "-" + @address_attribute[:phone_number_2] + "-" + @address_attribute[:phone_number_3]}"
+                  = ff.hidden_field :phone_number, value: "#{@address_attribute[:phone_number_1] + "-" + @address_attribute[:phone_number_2] + "-" + @address_attribute[:phone_number_3]}"
+              = f.hidden_field :use_basic_email_flg, 2
+              = f.hidden_field :address_create, value: params[:address_create]
         - else
-          .row
-            .col-4.text-right
-              p お届け先
-            .col-8
-              p お客様情報と同じ住所に配送する
-        .row
-          .col-4.text-right
-            p お届け日
-          .col-8
-            - if params[:date] == "99"
-              = f.label "指定なし"
-              = f.hidden_field :date, value: nil
-              div
-            - else
-              = f.label "#{@date}"
-              = f.hidden_field :date, value: @date
-
-        p お支払い方法
-        .row
-          .col-4.text-right
-            p 締め払い
-          .col-8
-            p 御社規定に従います
-
-        p お届け希望日時指定・備考
-        - if params[:date] == "99"
-          .row
-            .col-4.text-right
-              p お届け希望日
-            .col-8
-              = f.label "指定なし"
-              = f.hidden_field :date, value: nil
-        - else
-          .row
-            .col-4.text-right
-              p お届け希望日
-            .col-8
-              = f.label "#{@date}"
-              = f.hidden_field :date, value: @date
-
-        p 備考・連絡事項等
-        .row
-          .col-4.text-right
-            = f.label "備考"
-          .col-8
-            = params[:remakes]
-            = f.hidden_field :remakes, value: params[:remakes]
-
+          .border.pt-3
+            table.table.table-borderless.mx-auto(style="width:95%;")
+              tr
+                th.text-right.bg-info(style="width:30%;") お届け先
+                td.border-bottom お客様情報と同じ住所に配送する
+                = hidden_field_tag :use_basic_email_flg, 1
+        br
+        p.border-bottom お支払い方法
+        .border.pt-3
+          table.table.table-borderless.mx-auto(style="width:95%;")
+            tr
+              th.text-right.bg-info(style="width:30%;") お支払い方法
+              - if params[:date] == "99"
+                td.border-bottom 締め払い
+                = f.hidden_field :payment_method, value: 1
+              - else
+                td.border-bottom 御社規定に従います
+                = f.hidden_field :payment_method, value: 2
+        br
+        p.border-bottom お届け希望日時指定
+        .border.pt-3
+          table.table.table-borderless.mx-auto(style="width:95%;")
+            tr
+              th.text-right.bg-info(style="width:30%;") お届け希望日
+              - if params[:date] == "99"
+                td.border-bottom 指定なし
+                = f.hidden_field :preferred_date_flg, value: 0
+                = f.hidden_field :date, value: nil
+              - else
+                td.border-bottom = @date
+                = f.hidden_field :preferred_date_flg, value: 1
+                = f.hidden_field :date, value: @date
+        br
+        p.border-bottom 備考・連絡事項等
+        .border.pt-3
+          table.table.table-borderless.mx-auto(style="width:95%;")
+            tr
+              th.text-right.bg-info(style="width:30%;") 備考
+              td.border-bottom
+                = simple_format(params[:remakes])
+                = f.hidden_field :remakes, value: params[:remakes]
+        br
         p 以上の内容でよろしければ、下の「この内容で注文する」ボタンを押してください。
-
         .row
           .col-3
           .col-3
-            = link_to '訂正する', edit_user_cart_path(@current_user, @current_user.cart_id), class: "form-control text-center"
+            = link_to '訂正する', edit_user_cart_path(@current_user, @current_user.cart.id), class: "form-control text-center"
           .col-3
             = f.submit 'この内容で注文する', class: "form-control"
           .col-3

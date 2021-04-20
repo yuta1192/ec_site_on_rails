@@ -1,34 +1,14 @@
 .container
   .row
+    = render 'layouts/admin_left_menu'
+    = render 'admin/informations/information_list'
     .col-2
-      = render 'layouts/admin_left_menu'
     .col-10
-      p 新着情報
-      p トップページの新着情報欄を変更できます。
-      p 実際の項目の表示は、日付の降順です。（同じ日付の場合、最後に更新したものが上）
-      p 新着情報は公開/非公開合わせて80項目まで登録が可能です。
-      
-      = form_with model: Information, url: admin_informations_path, method: :post, local: true do |f|
-        = f.label "タイトル"
-        = f.text_field :title
-        p 日付	掲載期間	内容	添付	公開	変更	削除
-        - @informations.each do |im|
-          = im.created_at
-          - if im.published_start.present?
-            p #{im.published_start} ~ #{im.published_end}
-          = im.detail
-          = im.attachment_file1
-          = im.attachment_file2
-          = im.attachment_file3
-          = im.attachment_file4
-          = im.attachment_file5
-          - if im.release_flg == true
-            公開
-          - else
-            非公開
-          = link_to "変更", edit_admin_information_path(im.id)
-          = link_to "削除", admin_information_path(im.id)
-      
-          p 新着情報登録
-          = render partial: 'admin/informations/form', locals: { f: f }
-      
+      - if @information.errors.any?
+        .alert
+          - @information.errors.full_messages.each do |message|
+            li = message
+      = form_with model: @information, url: admin_informations_path, method: :post, local: true do |info|
+        = render partial: 'form', locals: { f: info, edit: false }
+
+    / = render 'admin/informations/information_list'

@@ -1,0 +1,30 @@
+/.col-9
+br
+p.border-bottom アドレス帳
+p お届け先をあらかじめご登録いただけます。
+- if @address.errors.any?
+  .alert
+    - @address.errors.full_messages.each do |message|
+      li = message
+h4.border-bottom お届け先
+br
+= form_with model: Address, url: new_user_address_path, local: true, method: :get do |f|
+  = f.submit '新規お届け先を追加'
+br
+- @addresses.each do |address|
+  .row
+    .col-md-8.border-bottom
+      = address.company_name
+      = link_to '編集', edit_user_address_path(address.user_id, address.id), class: 'btn btn-light float-right'
+  br
+
+  / - if params[:action] == "new"
+  /   br
+  /   h4.border-bottom お届け先情報
+  /   = form_with model: @address, url: user_addresses_path, method: :get, local: true do |f|
+  /     = render partial: 'form', locals: { f: f }
+  / - if params[:action] == "edit"
+  /   br
+  /   h4.border-bottom お届け先情報
+  /   = form_with model: @address, url: user_address_path, method: :patch, local: true do |f|
+  /     = render partial: 'form', locals: { f: f }

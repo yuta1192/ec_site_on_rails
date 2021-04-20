@@ -1,76 +1,94 @@
 .container
   .row
     .col-12
+      | 現在位置：
+      = link_to 'トップ', root_path
+      | > クイックオーダー
+    / サイドメニュー
+    = render 'layouts/side_menu'
+
+    .col-9
+      br
+      .row.bg-secondary.border-bottom.border-primary
+        .h3 クイックオーダー
+      .row.bg-warning
+        | ご希望の商品コード／品番と数量を入力して、
+        br
+        | 「カートへ入れる」ボタンを押してください。
+      br
       = form_with url: quick_order_products_path, method: :post, local: true do |f|
-        p quick_order
-        p ご希望の商品コード／品番と数量を入力して、
-        p 「カートへ入れる」ボタンを押してください。
-        .row
-          .col-1
+
+        / hedder
+        .row.no-gutters.text-center.bg-success
+          .col-1.border
             p No.
-          .col-4
+          .col-4.border
             p 商品コード／品番
-          .col-2
+          .col-2.pl-3.border
             p 数量
-          .col-4
+          .col-4.border
             p 商品名／メーカー
-          .col-1
+          .col-1.border
             p 削除
-        .row
+        / 登録フォーム
+        .row.no-gutters.text-center
+          / 1
           .col-1
             = f.label "1"
           .col-4
             = f.text_field "[order][id_1]product_code", class: 'form-control'
-          .col-2
-            = f.number_field "[order][id_1]quantity", class: 'form-control'
+          .col-2.pl-3
+            = f.text_field "[order][id_1]quantity", class: 'form-control'
           .col-4
             p 商品名のリンク出てくる
           .col-1
             p 削除
-        .row
+          / 2
           .col-1
             = f.label "2"
           .col-4
             = f.text_field "[order][id_2]product_code", class: 'form-control'
-          .col-2
-            = f.number_field "[order][id_2]quantity", class: 'form-control'
+          .col-2.pl-3
+            = f.text_field "[order][id_2]quantity", class: 'form-control'
           .col-4
             p 商品名のリンク出てくる
           .col-1
             p 削除
-        .row
+          / 3
           .col-1
             = f.label "3"
           .col-4
             = f.text_field "[order][id_3]product_code", class: 'form-control'
-          .col-2
-            = f.number_field "[order][id_3]quantity", class: 'form-control'
+          .col-2.pl-3
+            = f.text_field "[order][id_3]quantity", class: 'form-control'
           .col-4
             p 商品名のリンク出てくる
           .col-1
             p 削除
-        .row
+          / 4
           .col-1
             = f.label "4"
           .col-4
             = f.text_field "[order][id_4]product_code", class: 'form-control'
-          .col-2
-            = f.number_field "[order][id_4]quantity", class: 'form-control'
+          .col-2.pl-3
+            = f.text_field "[order][id_4]quantity", class: 'form-control'
           .col-4
             p 商品名のリンク出てくる
           .col-1
             p 削除
-        .row
+          / 5
           .col-1
             = f.label "5"
           .col-4
             = f.text_field "[order][id_5]product_code", class: 'form-control'
-          .col-2
-            = f.number_field "[order][id_5]quantity", class: 'form-control'
+          .col-2.pl-3
+            = f.text_field "[order][id_5]quantity", class: 'form-control'
           .col-4
             p 商品名のリンク出てくる
           .col-1
             p 削除
+          / ボタン
+        br
         .row
           .col-4
           .col-4.text-center

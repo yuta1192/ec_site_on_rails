@@ -1,81 +1,261 @@
-p 受注入力
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 受注入力
+      div
 
-p 受注番号		受注日
-p お支払い方法（必須）		合計	0円
-p カート備考欄
-p お客様情報
-= form_with model: User, url: admin_order_managements_path, local: true, method: :post do |f|
-  p 会員コード
-  p 担当者名
-  = f.label '姓'
-  = f.text_field :name_sei
-  = f.label '名'
-  = f.text_field :name_mei
-  div
-  p 担当者名 フリガナ
-  = f.label '姓'
-  = f.text_field :name_sei_kana
-  = f.label '名'
-  = f.text_field :name_mei_kana
-  p  ※全角カタカナ
-  div
-  = f.label '会社コード'
-  = f.text_field :company_code
-  div
-  = f.label '会社名'
-  = f.text_field :company_name
-  div
-  = f.label '会社名 フリガナ'
-  = f.text_field :company_name_kana
-  div
-  = f.label '部署コード'
-  = f.text_field :department_code
-  div
-  = f.label '部署名'
-  = f.text_field :department_name
-  div
-  = f.label '部署名 フリガナ'
-  = f.text_field :department_name_kana
-  div
-  = f.label '郵便番号'
-  = f.text_field :zip_code
-  p ※半角数字
-  = f.label '都道府県'
-  = f.select :prefectures, Address.prefectures.keys, {prompt: '選択してください'}
-  div
-  = f.label '市区町村'
-  = f.text_field :municipation
-  div
-  = f.label '地番、番地'
-  = f.text_field :address_1
-  div
-  = f.label 'ビル、マンション、アパート名など'
-  = f.text_field :address_2
-  div
-  = f.label '電話番号（必須）'
-  = f.text_field :tel
-  p ※半角数字
-  = f.label '携帯番号'
-  = f.text_field :phone_number
-  p ※半角数字
-  = f.label 'FAX番号'
-  = f.text_field :fax_number
-  p   ※半角数字
-  = f.label 'メールアドレス（必須）'
-  = f.text_field :mail_address
-  div
-  = f.label '会員情報備考'
-  = f.text_field :member_info
-  p お届け先
-  = f.radio_button :place, 1, checked: true
-  = f.label "ご依頼人情報と同じ住所に配送する"
-  div
-  = f.radio_button :place, 2
-  = f.label "1件の異なる住所に配送する"
-  div
-  = f.label 'お届け日'
-  = f.text_field :delivery_day
-  p ※「yyyymmdd」の形式で入力してください。
-  p （yyyy＝年／mm＝月／dd＝日）　例）20080808
+      table.table.table-bordered.bg-light
+        tbody
+          tr
+            th.max-width-30 お客様情報:検索ワード
+            td.bg-white.max-width-70 = link_to 'ユーザーを検索する', user_search_admin_order_managements_path, class: 'btn btn-primary'
+      - if @user.present?
+        table.table.table-bordered.bg-light
+          tbody
+            tr
+              th.max-width-30 会員コード
+              td.bg-white.max-width-70 = @user.member_id
+            tr
+              th 担当者名
+              td.bg-white
+                = @user.name_sei
+                = @user.name_mei
+            tr
+              th
+                | 担当者名 フリガナ
+                div
+                | ※全角カタカナ
+              td.bg-white
+                = @user.name_sei_kana
+                = @user.name_mei_kana
+            tr
+              th 会社コード
+              td.bg-white = @user.company_code
+            tr
+              th 会社名
+              td.bg-white = @user.company_name
+            tr
+              th 会社名 フリガナ
+              td.bg-white = @user.company_name_kana
+            tr
+              th 部署コード
+              td.bg-white = @user.department_code
+            tr
+              th 部署名
+              td.bg-white = @user.department_name
+            tr
+              th 部署名 フリガナ
+              td.bg-white = @user.department_name_kana
 
-  p 商品No.	商品名	単価（税抜）	個数[?]	金額（税抜）	削除
+        table.table.table-bordered.bg-light
+          tbody
+            / addressを取得するかuserから取得するか選択
+            tr
+              th ご依頼人情報と異なる住所に送る場合はこちらで検索
+              td.bg-white = link_to '住所を調べる', address_search_admin_order_managements_path(user: @user), class: 'btn btn-primary'
+
+        table.table.table-bordered.bg-light
+          tbody
+            / 異なる住所(@address)を取得した場合
+            - if @address.present?
+              tr
+                th[rowspan="5"]
+                  | 住所
+              tr
+                th 郵便番号
+                td.bg-white
+                  = @address.zip_code
+              tr
+                th 都道府県
+                td.bg-white = @address.prefectures
+              tr
+                th 地番、番地
+                td.bg-white = @address.municipation
+              tr
+                th ビル、マンション、アパート名など
+                td.bg-white
+                  = @address.address_1
+                  div
+                  = @address.address_2
+              tr
+                th 電話番号（必須）
+                td.bg-white[colspan="2"]
+                  = @address.tel
+                  div
+                  | ※半角数字
+              tr
+                th 携帯番号
+                td.bg-white[colspan="2"]
+                  = @address.phone_number
+                  div
+                  | ※半角数字
+              tr
+                th FAX番号
+                td.bg-white[colspan="2"]
+                  = @address.fax
+                  div
+                  | ※半角数字
+              tr
+                th メールアドレス（必須）
+                td.bg-white[colspan="2"] = @user.e_mail
+              tr
+                th 会員情報備考
+                td.bg-white[colspan="2"] = @user.rank
+
+            / @addressを選択していない場合@userから取得
+            - else
+              tr
+                th[rowspan="5"]
+                  | 住所
+              tr
+                th 郵便番号
+                td.bg-white
+                  = @user.zip_code
+              tr
+                th 都道府県
+                td.bg-white = @user.prefectures
+              tr
+                th 地番、番地
+                td.bg-white = @user.municipation
+              tr
+                th ビル、マンション、アパート名など
+                td.bg-white
+                  = @user.address_1
+                  div
+                  = @user.address_2
+              tr
+                th 電話番号（必須）
+                td.bg-white[colspan="2"]
+                  = @user.tel
+                  div
+                  | ※半角数字
+              tr
+                th 携帯番号
+                td.bg-white[colspan="2"]
+                  = @user.phone_number
+                  div
+                  | ※半角数字
+              tr
+                th FAX番号
+                td.bg-white[colspan="2"]
+                  = @user.fax
+                  div
+                  | ※半角数字
+              tr
+                th メールアドレス（必須）
+                td.bg-white[colspan="2"] = @user.e_mail
+              tr
+                th 会員情報備考
+                td.bg-white[colspan="2"] = @user.rank
+        br
+
+        / @user がある場合は表示させる
+        = form_with model: OrderHistory, url: admin_order_managements_path, method: :post, local: true do |f|
+          = f.hidden_field :user, value: @user.id
+          = f.hidden_field :address, value: @address.id
+          table.table.table-bordered.bg-light
+            tbody
+              table.table.table-bordered.bg-light
+                tbody
+                  tr
+                    th = f.label 'お届け日'
+                    td.bg-white
+                      = f.date_field :delivery_day
+                  tr
+                    th[colspan="2"]
+                      table.table.table-bordered.bg-light
+                        thead
+                          tr
+                            th 商品No.
+                            th 商品名
+                            th 単価（税抜）
+                            th 個数
+                            th
+                        - if @products.present?
+                          tbody
+                            - @products.each.with_index(0) do |p, i|
+                              tr
+                                td.bg-white = p.product_number
+                                td.bg-white = p.name
+                                td.bg-white
+                                  = p.price
+                                  | 円
+                                td.bg-white
+                                  | 購入個数:
+                                  = f.number_field "product[#{p.id}]"
+                                  div
+                                  - if p.purchase_limit.present?
+                                    = "購入制限#{p.purchase_limit}"
+                                  - else
+                                    | 購入制限なし
+                                td.bg-white = link_to '削除', select_product_delete_admin_order_managements_path(product_id: p.id, user: @user.id, address: @address.id), method: :post
+                  tr
+                    th
+                      table.table.table-bordered.bg-light
+                        thead
+                          tr
+                            th[colspan="2"] 商品追加
+                        tbody
+                          tr
+                            th 商品No.から追加
+                            td.bg-white
+                              = f.text_field :product_number
+                              = f.submit '追加', name: "product_add"
+                          tr
+                            th 商品検索から追加
+                            td.bg-white = link_to '商品検索', product_search_admin_order_managements_path(user: @user.id, address: @address.id), class: 'btn btn-primary'
+          br
+          table.table.table-bordered.bg-light
+            thead
+              tr
+                th お支払い方法
+                td
+                  = f.radio_button :payment_method_flg, 0, checked: true
+                  | 指定なし
+                  = f.radio_button :payment_method_flg, 1, class: 'ml-2'
+                  | 一括代金引換（代引）
+                  = f.radio_button :payment_method_flg, 2, class: 'ml-2'
+                  | 締め払い
+              tr
+                th カート備考欄
+                td.bg-white = f.text_area :memo, class: 'text-area'
+            tbody
+              tr.text-center
+                td.bg-white[colspan="2"]
+                  = f.check_box :send_mail_flg, {class: "check_box"}, true, false
+                  | 登録メール送信
+                  = f.submit '登録', class: 'btn btn-primary ml-5'
+
+      / @userがない初期値
+      - else
+        table.table.table-bordered.bg-light
+          tbody
+            tr
+              th.max-width-30 会員コード
+              td.bg-white.max-width-70
+            tr
+              th 担当者名
+              td.bg-white
+            tr
+              th 担当者名 フリガナ
+              td.bg-white
+            tr
+              th 会社コード
+              td.bg-white
+            tr
+              th 会社名
+              td.bg-white
+            tr
+              th 会社名 フリガナ
+              td.bg-white
+            tr
+              th 部署コード
+              td.bg-white
+            tr
+              th 部署名
+              td.bg-white
+            tr
+              th 部署名 フリガナ
+              td.bg-white

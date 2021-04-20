@@ -10,38 +10,62 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_13_062912) do
+ActiveRecord::Schema.define(version: 2021_04_10_083624) do
 
-  create_table "Images", force: :cascade do |t|
-    t.string "image"
-    t.string "url"
-    t.string "name"
-    t.boolean "is_banner_flg", default: false, null: false
-    t.text "comment"
+  create_table "Delivery_infos", force: :cascade do |t|
+    t.string "company_name"
+    t.string "user_name"
+    t.string "address"
+    t.string "tel"
+    t.string "phone_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "banner_id"
-  end
-
-  create_table "Information", force: :cascade do |t|
-    t.text "detail"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "release_flg", default: true, null: false
-    t.date "published_start"
-    t.date "published_end"
-    t.string "attachment_file1"
-    t.string "attachment_file2"
-    t.string "attachment_file3"
-    t.string "attachment_file4"
-    t.string "attachment_file5"
-    t.string "title"
+    t.date "delivery_day"
+    t.integer "purchase_history_id"
+    t.integer "order_history_id"
+    t.string "zip_code"
   end
 
   create_table "Inqueries", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "title"
+  end
+
+  create_table "Products", force: :cascade do |t|
+    t.string "name"
+    t.text "detail"
+    t.integer "category_id"
+    t.integer "price"
+    t.integer "member_price"
+    t.string "product_number"
+    t.boolean "postage_flg", default: false, null: false
+    t.integer "postage"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "jan_code"
+    t.string "shipping_location"
+    t.string "notification_email"
+    t.boolean "new_flg", default: true, null: false
+    t.boolean "popular_flg", default: true, null: false
+    t.text "comment"
+    t.text "explanation_1"
+    t.text "explanation_2"
+    t.boolean "tax_flg", default: true, null: false
+    t.string "manufacturer"
+    t.boolean "remote_island_shipping_confirmation", default: true, null: false
+    t.date "display_period_start"
+    t.date "display_period_end"
+    t.integer "purchase_limit"
+    t.text "postage_comment"
+    t.boolean "is_release_flg", default: false, null: false
+    t.boolean "set_flg", default: false, null: false
+    t.integer "set_num"
+    t.integer "shipping_origin_id"
+    t.string "shipping_company"
+    t.integer "stock_management_id"
+    t.integer "child_category_id"
+    t.string "image"
   end
 
   create_table "Purchase_histories", force: :cascade do |t|
@@ -82,7 +106,9 @@ ActiveRecord::Schema.define(version: 2020_09_13_062912) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "image"
+    t.text "comment"
+    t.integer "hyoji_area"
+    t.integer "image_id"
   end
 
   create_table "cart_items", force: :cascade do |t|
@@ -101,15 +127,14 @@ ActiveRecord::Schema.define(version: 2020_09_13_062912) do
     t.text "memo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "position"
   end
 
   create_table "carts", force: :cascade do |t|
     t.string "cart_number"
-    t.integer "order_history_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
-    t.index ["order_history_id"], name: "index_carts_on_order_history_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -133,20 +158,6 @@ ActiveRecord::Schema.define(version: 2020_09_13_062912) do
     t.index ["user_id"], name: "index_contacts_on_user_id"
   end
 
-  create_table "delivery_infos", force: :cascade do |t|
-    t.string "company_name"
-    t.string "user_name"
-    t.string "address"
-    t.string "tel"
-    t.string "phone_number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "zip_code"
-    t.date "delivery_day"
-    t.integer "purchase_history_id"
-    t.integer "order_history_id"
-  end
-
   create_table "free_pages", force: :cascade do |t|
     t.string "page_title"
     t.datetime "created_at", null: false
@@ -159,9 +170,9 @@ ActiveRecord::Schema.define(version: 2020_09_13_062912) do
     t.integer "display_order"
   end
 
-  create_table "group_users", force: :cascade do |t|
-    t.integer "user_id"
+  create_table "group_addresses", force: :cascade do |t|
     t.integer "group_id"
+    t.integer "address_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -186,6 +197,44 @@ ActiveRecord::Schema.define(version: 2020_09_13_062912) do
     t.string "october_holiday"
     t.string "november_holiday"
     t.string "december_holiday"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "images", force: :cascade do |t|
+    t.string "image"
+    t.string "url"
+    t.string "name"
+    t.boolean "is_banner_flg", default: false, null: false
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "info_titles", force: :cascade do |t|
+    t.string "title"
+    t.integer "hyoji_count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "information", force: :cascade do |t|
+    t.text "detail"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "release_flg", default: true, null: false
+    t.date "date"
+    t.date "published_start_yyyymmdd"
+    t.string "published_start_hhmm"
+    t.date "published_end_yyyymmdd"
+    t.string "published_end_hhmm"
+  end
+
+  create_table "information_attachment_files", force: :cascade do |t|
+    t.integer "information_id"
+    t.string "attachment_file"
+    t.string "filename"
+    t.string "filepath"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -233,7 +282,7 @@ ActiveRecord::Schema.define(version: 2020_09_13_062912) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
-    t.integer "product_id"
+    t.string "name"
   end
 
   create_table "order_histories", force: :cascade do |t|
@@ -259,6 +308,9 @@ ActiveRecord::Schema.define(version: 2020_09_13_062912) do
     t.integer "shipping_origin_id"
     t.boolean "cancel_flg", default: false, null: false
     t.integer "shipment_id"
+    t.integer "address_id"
+    t.integer "price"
+    t.integer "excluding_tax_price"
     t.index ["cart_id"], name: "index_order_histories_on_cart_id"
     t.index ["user_id"], name: "index_order_histories_on_user_id"
   end
@@ -358,42 +410,6 @@ ActiveRecord::Schema.define(version: 2020_09_13_062912) do
     t.text "bottom_page_text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "products", force: :cascade do |t|
-    t.string "name"
-    t.text "detail"
-    t.integer "category_id"
-    t.integer "price"
-    t.integer "member_price"
-    t.string "product_number"
-    t.boolean "postage_flg", default: false, null: false
-    t.integer "postage"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "jan_code"
-    t.string "shipping_location"
-    t.string "notification_email"
-    t.boolean "new_flg", default: true, null: false
-    t.boolean "popular_flg", default: true, null: false
-    t.text "comment"
-    t.text "explanation_1"
-    t.text "explanation_2"
-    t.boolean "tax_flg", default: true, null: false
-    t.string "manufacturer"
-    t.boolean "remote_island_shipping_confirmation", default: true, null: false
-    t.date "display_period_start"
-    t.date "display_period_end"
-    t.integer "purchase_limit"
-    t.text "postage_comment"
-    t.boolean "is_release_flg", default: false, null: false
-    t.boolean "set_flg", default: false, null: false
-    t.integer "set_num"
-    t.integer "shipping_origin_id"
-    t.string "shipping_company"
-    t.integer "stock_management_id"
-    t.integer "child_category_id"
-    t.string "image"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -548,9 +564,16 @@ ActiveRecord::Schema.define(version: 2020_09_13_062912) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_my_list_products", force: :cascade do |t|
+    t.integer "my_list_id"
+    t.integer "product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "quantity"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "e_mail"
-    t.integer "cart_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest"
@@ -581,7 +604,6 @@ ActiveRecord::Schema.define(version: 2020_09_13_062912) do
     t.string "member_id"
     t.boolean "deadline", default: false, null: false
     t.boolean "admin", default: false, null: false
-    t.index ["cart_id"], name: "index_users_on_cart_id"
   end
 
 end

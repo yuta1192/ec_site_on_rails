@@ -1,100 +1,108 @@
-p 受注情報検索
-p 受注情報を検索することができます。
-p 検索条件を入力して「検索」ボタンを押してください。次ページにて検索結果が受注番号別に一覧表示されます。
-p 指定期間内に売れた商品全てを確認したい場合は、期間設定以外の項目は設定せずに検索してください。
-p データフォーマット設定で受注情報を設定後、ダウンロードできるようになります。
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 受注情報検索
+      div
+        ul.border.border-5.border-muted
+          li.small 受注情報を検索することができます。
+          li.small 検索条件を入力して「検索」ボタンを押してください。次ページにて検索結果が受注番号別に一覧表示されます。
+          li.small 指定期間内に売れた商品全てを確認したい場合は、期間設定以外の項目は設定せずに検索してください。
+          li.small データフォーマット設定で受注情報を設定後、ダウンロードできるようになります。
 
-= form_with model: OrderHistory, url: order_history_search_admin_order_managements_path, local: true, method: :get do |f|
-  = f.label '受注日'
-  = f.text_field :order_date_start
-  | ~
-  = f.text_field :order_date_end
-  = f.label 'お届け希望日'
-  = f.radio_button :preferred_date, 1, checked: true
-  = f.text_field :order_preferred_date_start
-  | ~
-  = f.text_field :order_preferred_date_end
-  = f.check_box :unspecified, {class: "check_box"}, 'true', 'false'
-  | 未指定も含む
-  = f.radio_button :preferred_date, 2
-  | 未入力のみ
-  = f.radio_button :preferred_date, 3
-  | 入力済みのみ
-  div
-  = f.label '受注番号'
-  = f.text_field :order_number
-  div
-  = f.label '商品No'
-	= f.text_field :product_number
-  div
-  = f.label '商品名'
-  = f.text_field :product_name
-  div
-  = f.label '商品状態'
-  = f.check_box :new_product, {class: "check_box"}, 'true', 'false'
-  = f.label '新商品'
-  = f.check_box :popular_product, {class: "check_box"}, 'true', 'false'
-  = f.label '人気商品'
-  div
-  = f.label 'メーカー'
-  = f.text_field :manufacturer
-	div
-  = f.label '送り状番号'
-  = f.text_field :invoice_number
-	div
-  = f.label '会社名[?]'
-  = f.text_field :company_name
-  div
-  = f.label '部署コード'
-  = f.text_field :department_code
-  div
-  = f.label '部署名'
-  = f.text_field :department_name
-  div
-  = f.label '会員コード'
-  = f.text_field :member_code
-  div
-  = f.label '担当者名[?]'
-  = f.text_field :contact_name
-  div
-  = f.label '電話番号'
-  = f.text_field :tel
-  = f.label 'メールアドレス'
-  = f.text_field :mail_address
-  div
-  = f.label '決済方式'
-  = f.select :payment_method, payment_method
-  = f.label '入金'
-  = f.select :payment, payment
-  div
-  = f.label '引当状況'
-  = f.check_box :unallocated, {class: "check_box"}, 'true', 'false'
-  = f.label '未引当[?]'
-  = f.check_box :partially_reserved, {class: "check_box"}, 'true', 'false'
-  = f.label '一部引当済[?]'
-  = f.check_box :allocated, {class: "check_box"}, 'true', 'false'
-  = f.label '引当済[?]'
-  div
-  = f.label '出荷状況'
-  = f.check_box :untreated, {class: "check_box"}, 'true', 'false'
-  = f.label '未処理'
-  = f.check_box :can_be_shipped, {class: "check_box"}, 'true', 'false'
-  = f.label '出荷可能'
-  = f.check_box :undertake, {class: "check_box"}, 'true', 'false'
-  = f.label '着手'
-  = f.check_box :shipped, {class: "check_box"}, 'true', 'false'
-  = f.label '出荷済'
-  div
-  = f.label '送料確認'
-  = f.select :postage_confirmation, postage_confirmation
-  div
-  = f.label '出荷元'
-  = f.select :shipping_origin, shipping_origin
-  div
-  = f.label 'キャンセル'
-  = f.select :cancel, cancel
-  div
-  = f.label '表示順序'
-  = f.select :order_display, order_display
-  div
-  = f.submit '検索'
+      = form_with model: OrderHistory, url: order_history_search_admin_order_managements_path, local: true, method: :get do |f|
+        table.table-sm.table-bordered.bg-light
+          tbody
+            tr
+              th = f.label '受注日'
+              td
+                = f.text_field :order_date_start, style: 'width: 45%;'
+                | ~
+                = f.text_field :order_date_end, style: 'width: 45%;'
+              th = f.label 'お届け希望日'
+              td
+                = f.radio_button :preferred_date, 1, checked: true
+                = f.text_field :order_preferred_date_start, style: 'width: 45%;'
+                | ~
+                = f.text_field :order_preferred_date_end, style: 'width: 45%;'
+                div
+                = f.check_box :unspecified, {class: "check_box"}, 'true', 'false'
+                | 未指定も含む
+                = f.radio_button :preferred_date, 2
+                | 未入力のみ
+                = f.radio_button :preferred_date, 3
+                | 入力済みのみ
+            tr
+              th = f.label '受注番号'
+              td = f.text_field :order_number
+              th = f.label '商品No'
+              td = f.text_field :product_number
+            tr
+              th = f.label '商品名'
+              td = f.text_field :product_name
+              th = f.label '商品状態'
+              td
+                = f.check_box :new_product, {class: "check_box"}, 'true', 'false'
+                = f.label '新商品'
+                = f.check_box :popular_product, {class: "check_box"}, 'true', 'false'
+                = f.label '人気商品'
+            tr
+              th = f.label 'メーカー'
+              td = f.text_field :manufacturer
+              th = f.label '送り状番号'
+              td = f.text_field :invoice_number
+	          tr
+              th = f.label '会社名[?]'
+              td = f.text_field :company_name
+              th = f.label '部署コード'
+              td = f.text_field :department_code
+            tr
+              th = f.label '部署名'
+              td = f.text_field :department_name
+              th = f.label '会員コード'
+              td = f.text_field :member_code
+            tr
+              th = f.label '担当者名[?]'
+              td = f.text_field :contact_name
+              th = f.label '電話番号'
+              td = f.text_field :tel
+            tr
+              th = f.label 'メールアドレス'
+              td[colspan="3"] = f.text_field :mail_address
+            tr
+              th = f.label '決済方式'
+              td = f.select :payment_method, payment_method
+              th = f.label '入金'
+              td = f.select :payment, payment
+            tr
+              th = f.label '引当状況'
+              td
+                = f.check_box :unallocated, {class: "check_box"}, 'true', 'false'
+                = f.label '未引当[?]'
+                = f.check_box :partially_reserved, {class: "check_box"}, 'true', 'false'
+                = f.label '一部引当済[?]'
+                = f.check_box :allocated, {class: "check_box"}, 'true', 'false'
+                = f.label '引当済[?]'
+              th = f.label '出荷状況'
+              td
+                = f.check_box :untreated, {class: "check_box"}, 'true', 'false'
+                = f.label '未処理'
+                = f.check_box :can_be_shipped, {class: "check_box"}, 'true', 'false'
+                = f.label '出荷可能'
+                = f.check_box :undertake, {class: "check_box"}, 'true', 'false'
+                = f.label '着手'
+                = f.check_box :shipped, {class: "check_box"}, 'true', 'false'
+                = f.label '出荷済'
+            tr
+              th = f.label '送料確認'
+              td = f.select :postage_confirmation, postage_confirmation
+              th = f.label '出荷元'
+              td = f.select :shipping_origin, shipping_origin
+            tr
+              th = f.label 'キャンセル'
+              td = f.select :cancel, cancel
+              th = f.label '表示順序'
+              td = f.select :order_display, order_display
+            tr.text-center
+              th[colspan="4"] = f.submit '検索'

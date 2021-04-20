@@ -1,12 +1,24 @@
-p カート備考欄
-p カート備考欄の初期値を編集できます。
-p ご注文手続きSTEP2の備考欄に初期値として表示されます。
-p 「ラッピング要（　）不要（　）」など、注文されるお客様に質問したいことなどを入力してください。
-p 特に必要のない場合は空白にしてください。
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ カート備考欄
+      div
+        ul.border.border-5.border-muted
+          li.small カート備考欄の初期値を編集できます。
+          li.small ご注文手続きSTEP2の備考欄に初期値として表示されます。
+          li.small 「ラッピング要（　）不要（　）」など、注文されるお客様に質問したいことなどを入力してください。
+          li.small 特に必要のない場合は空白にしてください。
 
-= form_with model: @cart_memo, url: admin_shipping_setting_path, method: :patch, local: true do |f|
-  = f.label '備考'
-  div
-  = f.text_field :memo
-  div
-  = f.submit '保存'
+      br
+      table.table-sm.table-bordered.bg-light.image-max-size
+        = form_with model: @cart_memo, url: admin_shipping_setting_path, method: :patch, local: true do |f|
+          thead
+            tr
+              th = f.label '備考'
+          tbody
+            tr
+              td = f.text_area :memo, class: 'text-area'
+            tr.text-center
+              td = f.submit '保存'

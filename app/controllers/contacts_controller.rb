@@ -3,13 +3,20 @@ class ContactsController < ApplicationController
     @contact = Contact.new
   end
 
+  def confirm
+    @contact = Contact.new(contact_params)
+    if @contact.invalid?
+      render :new
+    end
+  end
+
   def create
     @contact = Contact.new(contact_params)
-      if @contact.save
-        redirect_to complite_path
-      else
-        render 'new'
-      end
+    if @contact.save!
+      redirect_to complite_path
+    else
+      render 'new'
+    end
   end
 
   private

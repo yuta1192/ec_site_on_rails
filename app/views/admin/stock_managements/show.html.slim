@@ -1,32 +1,56 @@
-p 在庫管理 ／ 詳細
-p 商品No.	商品名	出荷元	在庫	引当[?]
-= @product.product_number
-= @product.name
-= @product.shipping_origin.shipping_origin_name
-= @product.stock_management.stock
-= @product.stock_management.allocate
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 在庫管理
 
-p 在庫編集
-= form_with model: @stock_management, url: admin_stock_management_path, method: :patch, local: true do |f|
-  = f.label '無制限[?]'
-  = f.check_box :unlimited, {}, true, false
-  div
-  = f.label '在庫数'
-  = f.radio_button :sabun, 1, checked: true
-  | 差分入力
-  = f.radio_button :sabun, 2
-  | 実数入力
-  div
-  = f.text_field :aiueo, placeholder: "現在の在庫数：#{@stock_management.stock}"
-  div
-  = f.label 'メモ[?]'
-  = f.text_field :memo
-  div
-  = f.submit '保存'
+      table.table-sm.table-bordered.bg-light.image-max-size
+        thead
+          tr
+            th 在庫管理 ／ 詳細
+          tr
+            td 商品No.
+            td 商品名
+            td 出荷元
+            td 在庫
+            td 引当
+          tr
+            td = @product.product_number
+            td = @product.name
+            td = @product.shipping_origin.shipping_origin_name
+            td = @product.stock_management.stock
+            td = @product.stock_management.allocate
 
-div
-= link_to '戻る', admin_stock_managements_path
+      br
+      table.table-sm.table-bordered.bg-light.image-max-size
+        thead
+          tr
+            th[colspan="3"] 在庫編集
+        tbody
+          = form_with model: @stock_management, url: admin_stock_management_path, method: :patch, local: true do |f|
+            tr
+              th = f.label '無制限'
+              th
+                = f.label '在庫数'
+                div
+                = f.radio_button :sabun, 1, checked: true
+                | 差分入力
+                = f.radio_button :sabun, 2
+                | 実数入力
+              th = f.label 'メモ[?]'
+            tr
+              td = f.check_box :unlimited, {}, true, false
+              td = f.text_field :aiueo, placeholder: "現在の在庫数：#{@stock_management.stock}"
+              td = f.text_area :memo, class: 'text-area'
+            tr.text-center
+              th[colspan="3"] = f.submit '保存'
 
-p 日付	区分	受注番号	移動数量	対象	在庫	引当[?]	メモ
-- @stock_fluctuations.each do |sf|
-  = sf.created_at.strftime('%Y%m%d')
+      br
+      .text-center = link_to '戻る', admin_stock_managements_path, class: 'btn btn-primary'
+
+      / todo 表示できるようにする（多分できてない。）
+      br
+      p 日付	区分	受注番号	移動数量	対象	在庫	引当[?]	メモ
+      - @stock_fluctuations.each do |sf|
+        = sf.created_at.strftime('%Y%m%d')

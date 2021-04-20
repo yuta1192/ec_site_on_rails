@@ -1,0 +1,47 @@
+.col-3
+  br
+  .table.table-bordered
+    .thead.bg-primary
+      .tr
+        .td.h2 商品検索
+    .tbody
+      .tr
+        = form_with model: Product, url: search_products_path , method: :get, local: true do |f|
+          .td = f.label 'カテゴリ'
+          .td = f.select :category, select_categories, {}, class: 'form-control'
+          .td = f.label 'キーワード'
+          .td = f.text_field :name, value: "", class: 'form-control'
+          = f.submit '検索'
+  br
+  .table.table-bordered
+    .thead.bg-primary
+      .tr
+        .td.h2 商品カテゴリー
+    .tbody
+      .tr
+        - product_categories.each do |parent_category|
+          .td = link_to "#{parent_category.name}(#{Product.where(category_id: parent_category.id).count})", search_products_path(product: {category: parent_category.name})
+      br
+      .tr = link_to "全カテゴリー", search_products_path(product: {category: nil})
+  div
+  .table.table-bordered
+    .tbody
+      .tr = link_to "クイックオーダー", quick_order_products_path
+  div
+  br
+
+  / TODO バナー表示（表示カラムを追加して、左に表示するかを制御する。helperに書いてある
+  - banner_left.each do |b|
+    = image_tag(b.image.to_s, :size => '210x90')
+
+  .h4.bg-primary 営業日カレンダー
+  /#calendar
+  p.text-danger この日(赤色)は休業日です。
+
+  / todo 商品ランキング作成、購入数でランキング付けするため、購入数取得の方法決まったらここつくる
+  br
+  h2 ランキング(redisで作る予定)
+  p ランキング
+  p 左に画像image
+  p 第●位(10位まで)
+  p 商品名

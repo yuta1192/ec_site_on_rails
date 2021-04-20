@@ -1,0 +1,67 @@
+.col-10
+  br
+    p.bg-secondary ◎ 新着情報
+    div
+      ul.border.border-5.border-muted
+        p トップページの新着情報欄を変更できます。
+        li.small 実際の項目の表示は、日付の降順です。（同じ日付の場合、最後に更新したものが上）
+        li.small 新着情報は公開/非公開合わせて80項目まで登録が可能です。
+
+    / informationsの総合タイトルと表示件数のみのモデルのタイトルと表示件数変更
+    = form_with model: @info_title, url: info_title_admin_informations_path, method: :post, local: true do |f|
+      table.table-sm.table-bordered.bg-light.image-max-size
+        tbody
+          tr
+            th= f.label "タイトル"
+            td
+              = f.text_field :title, size: '45*10'
+              = f.submit '保存'
+            th= f.label "表示件数"
+            td
+              = f.text_field :hyoji_count, size: '8*10'
+              = f.submit '保存'
+    br
+
+    / 情報一覧表示
+    table.table.table-bordered.bg-light
+      thead
+        tr.text-center
+          th 日付
+          th 掲載期間
+          th 内容
+          th 添付
+          th 公開
+          th 変更
+          th 削除
+      tbody.bg-white
+        - @informations.each do |im|
+          tr class="text-center align-middle release_#{im.release_flg}"
+            td = im.date.to_s.gsub('-', '/')
+            - if im.published_start_yyyymmdd.present? || im.published_end_yyyymmdd.present?
+              td
+                | #{im.published_start_yyyymmdd.to_s.gsub('-', '/')}
+                div
+                | #{im.published_start_hhmm}
+                / .insert(2, ":")}
+                div
+                | ~
+                div
+                | #{im.published_end_yyyymmdd.to_s.gsub('-', '/')}
+                div
+                | #{im.published_end_hhmm}
+                / .insert(2, ":")}
+            - else
+              td -
+            td = simple_format(im.detail)
+            td
+              - im.information_attachment_files.each do |iaf|
+                = link_to iaf.filename, download_admin_information_path(iaf.id)
+                div
+            - if im.release_flg == true
+              td = link_to "公開", change_release_admin_information_path(im.id), method: :post
+            - else
+              td = link_to "非公開", change_release_admin_information_path(im.id), method: :post
+            td = link_to "変更", edit_admin_information_path(im.id)
+            td = link_to "削除", admin_information_path(im.id), method: :delete
+
+    br

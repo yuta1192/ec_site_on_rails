@@ -1,35 +1,48 @@
 .container
   .row.pb-5
     .col-12
-      | ログインIDとパスワードを入力し、「ログイン」ボタンを押してください。
-  = form_with model: Session, url: login_path, method: :post, local: true do |f|
-    .form-group
-      .row
-        .col-3
-        .col-2
-          = f.label "ログインID"
-        .col-4
-          = f.text_field :e_mail, class: 'form-control'
-          .small.p ※メールアドレスまたは会員コード
-        .col-3
-    .form-group
-      .row
-        .col-3
-        .col-2
-          = f.label "パスワード"
-        .col-4
-          = f.password_field :password, class: 'form-control'
-        .col-3
-        br
-          = f.submit 'ログイン', class: "btn btn-primary mx-auto m-3"
-  .div
+      br
+      p ログインIDとパスワードを入力し、「ログイン」ボタンを押してください。
+
+    .col-3
+    .col-6
+      = form_with model: Session, url: login_path, method: :post, local: true do |f|
+        .border.p-3
+          - if @error.present?
+            .alert
+              = @error
+          table.table-borderless.image-max-size
+            tbody
+              tr
+                th = f.label "ログインID"
+                td
+                  = f.text_field :e_mail, class: 'form-control'
+                  .small.p ※メールアドレスまたは会員コード
+              tr
+                th = f.label "パスワード"
+                td = f.password_field :password, class: 'form-control'
+              tr.text-center
+                th[colspan="2"]
+                  = f.submit 'ログイン', class: "btn btn-primary mt-3"
+    .col-3
+
+  / todo パスワード再設定機能作成
   .row
     .col-3
     .col-6
-      p パスワードをお忘れのかたへ
-      p メールアドレスを入力して「送信」ボタンを押してください。
-      p パスワード再設定ページのURLをお送りします。
-      = form_with model: User do |f|
-        = f.label :メールアドレス
-        = f.text_field :e_mail
-        = f.submit '送信'
+      .border.p-3
+        p.border-bottom パスワードをお忘れのかたへ
+        | メールアドレスを入力して「送信」ボタンを押してください。
+        div
+        | パスワード再設定ページのURLをお送りします。
+        .notifications
+          - flash.each do |key, value|
+            = content_tag(:div, value, class: key)
+        = form_with model: Session, url: password_reset_path, method: :post, local: true do |f|
+          table.table-bordered.image-max-size
+            thead
+              tr
+                th.text-center = f.label :メールアドレス
+                td = f.text_field :e_mail, class: 'image-max-size'
+                td = f.submit '送信'
+    .col-3

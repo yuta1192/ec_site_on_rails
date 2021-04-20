@@ -12,8 +12,9 @@ class Admin::ShipmentsController < ApplicationController
   end
 
   def search
+    # todo shipmentおよびorder_managementの検索方法についてはちゃんと考える。一旦保留。とりまseed作ってから
     @shipment_params = shipment_params
-    @shipment = Shipment.includes(order_history: [user: :addresses, order_history_products: :product]).search(@shipment_params)
+    @shipments = Shipment.includes(order_history: [user: :addresses, order_history_products: :product]).search(@shipment_params)
   end
 
   def update

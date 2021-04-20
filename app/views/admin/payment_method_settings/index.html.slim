@@ -1,76 +1,132 @@
-p 支払方法の設定
-p 支払い方法の設定ができます。
-p 各種支払方法の設定をします。
-p ご注文手続きの「STEP.2」「STEP.3」と、ご注文の後にお客様に送られる確認メールに表示されます。
-= form_with model: @payment_method_setting, url: admin_payment_method_setting_path(@payment_method_setting), method: :patch, local: true do |f|
-  = f.label '支払い方法（必須）'
-  = f.check_box :payment_method
-  | 銀行振込
-  = f.check_box :payment_methods
-  | 代金引換
-  = f.check_box :payment_methodss
-  | 締め払い
-  div
-  = f.label '銀行振込'
-  | ＜振込先情報＞
-  = f.text_field :payee_memo
-  div
-  = f.label '代金引換'
-  | ＜代引手数料設定＞
-  p 集金金額（税込）	代引手数料
-  = f.radio_button :cash_on_delivery_charge_flg, 1, checked: true
-  | 税込
-  = f.radio_button :cash_on_delivery_charge_flg, 2
-  | 税別
-  div
-  | 1, 0円 〜
-  = f.text_field :amount_collected_1
-  | 円未満
-  = f.text_field :cash_on_delivery_charge_1
-  | 円
-  div
-  | 2, 〜
-  = f.text_field :amount_collected_2
-  | 円未満
-  = f.text_field :cash_on_delivery_charge_2
-  | 円
-  div
-  | 3, 〜
-  = f.text_field :amount_collected_3
-  | 円未満
-  = f.text_field :cash_on_delivery_charge_3
-  | 円
-  div
-  | 4, 〜
-  = f.text_field :amount_collected_4
-  | 円未満
-  = f.text_field :cash_on_delivery_charge_4
-  | 円
-  div
-  | 5, 〜
-  = f.text_field :amount_collected_5
-  | 円未満
-  = f.text_field :cash_on_delivery_charge_5
-  | 円
-  div
-  | 6, 〜
-  = f.text_field :amount_collected_6
-  | 円未満
-  = f.text_field :cash_on_delivery_charge_6
-  | 円
-  div
-  | 7, 〜 300000円以下
-  = f.text_field :cash_on_delivery_charge_7
-  | 円
-  p ※代引手数料は、集金金額に合わせ7段階までの設定ができます。
-  p ※集金金額とは、商品代金に消費税・送料・代引手数料等を全て含んだ支払い合計額です。
-  p ※代引手数料が一律の場合は「7」の300000円以下の欄のみ入力してください。
-  p ※集金金額が300000円を超える場合、お客様は代金引換の支払いを選択できません。
-  p ＜代引手数料についての説明＞
-  = f.text_field :cash_on_delivery_charge_memo
-  p ※＜代引手数料設定＞に登録した内容をテキストで入力してください。
-  p ご注文STEPの支払い方法に表示されます。
-  = f.label '締め払い'
-  p ＜備考＞
-  = f.text_field :deadline_memo
-  = f.submit '保存'
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 支払方法の設定
+      div
+        ul.border.border-5.border-muted
+          li.small 支払い方法の設定ができます。
+          li.small 各種支払方法の設定をします。
+          li.small ご注文手続きの「STEP.2」「STEP.3」と、ご注文の後にお客様に送られる確認メールに表示されます。
+
+      br
+      table.table-sm.table-bordered.bg-light.image-max-size
+        = form_with model: @payment_method_setting, url: admin_payment_method_setting_path(@payment_method_setting), method: :patch, local: true do |f|
+          tr
+            th = f.label '支払い方法（必須）'
+            td
+              = f.check_box :payment_method
+              | 銀行振込
+              = f.check_box :payment_methods
+              | 代金引換
+              = f.check_box :payment_methodss
+              | 締め払い
+          tr
+            th = f.label '銀行振込'
+            td
+              | ＜振込先情報＞
+              div
+              = f.text_area :payee_memo, class: 'text-area'
+          tr
+            th = f.label '代金引換'
+            td
+              | ＜代引手数料設定＞
+              table.table-sm.table-bordered.bg-light
+                thead
+                  tr
+                    th
+                    th
+                      | 集金金額（税込）
+                    th
+                      | 代引手数料
+                      = f.radio_button :cash_on_delivery_charge_flg, 1, checked: true
+                      | 税込
+                      = f.radio_button :cash_on_delivery_charge_flg, 2
+                      | 税別
+                tbody
+                  tr
+                    th 1
+                    td
+                      | 0円 〜
+                      = f.text_field :amount_collected_1
+                      | 円未満
+                    td
+                      = f.text_field :cash_on_delivery_charge_1
+                      | 円
+                  tr
+                    th 2
+                    td
+                      | 〜
+                      = f.text_field :amount_collected_2
+                      | 円未満
+                    td
+                      = f.text_field :cash_on_delivery_charge_2
+                      | 円
+                  tr
+                    th 3
+                    td
+                      | 〜
+                      = f.text_field :amount_collected_3
+                      | 円未満
+                    td
+                      = f.text_field :cash_on_delivery_charge_3
+                      | 円
+                  tr
+                    th 4
+                    td
+                      | 〜
+                      = f.text_field :amount_collected_4
+                      | 円未満
+                    td
+                      = f.text_field :cash_on_delivery_charge_4
+                      | 円
+                  tr
+                    th 5
+                    td
+                      | 〜
+                      = f.text_field :amount_collected_5
+                      | 円未満
+                    td
+                      = f.text_field :cash_on_delivery_charge_5
+                      | 円
+                  tr
+                    th 6
+                    td
+                      | 〜
+                      = f.text_field :amount_collected_6
+                      | 円未満
+                    td
+                      = f.text_field :cash_on_delivery_charge_6
+                      | 円
+                  tr
+                    th 7
+                    td 〜 300000円以下
+                    td
+                      = f.text_field :cash_on_delivery_charge_7
+                      | 円
+              div
+              | ※代引手数料は、集金金額に合わせ7段階までの設定ができます。
+              div
+              | ※集金金額とは、商品代金に消費税・送料・代引手数料等を全て含んだ支払い合計額です。
+              div
+              | ※代引手数料が一律の場合は「7」の300000円以下の欄のみ入力してください。
+              div
+              | ※集金金額が300000円を超える場合、お客様は代金引換の支払いを選択できません。
+              div
+              br
+              | ＜代引手数料についての説明＞
+              div
+              = f.text_area :cash_on_delivery_charge_memo, style: 'width: 100%; height: 200px;'
+              div
+              | ※＜代引手数料設定＞に登録した内容をテキストで入力してください。
+              div
+              | ご注文STEPの支払い方法に表示されます。
+          tr
+            th = f.label '締め払い'
+            td
+              | ＜備考＞
+              div
+              = f.text_area :deadline_memo, style: 'width: 100%; height: 200px;'
+          tr.text-center
+            th[colspan="2"] = f.submit '保存'

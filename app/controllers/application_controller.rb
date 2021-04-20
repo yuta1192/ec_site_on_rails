@@ -29,6 +29,11 @@ class ApplicationController < ActionController::Base
   private
 
     def require_sign_in!
-      redirect_to login_path unless signed_in?
+      # adminでログインしてない場合はadminのログイン画面にそれ以外は利用者画面
+      if params[:controller].include?("admin")
+        redirect_to admin_login_path unless signed_in?
+      else
+        redirect_to login_path unless signed_in?
+      end
     end
 end

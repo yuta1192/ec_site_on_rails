@@ -1,115 +1,162 @@
-p 基本設定
-p ショップ営業切替とショップ情報の編集をします。
-p ショップ営業切替・・・ショップは現在 「#{@shop.open_flg}」 です。
-p 改装中の間は、サイト上の商品は全て表示されないため購入ができない状態になります。
-= form_with model: @shop, url: admin_shop_path(@shop), method: :patch, local: true do |f|
-  = f.submit '変更', name: 'open_flg_change'
-div
-p フロントサイトのロゴ（推奨サイズ：230×55px）　※アップ時に画像は縮小されません。そのままのサイズで表示されます。
-div
-p ※空白や、記号がない半角英数のみのファイル名を選択してください。
-div
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.bg-secondary ◎ 基本設定
+      div
+        ul.border.border-5.border-muted
+          li.small ショップ営業切替とショップ情報の編集をします。
 
-= form_with model: @shop, url: admin_shop_path(@shop), method: :patch, local: true do |f|
-  = f.label 'ショップ基本情報'
-  = f.label 'ショップ名[?]'
-  = f.text_field :name
-  div
-  = f.label '会社名（必須）'
-  = f.text_field :company_name
-  = f.label '所在地（必須）'
-  = f.label '郵便番号（必須）'
-  = f.text_field :zip_code_first
-  | -
-  = f.text_field :zip_code_second
-  | ※半角数字で入力してください。
-  div
-  = f.label '都道府県（必須）'
-  = f.select :prefectures, Address.prefectures.keys, {include_blank: "選択してください", selected: "選択してください"}
-  div
-  = f.label '市区町村（必須）'
-  = f.text_field :municipation
-  div
-  = f.label '地番、番地（必須）'
-  = f.text_field :address_1
-  div
-  = f.label 'ビル、マンション、アパート名など'
-  = f.text_field :address_2
-  div
-  = f.label '電話番号（必須）'
-  = f.text_field :tel_first
-  | -
-  = f.text_field :tel_second
-  | -
-  = f.text_field :tel_third
-  | ※半角数字で入力してください。
-  div
-  = f.label 'ＦＡＸ番号'
-  = f.text_field :fax_first
-  | -
-  = f.text_field :fax_second
-  | -
-  = f.text_field :fax_third
-  div
-  = f.label 'メールアドレス（必須）'
-  = f.text_field :email
-  p ※システムで送られるメール送信元・送信先の初期設定になります。メール設定で個別設定に変更できます。
-  div
-  = f.label '在庫設定'
-  p 在庫切れ通知の閾値	在庫が
-  |
-  = f.text_field :stock_notification_num
-  | 個以下になったらメールを送信する。
-  div
-  = f.label '支払い方法設定'
-  = f.label '支払い方法（必須）'
-  = f.radio_button :payment_method, 1, checked: true
-  | 銀行振込
-  = f.radio_button :payment_method, 2
-  | 代金引換
-  = f.radio_button :payment_method, 3
-  | 締め払い
-  div
-  = f.label '出荷処理設定'
-  = f.label 'B2 ご請求先顧客コード[?]'
-  = f.text_field :billing_customer_code
-  div
-  = f.label '送り状CSV品名1設定（必須）'
-  = f.radio_button :product_name_setting, 1, checked: true
-  | 固定文字を表示（主な取り扱い商品）　
-  |
-  = f.text_field :name_set, placeholder: "健康食品､化粧品"
-  div
-  = f.radio_button :product_name_setting, 2
-  | 注文された商品名を表示（※複数ある場合には１つ目のみ）
-  p ※B2ご利用の際、品名１欄に出力されます。
-  div
-  = f.label '出荷状況「着手」にする条件'
-  = f.check_box :total_picking
-  | トータルピッキング発行
-  = f.check_box :invidible_picking
-  | 個別ピッキング発行
-  = f.check_box :shipping_yotei
-  | 出荷予定日入力
-  = f.check_box :derively_company
-  | 運送会社入力
-  div
-  = f.label '送り状アップロード時に出荷済みにする'
-  = f.check_box :shipped_flg
-  | B2アップロード
-  div
-  = f.label '送り状アップロード時に運送会社をセットする'
-  = f.check_box :set_shipping_company_flg
-  | B2アップロード → ヤマト運輸をセット
-  div
-  = f.label '商品消費税'
-  = f.radio_button :product_consumption_tax_flg, 1, checked: true
-  | 込
-  = f.radio_button :product_consumption_tax_flg, 2
-  | 別
-  div
-  p ※参考価格と商品価格の初期値です。
-  = f.label '消費税率[?]'
-  = f.text_field :tax_rate
-  div
-  = f.submit '保存'
+      br
+      table.table-sm.table-bordered.bg-light.image-max-size
+        thead
+          tr
+            th ショップ営業切替・・・ショップは現在 「#{@shop.open_flg}」 です。
+        tbody
+          tr
+            td
+              | 改装中の間は、サイト上の商品は全て表示されないため購入ができない状態になります。
+              div
+              = form_with model: @shop, url: admin_shop_path(@shop), method: :patch, local: true do |f|
+                = f.submit '変更', name: 'open_flg_change'
+
+      br
+      table.table-sm.table-bordered.bg-light.image-max-size
+        thead
+          tr
+            th フロントサイトのロゴ（推奨サイズ：230×55px）　※アップ時に画像は縮小されません。そのままのサイズで表示されます。
+        tbody
+          tr
+            td
+              p ここにロゴ
+              p ここにファイル選択
+              p ※空白や、記号がない半角英数のみのファイル名を選択してください。
+              / todo ここら辺の昨日何一つ作っていないため修正
+              = form_with model: @shop, url: admin_shop_path(@shop), method: :patch, local: true do |f|
+                = f.submit '変更', name: 'open_flg_change'
+                = f.submit '削除', name: 'open_flg_change'
+
+      br
+      table.table-sm.table-bordered.bg-light.image-max-size
+        = form_with model: @shop, url: admin_shop_path(@shop), method: :patch, local: true do |f|
+          tr
+            th[colspan="3"] = f.label 'ショップ基本情報'
+          tr
+            th = f.label 'ショップ名[?]'
+            td[colspan="2"] = f.text_field :name
+          tr
+            th = f.label '会社名（必須）'
+            td[colspan="2"] = f.text_field :company_name
+          tr
+            th[rowspan="5"] = f.label '所在地（必須）'
+            th = f.label '郵便番号（必須）'
+            td
+              = f.text_field :zip_code_first
+              | -
+              = f.text_field :zip_code_second
+          tr
+            th = f.label '都道府県（必須）'
+            td = f.select :prefectures, Address.prefectures.keys, {include_blank: "選択してください", selected: "選択してください"}
+          tr
+            th = f.label '市区町村（必須）'
+            td = f.text_field :municipation
+          tr
+            td = f.label '地番、番地（必須）'
+            th = f.text_field :address_1
+          tr
+            th = f.label 'ビル、マンション、アパート名など'
+            td = f.text_field :address_2
+          tr
+            th = f.label '電話番号（必須）'
+            td[colspan="2"]
+              = f.text_field :tel_first
+              | -
+              = f.text_field :tel_second
+              | -
+              = f.text_field :tel_third
+          tr
+            th = f.label 'ＦＡＸ番号'
+            td[colspan="2"]
+              = f.text_field :fax_first
+              | -
+              = f.text_field :fax_second
+              | -
+              = f.text_field :fax_third
+          tr
+            th = f.label 'メールアドレス（必須）'
+            td[colspan="2"]
+              = f.text_field :email
+              div
+              | ※システムで送られるメール送信元・送信先の初期設定になります。メール設定で個別設定に変更できます。
+          tr
+            th = f.label '在庫設定'
+            td[colspan="2"]
+              | 在庫切れ通知の閾値	在庫が
+              = f.text_field :stock_notification_num
+              | 個以下になったらメールを送信する。
+          tr
+            th[colspan="3"] = f.label '支払い方法設定'
+          tr
+            th = f.label '支払い方法（必須）'
+            td[colspan="2"]
+              = f.radio_button :payment_method, 1, checked: true
+              | 銀行振込
+              = f.radio_button :payment_method, 2
+              | 代金引換
+              = f.radio_button :payment_method, 3
+              | 締め払い
+          tr
+            th[colspan="3"] = f.label '出荷処理設定'
+          tr
+            th = f.label 'B2 ご請求先顧客コード[?]'
+            td[colspan="2"] = f.text_field :billing_customer_code
+          tr
+            th = f.label '送り状CSV品名1設定（必須）'
+            td[colspan="2"]
+              = f.radio_button :product_name_setting, 1, checked: true
+              | 固定文字を表示（主な取り扱い商品）
+              = f.text_field :name_set, placeholder: "健康食品､化粧品"
+              div
+              = f.radio_button :product_name_setting, 2
+              | 注文された商品名を表示（※複数ある場合には１つ目のみ）
+              div
+              | ※B2ご利用の際、品名１欄に出力されます。
+          tr
+            th = f.label '出荷状況「着手」にする条件'
+            td[colspan="2"]
+              = f.check_box :total_picking
+              | トータルピッキング発行
+              div
+              = f.check_box :invidible_picking
+              | 個別ピッキング発行
+              div
+              = f.check_box :shipping_yotei
+              | 出荷予定日入力
+              div
+              = f.check_box :derively_company
+              | 運送会社入力
+          tr
+            th = f.label '送り状アップロード時に出荷済みにする'
+            td[colspan="2"]
+              = f.check_box :shipped_flg
+              | B2アップロード
+          tr
+            th = f.label '送り状アップロード時に運送会社をセットする'
+            td[colspan="2"]
+              = f.check_box :set_shipping_company_flg
+              | B2アップロード → ヤマト運輸をセット
+          tr
+            th = f.label '商品消費税'
+            td[colspan="2"]
+              = f.radio_button :product_consumption_tax_flg, 1, checked: true
+              | 込
+              = f.radio_button :product_consumption_tax_flg, 2
+              | 別
+              div
+              | ※参考価格と商品価格の初期値です。
+          tr
+            th = f.label '消費税率[?]'
+            td[colspan="2"] = f.text_field :tax_rate
+          tr.text-center
+            th[colspan="3"] = f.submit '保存'
