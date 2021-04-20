@@ -13,4 +13,6 @@ ADD Gemfile.lock /ec_site_on_rails/Gemfile.lock
 RUN gem install bundler
 RUN bundle install
 
+CMD ["rails", "server", "-b", "0.0.0.0"] 
+
 ADD . /ec_site_on_rails

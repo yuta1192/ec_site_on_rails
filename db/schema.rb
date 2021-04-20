@@ -202,13 +202,13 @@ ActiveRecord::Schema.define(version: 2021_04_10_083624) do
   end
 
   create_table "images", force: :cascade do |t|
-    t.string "image"
     t.string "url"
     t.string "name"
     t.boolean "is_banner_flg", default: false, null: false
     t.text "comment"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.binary "image"
   end
 
   create_table "info_titles", force: :cascade do |t|
@@ -218,7 +218,16 @@ ActiveRecord::Schema.define(version: 2021_04_10_083624) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "information", force: :cascade do |t|
+  create_table "information_attachment_files", force: :cascade do |t|
+    t.integer "information_id"
+    t.string "attachment_file"
+    t.string "filename"
+    t.string "filepath"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "informations", force: :cascade do |t|
     t.text "detail"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -228,15 +237,6 @@ ActiveRecord::Schema.define(version: 2021_04_10_083624) do
     t.string "published_start_hhmm"
     t.date "published_end_yyyymmdd"
     t.string "published_end_hhmm"
-  end
-
-  create_table "information_attachment_files", force: :cascade do |t|
-    t.integer "information_id"
-    t.string "attachment_file"
-    t.string "filename"
-    t.string "filepath"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "items", force: :cascade do |t|
