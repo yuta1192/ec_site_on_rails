@@ -1,4 +1,4 @@
-FROM ruby:2.5.1
+FROM ruby:2.7.3
 
 RUN apt-get install imagemagick libmagickcore-dev libmagickwand-dev
 RUN apt-get update && apt-get install -y nodejs --no-install-recommends && rm -rf /var/lib/apt/lists/*
