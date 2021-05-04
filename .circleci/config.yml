@@ -61,7 +61,7 @@ jobs:
     # Rubocop
     - run:
         name: Rubocop
-        command: bundle exec rubocop
+        command: bundle exec rubocop --fail-level W --display-only-fail-level-offenses
 
     # collect reports
     - store_test_results:
