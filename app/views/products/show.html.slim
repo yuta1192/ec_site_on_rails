@@ -99,7 +99,11 @@
                     td.col-7 #{@product.member_price}円
       /商品説明
       br
-      = @product.detail
+      .border_bottom
+        h2 商品説明
+      br
+      .border
+        .m-3 = simple_format(@product.detail)
       br
       br
       p お取り寄せ商品について

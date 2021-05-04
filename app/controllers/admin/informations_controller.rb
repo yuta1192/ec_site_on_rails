@@ -1,5 +1,6 @@
 class Admin::InformationsController < ApplicationController
   def index
+    @errors = []
     @informations = Information.all
     @information = Information.new
     @info_title = InfoTitle.first
@@ -17,6 +18,7 @@ class Admin::InformationsController < ApplicationController
   end
 
   def edit
+    @errors = []
     @info_title = InfoTitle.first
     @informations = Information.all
     @information = Information.find(params[:id])
@@ -26,7 +28,24 @@ class Admin::InformationsController < ApplicationController
     @info_title = InfoTitle.first
     @informations = Information.all
     @infomation = Information.find(params[:id])
-    if @infomation.update(info_params)
+
+    published_start = nil
+    published_end = nil
+
+    @errors = params_valid_check(info_params)
+
+    if @errors.present?
+      render 'index' and return
+    end
+
+    if info_params[:published_start_yyyymmdd].present?
+      published_start = info_params[:published_start_yyyymmdd] + ' ' + info_params[:published_start_hhmm]
+    end
+    if info_params[:published_end_yyyymmdd].present?
+      published_end = info_params[:published_end_yyyymmdd] + ' ' +info_params[:published_end_hhmm]
+    end
+
+    if @infomation.update(detail: info_params[:detail], release_flg: info_params[:release_flg], date: info_params[:date], published_start: published_start, published_end: published_end)
       if attachment_files_add(@infomation, params)
         redirect_to edit_admin_information_path(@infomation)
       else
@@ -38,9 +57,33 @@ class Admin::InformationsController < ApplicationController
   end
 
   def create
+    # todo 修正
     @info_title = InfoTitle.first
     @informations = Information.all
-    @infomation = Information.new(info_params)
+
+    published_start = nil
+    published_end = nil
+
+    @errors = params_valid_check(info_params)
+
+    if @errors.present?
+      render 'index' and return
+    end
+
+    if info_params[:published_start_yyyymmdd].present?
+      published_start = info_params[:published_start_yyyymmdd] + ' ' + info_params[:published_start_hhmm]
+    end
+    if info_params[:published_end_yyyymmdd].present?
+      published_end = info_params[:published_end_yyyymmdd] + ' ' +info_params[:published_end_hhmm]
+    end
+
+    @infomation = Information.new(
+      detail: info_params[:detail],
+      release_flg: info_params[:release_flg],
+      date: info_params[:date],
+      published_start: published_start,
+      published_end: published_end
+    )
     if @infomation.save
       if attachment_files_new(@infomation, params)
         redirect_to edit_admin_information_path(@infomation)
@@ -102,7 +145,6 @@ class Admin::InformationsController < ApplicationController
     end
 
     def attachment_files_new(info, params)
-      binding.pry
       begin
         if params[:information][:attachment_file1].present?
           InformationAttachmentFile.create(
@@ -188,6 +230,55 @@ class Admin::InformationsController < ApplicationController
         return true
       rescue
         return false
+      end
+    end
+
+    def params_valid_check(info_params)
+      @errors = []
+      if (info_params[:published_start_yyyymmdd].present? && info_params[:published_start_hhmm].blank?) || (info_params[:published_start_yyyymmdd].blank? && info_params[:published_start_hhmm].present?)
+        @errors << "掲載開始日を正しく入力してください。"
+      end
+
+      if (info_params[:published_end_yyyymmdd].present? && info_params[:published_end_hhmm].blank?) || (info_params[:published_end_yyyymmdd].blank? && info_params[:published_end_hhmm].present?)
+        @errors << "掲載終了日を正しく入力してください。"
+      end
+
+      if info_params[:published_start_hhmm].present?
+        if info_params[:published_start_hhmm].length < 3
+          @errors << "掲載開始時刻を正しく入力してください。"
+        else
+          start_hhmm = info_params[:published_start_hhmm]
+          # 末尾から挿入し、 "0:10" のような文字列にする。 ":"の前後で取得
+          match = start_hhmm.insert(-3, ":").match(/:/)
+          start_hh = match.pre_match
+          if start_hh.to_i > 23
+            @errors << "掲載開始時間は0~23の数字で記載してください"
+          end
+          start_mm = match.post_match
+          if start_mm.to_i > 59
+            @errors << "掲載開始時間は00~59の数字で記載してください"
+          end
+        end
+      end
+
+      if info_params[:published_end_hhmm].present?
+        if info_params[:published_end_hhmm].length < 3
+          @errors << "掲載開始時刻を正しく入力してください。"
+        else
+          end_hhmm = info_params[:published_end_hhmm]
+          # 末尾から挿入し、 "0:10" のような文字列にする。 ":"の前後で取得
+          match = end_hhmm.insert(-3, ":").match(/:/)
+          end_hh = match.pre_match
+          if end_hh.to_i > 23
+            @errors << "掲載開始時間は0~23の数字で記載してください"
+          end
+          end_mm = match.post_match
+          if end_mm.to_i > 59
+            @errors << "掲載開始時間は00~59の数字で記載してください"
+          end
+        end
+
+        return @errors
       end
     end
 end

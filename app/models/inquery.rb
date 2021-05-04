@@ -10,8 +10,8 @@ class Inquery < ApplicationRecord
   # 検索方法　引数キーワードがある場合inqueryのtitleまたはquestionのquestionに部分一致するか、かつ引数titleがある場合inqueryのタイトル(:id)で絞る
   def self.search(key_word, title)
     return Inquery.all unless key_word.present? || title.present?
-    Inquery.eager_load(:questions)
-      .where(['question LIKE ? OR title LIKE ?', "%#{key_word}%", "%#{key_word}%"])
-      .where(id: title)
+    inquery = Inquery.eager_load(:questions).where(['question LIKE ? OR title LIKE ?', "%#{key_word}%", "%#{key_word}%"])
+    inquery.where(id: title) if title.present?
+    return inquery
   end
 end

@@ -1,0 +1,19 @@
+<%= @user.name_sei + @user.name_mei %> 様
+
+商品の購入が完了しました！
+
+購入商品
+
+<% total_price = 0 %>
+<% @order.order_history_products.each do |ohp| %>
+  商品名：<%= ohp.product.name %>
+  単価：<%= ohp.product.price %>円
+  購入数：<%= ohp.num %>個
+  <% total_price += (ohp.product.price * ohp.num) %>
+<% end %>
+
+合計金額：<%= total_price %>円
+
+注文番号：<%= @order.order_number %>
+
+商品の購入に身に覚えがない場合は<%= link_to 'こちら', root_url %>からお手続きをしてください。

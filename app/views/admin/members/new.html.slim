@@ -69,10 +69,11 @@
                 div
                 | ※全角カタカナで入力してください。
             tr
-              th
+              th[rowspan="6"]
                 = f.label '住所'
                 div
                 | 必須
+            tr
               th = f.label '郵便番号'
               td
                 = f.text_field :zip_code
@@ -80,19 +81,15 @@
                 div
                 | ※半角数字で入力してください。
             tr
-              th
               th = f.label '都道府県'
               td = f.select :prefectures, User.prefectures.keys
             tr
-              th
               th = f.label '市区町村'
               td = f.text_field :municipation
             tr
-              th
               th = f.label '地番、番地'
               td = f.text_field :address_1
             tr
-              th
               th = f.label 'ビル、マンション、アパート名など'
               td = f.text_field :address_2
             tr

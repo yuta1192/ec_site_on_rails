@@ -61,13 +61,13 @@ class CartsController < ApplicationController
           name_mei: params[:name_mei],
           name_sei_kana: params[:name_sei_kana],
           name_mei_kana: params[:name_mei_kana],
-          zip_code: (params[:zip_code_1] + "-" + params[:zip_code_2]),
+          zip_code: params[:zip_code],
           prefectures: params[:prefectures],
           municipation: params[:municipation],
           address_1: params[:address_1],
           address_2: params[:address_2],
-          tel: (params[:tel_1] + params[:tel_2] + params[:tel_3]),
-          phone_number: (params[:phone_number_1] + params[:phone_number_2] + params[:phone_number_3]),
+          tel: params[:tel],
+          phone_number: params[:phone_number],
           address_create: params[:address_create]
         }
       else
@@ -96,15 +96,12 @@ class CartsController < ApplicationController
   end
 
   def create
+    @address_attribute = params[:companies].to_i == 0 ? params[:addresses] : Address.find(params[:companies])
+
     ActiveRecord::Base.transaction do
       # 宛先新規作成+チェックが付いてた場合アドレス作成
       if params[:use_basic_email_flg].to_i == 2
         if params[:companies].to_i == 0 && params[:address][:address_create] == "true"
-          # telとphone_numberは間に"-"を入れてパラメータに入れる
-          tel = params[:address][:tel_1] + "-" + params[:address][:tel_2] + "-" + params[:address][:tel_3]
-          phone_number = params[:address][:phone_number_1] + "-" + params[:address][:phone_number_2] + "-" + params[:address][:phone_number_3]
-          zip_code = params[:address][:zip_code_1] + "-" + params[:address][:zip_code_2]
-
           @address = Address.new(
             company_name: params[:address][:company_name],
             department_name: params[:address][:department_name],
@@ -112,13 +109,13 @@ class CartsController < ApplicationController
             name_mei: params[:address][:name_mei],
             name_sei_kana: params[:address][:name_sei_kana],
             name_mei_kana: params[:address][:name_mei_kana],
-            zip_code: zip_code,
+            zip_code: params[:address][:zip_code],
             prefectures: params[:address][:prefectures],
             municipation: params[:address][:municipation],
             address_1: params[:address][:address_1],
             address_2: params[:address][:address_2],
-            tel: tel,
-            phone_number: phone_number,
+            tel: params[:address][:tel],
+            phone_number: params[:address][:phone_number],
             user_id: @current_user.id,
             is_select_flag: false,
             company_code: SecureRandom.alphanumeric(6),
@@ -226,6 +223,7 @@ class CartsController < ApplicationController
   def complite
     order_history = OrderHistory.find(params[:order_history_id])
     @order_number = order_history.order_number
+    NotificationMailer.send_purchase_complite(current_user, order_history).deliver
   end
 
   def destroy

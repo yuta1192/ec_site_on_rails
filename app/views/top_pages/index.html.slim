@@ -6,8 +6,10 @@
     / メインメニュー
     .col-9
       br
-      / TODO ロゴを表示できるようにする。
-      h2 ロゴ
+      - @logos.each do |logo|
+        .border
+          = image_tag(logo.image.image.to_s, :size => '800x100')
+        br
       .row
         .col-12.bg-secondary
           | 新入荷
@@ -27,25 +29,27 @@
 
       br
       h2.border-bottom 新着情報
-      - @informations.each do |info|
+      - if @informations.present?
+        - @informations.each do |info|
+          br
+          p.text-danger = info.date.strftime('%Y年%m月%d日')
+          = info.detail
+          - info.information_attachment_files.each do |file|
+            = link_to file.filename, top_pages_path(file.id)
+          br
+          br
+          .border-bottom
+          br
+      - else
         br
-        p.text-danger = info.date.strftime('%Y年%m月%d日')
-        = info.detail
-        - if info.attachment_file1.present?
-          = info.attachment_file1
-        br
-        br
-        .border-bottom
-        br
-      br
-      /TODO バナー作成
+        p 現在新着情報はございません。
       br
       .container
         .row
-          - banner_under.each.with_index(1) do |b, i|
+          - @under_banners.each do |banner|
             .col-sm-6
-              = image_tag(b.image.to_s, :size => '340x100')
-              = b.comment
-      /TODO ページトップへ　のボタン作成
+              .border
+                = image_tag(banner.image.image.to_s, :size => '340x100')
+              = banner.image.comment
       br
       float-right = link_to 'ページトップへ', root_path

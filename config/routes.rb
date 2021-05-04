@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
   root 'top_pages#index'
+  get 'top_pages/:id/download', to: 'top_pages#download', as: 'top_pages'
   get 'login', to: 'sessions#index'
   post 'login', to: 'sessions#login'
   post 'logout', to: 'sessions#logout'
   post 'password_reset', to: 'sessions#password_reset'
+  get 'reset_password/:user_id', to: 'sessions#reset_password'
+  post 'reset_user_password/:user_id', to: 'sessions#reset_user_password'
   get 'complite_message', to: 'sessions#complite_message'
   resources :users do
     resources :order_histories do
@@ -29,7 +32,7 @@ Rails.application.routes.draw do
     collection do
       get 'search', to: 'products#search'
       get 'quick_order', to: 'products#quick_order'
-      post 'quick_order', to: 'products#quick_order'
+      post 'quick_order_products', to: 'products#quick_order_products'
       post 'show_create', to: 'products#show_create'
       post 'mylist_create', to: 'products#mylist_create'
     end
@@ -62,8 +65,11 @@ Rails.application.routes.draw do
     # post 'informations/change_release/:id', to: 'informations#change_release', as: :informations_change_release
     resources :images
     get 'banner_index', to: 'images#banner_index'
+    get 'witch_new_or_edit', to: 'images#witch_new_or_edit'
+    get 'banner_new', to: 'images#banner_new'
+    get 'banner_edit/:id', to: 'images#banner_edit', as: 'banner_edit'
     post 'banner_create', to: 'images#banner_create'
-    patch 'banner_update', to: 'images#banner_update'
+    patch 'banner_update/:id', to: 'images#banner_update', as: 'banner_update'
     get 'product_page_edit', to: 'product_pages#edit'
     post 'product_page_create', to: 'product_pages#create'
     resources :free_pages do
@@ -127,7 +133,9 @@ Rails.application.routes.draw do
         patch 'bluk_update'
       end
     end
-    resources :shops
+    resources :shops do
+      patch 'open_or_close', on: :member
+    end
     resources :mail_settings
     resources :payment_method_settings
     resources :shipping_settings
@@ -142,6 +150,13 @@ Rails.application.routes.draw do
         patch 'bluk_update'
       end
     end
-    resources :shop_holidays
+    resources :shop_holidays do
+      post 'update_set_shop_holiday'
+      patch 'update_calender_display', on: :collection
+    end
+    resources :users do
+      get 'password_reset', on: :member
+      patch 'reset', on: :member
+    end
   end
 end

@@ -1,0 +1,58 @@
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+        p.bg-secondary ◎ バナー・リンク管理
+        div
+          ul.border.border-5.border-muted
+            p サイトに表示されるバナーやリンクを管理します。
+            li.small 新しく表示位置を追加するときは、表示位置を「新規登録」にし、表示位置名称を入力し、「追加」ボタンを押してください。ただし表示するにはテンプレート側の設定も必要です。
+            li.small 画像を登録する場合は、あらかじめ「画像管理」にて画像をアップロードしてください。
+            li.small 全ての編集が終わりましたら、「サイト更新」ボタンを押し、情報を更新してください。「一時削除」、「一時保存」だけでは、データは更新されません。
+
+        / セレクトボックス選択で画面を変える（多分ajaxとか？）
+        = form_with model: Banner, url: admin_banner_update_path, method: :patch, local: true do |f|
+          table.table.table-bordered.bg-light
+            tbody
+              tr
+                th = f.label "表示位置"
+                td.bg-white = f.collection_select :banner_id, Banner.all, :id, :name
+              tr
+                th = f.label "表示位置名称"
+                td.bg-white = f.text_field :banner_name
+              tr.text-center
+                th[colspan="2"] = f.submit '変更'
+
+        table.table.table-bordered.bg-light
+          tbody
+            tr
+              = form_with model: Image, url: admin_banner_edit_path, method: :get, local: true do |f|
+                th = f.label 'バナー・リンク一覧'
+                td.bg-white
+                  = f.collection_select :id, @images, :id, :name, { include_blank: "新規登録", selected: 0 }
+                  div
+                  = f.submit '参照'
+            tr
+              th 内容
+              td.bg-white
+                = form_with model: @banner, url: admin_banner_update_path(@banner), method: :patch, local: true do |f|
+                  table.table.table-bordered.bg-light
+                    tbody
+                      tr
+                        th.max-width-30 = f.label '名称（必須）'
+                        td.bg-white.max-width-70 = f.text_field :name, class: 'image-max-size'
+                      tr
+                        th = f.label 'バナー画像（必須）'
+                        td.bg-white
+                          = f.text_field :image_name
+                          div
+                          | * 画像名を入力してください。
+                      tr
+                        th = f.label '表示箇所'
+                        td.bg-white = f.number_field :hyoji_area, class: 'image-max-size'
+                      tr
+                        th = f.label 'コメント'
+                        td.bg-white = f.text_area :comment, class: 'text-area'
+                  div
+                    = f.submit '保存'

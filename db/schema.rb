@@ -10,72 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_10_083624) do
-
-  create_table "Delivery_infos", force: :cascade do |t|
-    t.string "company_name"
-    t.string "user_name"
-    t.string "address"
-    t.string "tel"
-    t.string "phone_number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.date "delivery_day"
-    t.integer "purchase_history_id"
-    t.integer "order_history_id"
-    t.string "zip_code"
-  end
-
-  create_table "Inqueries", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "title"
-  end
-
-  create_table "Products", force: :cascade do |t|
-    t.string "name"
-    t.text "detail"
-    t.integer "category_id"
-    t.integer "price"
-    t.integer "member_price"
-    t.string "product_number"
-    t.boolean "postage_flg", default: false, null: false
-    t.integer "postage"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "jan_code"
-    t.string "shipping_location"
-    t.string "notification_email"
-    t.boolean "new_flg", default: true, null: false
-    t.boolean "popular_flg", default: true, null: false
-    t.text "comment"
-    t.text "explanation_1"
-    t.text "explanation_2"
-    t.boolean "tax_flg", default: true, null: false
-    t.string "manufacturer"
-    t.boolean "remote_island_shipping_confirmation", default: true, null: false
-    t.date "display_period_start"
-    t.date "display_period_end"
-    t.integer "purchase_limit"
-    t.text "postage_comment"
-    t.boolean "is_release_flg", default: false, null: false
-    t.boolean "set_flg", default: false, null: false
-    t.integer "set_num"
-    t.integer "shipping_origin_id"
-    t.string "shipping_company"
-    t.integer "stock_management_id"
-    t.integer "child_category_id"
-    t.string "image"
-  end
-
-  create_table "Purchase_histories", force: :cascade do |t|
-    t.string "cart_number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "order_history_id"
-    t.integer "product_id"
-    t.integer "stock"
-  end
+ActiveRecord::Schema.define(version: 2021_05_04_050043) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "company_name"
@@ -158,6 +93,20 @@ ActiveRecord::Schema.define(version: 2021_04_10_083624) do
     t.index ["user_id"], name: "index_contacts_on_user_id"
   end
 
+  create_table "delivery_infos", force: :cascade do |t|
+    t.string "company_name"
+    t.string "user_name"
+    t.string "address"
+    t.string "tel"
+    t.string "phone_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.date "delivery_day"
+    t.integer "purchase_history_id"
+    t.integer "order_history_id"
+    t.string "zip_code"
+  end
+
   create_table "free_pages", force: :cascade do |t|
     t.string "page_title"
     t.datetime "created_at", null: false
@@ -218,6 +167,16 @@ ActiveRecord::Schema.define(version: 2021_04_10_083624) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "information", force: :cascade do |t|
+    t.text "detail"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "release_flg", default: true, null: false
+    t.date "date"
+    t.datetime "published_start"
+    t.datetime "published_end"
+  end
+
   create_table "information_attachment_files", force: :cascade do |t|
     t.integer "information_id"
     t.string "attachment_file"
@@ -227,16 +186,10 @@ ActiveRecord::Schema.define(version: 2021_04_10_083624) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "informations", force: :cascade do |t|
-    t.text "detail"
+  create_table "inqueries", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "release_flg", default: true, null: false
-    t.date "date"
-    t.date "published_start_yyyymmdd"
-    t.string "published_start_hhmm"
-    t.date "published_end_yyyymmdd"
-    t.string "published_end_hhmm"
+    t.string "title"
   end
 
   create_table "items", force: :cascade do |t|
@@ -268,6 +221,8 @@ ActiveRecord::Schema.define(version: 2021_04_10_083624) do
     t.string "user_cancel_sender"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "base_mail_address"
+    t.integer "ikiti"
   end
 
   create_table "member_ranks", force: :cascade do |t|
@@ -335,19 +290,19 @@ ActiveRecord::Schema.define(version: 2021_04_10_083624) do
     t.integer "payment_method"
     t.text "payee_memo"
     t.boolean "cash_on_delivery_charge_flg", default: true, null: false
-    t.string "amount_collected_1"
-    t.string "cash_on_delivery_charge_1"
-    t.string "amount_collected_2"
-    t.string "cash_on_delivery_charge_2"
-    t.string "amount_collected_3"
-    t.string "cash_on_delivery_charge_3"
-    t.string "amount_collected_4"
-    t.string "cash_on_delivery_charge_4"
-    t.string "amount_collected_5"
-    t.string "cash_on_delivery_charge_5"
-    t.string "amount_collected_6"
-    t.string "cash_on_delivery_charge_6"
-    t.string "cash_on_delivery_charge_7"
+    t.integer "amount_collected_1"
+    t.integer "cash_on_delivery_charge_1"
+    t.integer "amount_collected_2"
+    t.integer "cash_on_delivery_charge_2"
+    t.integer "amount_collected_3"
+    t.integer "cash_on_delivery_charge_3"
+    t.integer "amount_collected_4"
+    t.integer "cash_on_delivery_charge_4"
+    t.integer "amount_collected_5"
+    t.integer "cash_on_delivery_charge_5"
+    t.integer "amount_collected_6"
+    t.integer "cash_on_delivery_charge_6"
+    t.integer "cash_on_delivery_charge_7"
     t.text "cash_on_delivery_charge_memo"
     t.text "deadline_memo"
     t.datetime "created_at", null: false
@@ -412,6 +367,51 @@ ActiveRecord::Schema.define(version: 2021_04_10_083624) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.text "detail"
+    t.integer "category_id"
+    t.integer "price"
+    t.integer "member_price"
+    t.string "product_number"
+    t.boolean "postage_flg", default: false, null: false
+    t.integer "postage"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "jan_code"
+    t.string "shipping_location"
+    t.string "notification_email"
+    t.boolean "new_flg", default: true, null: false
+    t.boolean "popular_flg", default: true, null: false
+    t.text "comment"
+    t.text "explanation_1"
+    t.text "explanation_2"
+    t.boolean "tax_flg", default: true, null: false
+    t.string "manufacturer"
+    t.boolean "remote_island_shipping_confirmation", default: true, null: false
+    t.date "display_period_start"
+    t.date "display_period_end"
+    t.integer "purchase_limit"
+    t.text "postage_comment"
+    t.boolean "is_release_flg", default: false, null: false
+    t.boolean "set_flg", default: false, null: false
+    t.integer "set_num"
+    t.integer "shipping_origin_id"
+    t.string "shipping_company"
+    t.integer "stock_management_id"
+    t.integer "child_category_id"
+    t.string "image"
+  end
+
+  create_table "purchase_histories", force: :cascade do |t|
+    t.string "cart_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "order_history_id"
+    t.integer "product_id"
+    t.integer "stock"
+  end
+
   create_table "questions", force: :cascade do |t|
     t.text "question"
     t.text "answer"
@@ -427,10 +427,11 @@ ActiveRecord::Schema.define(version: 2021_04_10_083624) do
   end
 
   create_table "set_monthly_holidays", force: :cascade do |t|
-    t.date "year_month"
     t.string "set_holidays"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "year"
+    t.integer "month"
   end
 
   create_table "shipment_products", force: :cascade do |t|

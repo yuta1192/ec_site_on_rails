@@ -83,6 +83,9 @@
             tr
               th = f.label '送料コメント'
               td.bg-white = f.text_field :postage_comment
+            tr
+              th = f.label '商品の画像'
+              td.bg-white = f.file_field :image
             tr.text-center
               th[colspan="2"]
                 = f.submit '保存', class: 'btn btn-primary'

@@ -7,7 +7,7 @@
         / todo パスワードが変更されていない場合のみ表示するように変更(ユーザー管理編集ページ作成必要あり)
         p.text-danger
           | パスワードが初期設定のままになっています。
-          = link_to 'ユーザ管理', admin_dashboard_path
+          = link_to 'ユーザ管理', password_reset_admin_user_path(@current_user)
           | より変更してください。
       / メール障害 todo メール障害発生の有無によってここの表示を変える。gemを導入する。
       table.table.table-bordered.bg-light

@@ -64,11 +64,11 @@
               = link_to ' 50件', admin_products_path(per: 50)
               = link_to ' 100件', admin_products_path(per: 100)
         br
-        table.table-sm.table-bordered.bg-light
+        table.table-sm.table-bordered.bg-light.table-responsive.no-gutters
           thead
             tr
               th 受注番号
-              th 会社名（部署名
+              th 会社名（部署名)
               th 担当者名
               th お届け先
               th お届け希望日時
@@ -82,24 +82,39 @@
               th 詳細
           tbody
             - @shipments.each do |f|
-              = f.order_history.order_number
-              = f.order_history.user.addresses.find_by(is_select_flag: true).company_name
-              | (#{f.order_history.user.addresses.find_by(is_select_flag: true).department_name})
-              = f.order_history.user.name
-              = f.order_history.user.addresses.find_by(is_select_flag: true).zip_code
-              = f.order_history.user.addresses.find_by(is_select_flag: true).prefectures
-              = f.order_history.user.addresses.find_by(is_select_flag: true).municipation
-              = f.order_history.user.addresses.find_by(is_select_flag: true).address_1
-              = f.order_history.user.addresses.find_by(is_select_flag: true).address_2
-              = f.order_history.preferred_date_start
-              = f.shipping_origin
-              - f.shipment_products.each do |ff|
-                = ff.product.name
-                = ff.expected_shipping_date.present? ? ff.expected_shipping_date : "-"
-                = ff.ship_date.present? ? ff.ship_date : "-"
-                = ff.picking_flg == "true" ? ff.picking_flg : "-"
-                = ff.csv_flg == "true" ? ff.csv_flg : "-"
-                = ff.status
-              = link_to '詳細', admin_shipment_path(f)
+              tr
+                td = f.order_history.order_number
+                td
+                  = f.order_history.address.company_name
+                  div
+                  = f.order_history.address.department_name
+                td = f.order_history.user.name_sei + f.order_history.user.name_mei
+                td
+                  = f.order_history.address.zip_code
+                  div
+                  = f.order_history.address.prefectures
+                  div
+                  = f.order_history.address.municipation
+                  div
+                  = f.order_history.address.address_1
+                  div
+                  = f.order_history.address.address_2
+                td
+                  - if f.order_history.preferred_date_start.present?
+                    = f.order_history.preferred_date_start
+                  - else
+                    | 希望なし
+                - f.shipment_products.each do |ff|
+                  - if ff.product.shipping_origin.present?
+                    td = ff.product.shipping_origin.shipping_origin_name
+                  - else
+                    td 不明
+                  td = ff.product.name
+                  td = ff.expected_shipping_date.present? ? ff.expected_shipping_date : "-"
+                  td = ff.ship_date.present? ? ff.ship_date : "-"
+                  td = ff.picking_flg == "true" ? ff.picking_flg : "-"
+                  td = ff.csv_flg == "true" ? ff.csv_flg : "-"
+                  td = ff.status
+                td = link_to '詳細', admin_shipment_path(f)
       - else
         p ないよ

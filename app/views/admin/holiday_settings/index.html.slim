@@ -13,57 +13,11 @@
           li.small 月別休業日設定にて保存を行った後、祝日設定をした場合、月別休業日設定が保存された月の休業日は自動で変更されませんのでご注意ください。
           li.small 今年と来年の２年分の設定ができます。
           li.small 祝日は前年の2月に決定されます。内閣府のホームページを参照ください。
-
       br
       table.table-sm.table-bordered.bg-light.image-max-size
-        = form_with model: HolidaySetting, url: bluk_update_admin_holiday_settings_path, method: :patch, local: true do |f|
+        = form_with model: HolidaySetting, url: edit_admin_holiday_setting_path(:id), method: :get, local: true do |f|
           tbody
             tr
               th[colspan="2"] = f.label '年選択'
-              td = f.select :year, [['2020年', 1], ['2021年',2]]
-            tr
-              th[rowspan="13"] = f.label '2020年 祝日設定'
-              /todo ここは操作している年を取得して表示
-            tr
-              th = f.label '1月'
-              td
-                = f.text_field :january_holiday
-                div
-                | ※祝日を半角数字で入力してください。
-                div
-                | ※祝日が複数の場合は、カンマ区切りで入力してください。　例）1,12
-            tr
-              th = f.label '2月'
-              td = f.text_field :february_holiday
-            tr
-              th = f.label '3月'
-              td = f.text_field :march_holiday
-            tr
-              th = f.label '4月'
-              td = f.text_field :april_holiday
-            tr
-              th = f.label '5月'
-              td = f.text_field :may_holiday
-            tr
-              th = f.label '6月'
-              td = f.text_field :june_holiday
-            tr
-              th = f.label '7月'
-              th = f.text_field :july_holiday
-            tr
-              th = f.label '8月'
-              td = f.text_field :august_holiday
-            tr
-              th = f.label '9月'
-              td = f.text_field :september_holiday
-            tr
-              th = f.label '10月'
-              td = f.text_field :october_holiday
-            tr
-              th = f.label '11月'
-              td = f.text_field :november_holiday
-            tr
-              th = f.label '12月'
-              td = f.text_field :december_holiday
-            tr.text-center
-              th[colspan="3"] = f.submit '保存'
+              td = f.select :year, @years
+              td = f.submit '変更'

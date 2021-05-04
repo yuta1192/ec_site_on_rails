@@ -4,11 +4,11 @@
     = render 'admin/informations/information_list'
     .col-2
     .col-10
-      - if @information.errors.any?
+      - if @errors.any?
         .alert
-          - @information.errors.full_messages.each do |message|
+          - @errors.each do |message|
             li = message
-      = form_with model: @information, url: admin_informations_path, method: :post, local: true do |info|
+      = form_with model: Information, url: admin_informations_path, method: :post, local: true do |info|
         = render partial: 'form', locals: { f: info, edit: false }
 
     / = render 'admin/informations/information_list'

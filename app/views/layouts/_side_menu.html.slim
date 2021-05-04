@@ -30,18 +30,28 @@
   div
   br
 
-  / TODO バナー表示（表示カラムを追加して、左に表示するかを制御する。helperに書いてある
+  / バナー表示
   - banner_left.each do |b|
-    = image_tag(b.image.to_s, :size => '210x90')
+    .border
+      = image_tag(b.image.image.to_s, :size => '210x90')
+    br
+  br
 
   .h4.bg-primary 営業日カレンダー
-  /#calendar
+  #calendar
   p.text-danger この日(赤色)は休業日です。
 
-  / todo 商品ランキング作成、購入数でランキング付けするため、購入数取得の方法決まったらここつくる
+  / todo 商品ランキング redisで取得予定
   br
-  h2 ランキング(redisで作る予定)
-  p ランキング
-  p 左に画像image
-  p 第●位(10位まで)
-  p 商品名
+  table.table-bordered.image-max-size
+    thead.bg-primary
+      tr
+        td.h4 ランキング
+    tbody.text-center
+      - ranking.each.with_index(1) do |bt, i|
+        tr
+          td.text-warning #{i}位
+        tr
+          td = image_tag(bt.product.image.to_s, :size => '200x200')
+        tr
+          td = bt.product.name

@@ -42,6 +42,7 @@ class Admin::ProductsController < ApplicationController
     if @product.update!(update_product_params)
       redirect_to edit_admin_product_path(@product)
     else
+      render 'edit'
     end
   end
 
@@ -51,6 +52,7 @@ class Admin::ProductsController < ApplicationController
     if @product.save!
       redirect_to edit_admin_product_path(@product)
     else
+      render 'new'
     end
   end
 

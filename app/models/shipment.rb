@@ -165,7 +165,9 @@ class Shipment < ApplicationRecord
     end
   }
   scope :cancel_search, -> cancel {
-    if cancel == 'true'
+    if cancel == "99"
+      all
+    elsif cancel == 'true'
       where(cancel: true)
     elsif cancel == 'false'
       where(cancel: false)

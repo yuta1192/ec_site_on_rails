@@ -1,6 +1,6 @@
 # 支払い方法（PaymentMethodSetting）
 
-string = "これ、integerじゃないのか？値段だし"
+string = 1000
 
 PaymentMethodSetting.seed do |pms|
   pms.payment_method = 1

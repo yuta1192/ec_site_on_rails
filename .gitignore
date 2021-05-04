@@ -27,6 +27,7 @@
 /public/assets
 /public/uploads/*
 .byebug_history
+/config/initializers/mail.rb
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key

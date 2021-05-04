@@ -80,29 +80,29 @@
                   div
                   = @address.address_2
               tr
-                th 電話番号（必須）
-                td.bg-white[colspan="2"]
+                th[colspan="2"] 電話番号（必須）
+                td.bg-white
                   = @address.tel
                   div
                   | ※半角数字
               tr
-                th 携帯番号
-                td.bg-white[colspan="2"]
+                th[colspan="2"] 携帯番号
+                td.bg-white
                   = @address.phone_number
                   div
                   | ※半角数字
               tr
-                th FAX番号
-                td.bg-white[colspan="2"]
+                th[colspan="2"] FAX番号
+                td.bg-white
                   = @address.fax
                   div
                   | ※半角数字
               tr
-                th メールアドレス（必須）
-                td.bg-white[colspan="2"] = @user.e_mail
+                th[colspan="2"] メールアドレス（必須）
+                td.bg-white = @user.e_mail
               tr
-                th 会員情報備考
-                td.bg-white[colspan="2"] = @user.rank
+                th[colspan="2"] 会員情報備考
+                td.bg-white = @user.rank
 
             / @addressを選択していない場合@userから取得
             - else
@@ -126,35 +126,36 @@
                   div
                   = @user.address_2
               tr
-                th 電話番号（必須）
-                td.bg-white[colspan="2"]
+                th[colspan="2"] 電話番号（必須）
+                td.bg-white
                   = @user.tel
                   div
                   | ※半角数字
               tr
-                th 携帯番号
-                td.bg-white[colspan="2"]
+                th[colspan="2"] 携帯番号
+                td.bg-white
                   = @user.phone_number
                   div
                   | ※半角数字
               tr
-                th FAX番号
-                td.bg-white[colspan="2"]
+                th[colspan="2"] FAX番号
+                td.bg-white
                   = @user.fax
                   div
                   | ※半角数字
               tr
-                th メールアドレス（必須）
-                td.bg-white[colspan="2"] = @user.e_mail
+                th[colspan="2"] メールアドレス（必須）
+                td.bg-white = @user.e_mail
               tr
-                th 会員情報備考
-                td.bg-white[colspan="2"] = @user.rank
+                th[colspan="2"] 会員情報備考
+                td.bg-white = @user.rank
         br
 
         / @user がある場合は表示させる
-        = form_with model: OrderHistory, url: admin_order_managements_path, method: :post, local: true do |f|
+        = form_with model: OrderHistory, url: admin_order_managements_path(user: @user, address: @address), method: :post, local: true do |f|
           = f.hidden_field :user, value: @user.id
-          = f.hidden_field :address, value: @address.id
+          - if @address.present?
+            = f.hidden_field :address, value: @address.id
           table.table.table-bordered.bg-light
             tbody
               table.table.table-bordered.bg-light
@@ -190,7 +191,10 @@
                                     = "購入制限#{p.purchase_limit}"
                                   - else
                                     | 購入制限なし
-                                td.bg-white = link_to '削除', select_product_delete_admin_order_managements_path(product_id: p.id, user: @user.id, address: @address.id), method: :post
+                                - if @address.present?
+                                  td.bg-white = link_to '削除', select_product_delete_admin_order_managements_path(product_id: p.id, user: @user.id, address: @address.id), method: :post
+                                - else
+                                  td.bg-white = link_to '削除', select_product_delete_admin_order_managements_path(product_id: p.id, user: @user.id, address: @address), method: :post
                   tr
                     th
                       table.table.table-bordered.bg-light
@@ -205,7 +209,10 @@
                               = f.submit '追加', name: "product_add"
                           tr
                             th 商品検索から追加
-                            td.bg-white = link_to '商品検索', product_search_admin_order_managements_path(user: @user.id, address: @address.id), class: 'btn btn-primary'
+                            - if @address.present?
+                              td.bg-white = link_to '商品検索', product_search_admin_order_managements_path(user: @user.id, address: @address.id), class: 'btn btn-primary'
+                            - else
+                              td.bg-white = link_to '商品検索', product_search_admin_order_managements_path(user: @user.id, address: @address), class: 'btn btn-primary'
           br
           table.table.table-bordered.bg-light
             thead
