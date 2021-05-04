@@ -34,6 +34,8 @@ jobs:
             bundle config set path 'vendor/bundle'
             bundle install --jobs=4 --retry=3
           working_directory: ~/repo
+          
+      - run: bundle install --path vendor/cache
 
       - save_cache:
           key: gem-cache-v1-{{ checksum "~/repo/Gemfile.lock" }}
