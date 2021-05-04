@@ -20,6 +20,22 @@ jobs:
       - image: circleci/ruby:2.7.3
     steps:
       - setup
+      - restore_cache:
+          keys:
+            - blog-bundle-v1-{{ checksum "Gemfile.lock" }}-{{ checksum "yarn.lock" }}
+            - blog-bundle-v1-
+      - run:
+          name: Bundler and Yarn
+          command: |
+            gem install bundler -v '2.1.4' -N
+            bundle -v
+            bundle install --jobs=3 --retry=3 --path vendor/bundle
+            yarn install
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+            - ./node_modules
+          key: blog-bundle-v1-{{ checksum "Gemfile.lock" }}-{{ checksum "yarn.lock" }}
   test:
     docker:
       - image: circleci/ruby:2.7.3

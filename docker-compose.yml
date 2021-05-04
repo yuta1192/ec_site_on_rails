@@ -4,9 +4,9 @@ services:
     image: mysql:latest
     environment:
       MYSQL_DATABASE: ec_site_on_rails_development
-      MYSQL_ROOT_PASSWORD:
+      MYSQL_ROOT_PASSWORD: password
       MYSQL_USER: ec_site_on_rails
-      MYSQL_PASSWORD:
+      MYSQL_PASSWORD: password
     ports:
       - "5432:5432" # ホストからゲストへポートフォワード
   web:
