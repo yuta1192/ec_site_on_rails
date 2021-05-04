@@ -56,13 +56,8 @@ jobs:
 
       # run tests
       - run:
-          name: RSpec
-          command: |
-            bundle exec rspec --profile 10 \
-                              --format RspecJunitFormatter \
-                              --out test_results/rspec.xml \
-                              --format progress \
-                              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+          name: Rspec
+          command: bundle exec rspec
           working_directory: ~/repo
 
       # collect reports
@@ -74,6 +69,10 @@ jobs:
       - store_artifacts:
           path: /home/circleci/repo/tmp/screenshots
 
+      - run:
+          name: Rubocop
+          command: bundle exec rubocop
+
 
 workflows:
   version: 2
@@ -83,3 +82,9 @@ workflows:
           filters:
             branches:
               ignore: develop
+  rubocop_rspec:
+    jobs:
+      - rubocop
+      - rspec:
+          requires:
+            - rubocop
