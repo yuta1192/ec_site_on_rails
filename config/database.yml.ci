@@ -2,7 +2,7 @@ test:
   adapter: mysql2
   encoding: utf8
   pool: 5
-  username: ec_site_on_rails
+  username: 'ec_site_on_rails'
   port: 3306
-  host: localhost
+  host: '127.0.0.1'
   database: db/ec_site_on_rails_test.sqlite3

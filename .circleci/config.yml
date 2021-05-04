@@ -9,7 +9,7 @@ jobs:
     - image: circleci/mysql:latest
       environment:
         - MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
-        - MYSQL_ROOT_HOST: 'localhost'
+        - MYSQL_ROOT_HOST: '127.0.0.1'
 
     working_directory: ~/ec_site_on_rails  #自身のアプリディレクトリ名を設定
 
