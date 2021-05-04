@@ -9,7 +9,7 @@ jobs:
           RAILS_ENV: test
           DB_HOST: 127.0.0.1
           DB_PASSWORD: ''
-      - image: circleci/mysql:5.7
+      - image: circleci/mysql:latest
         environment:
           POSTGRES_USER: root
           POSTGRES_DB: circleci_testdb
