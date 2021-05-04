@@ -84,9 +84,3 @@ workflows:
           filters:
             branches:
               ignore: develop
-  rubocop_rspec:
-    jobs:
-      - rubocop
-      - rspec:
-          requires:
-            - rubocop
