@@ -69,6 +69,8 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-byebug'
   gem 'rspec-rails'
+  gem "rspec"
+  gem "rspec_junit_formatter"
 end
 
 group :development do
