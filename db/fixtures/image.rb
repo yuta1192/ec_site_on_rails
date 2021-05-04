@@ -14,6 +14,7 @@ end
   Banner.seed do |b|
     b.name = "banner_name_#{i}"
     b.comment = "banner_comment_#{i}"
+    b.hyoji_area = [1,2,3,4].sample
     b.image_id = [1,2,3].sample
   end
 end

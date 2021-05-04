@@ -16,78 +16,93 @@
         br
         | 「カートへ入れる」ボタンを押してください。
       br
-      = form_with url: quick_order_products_path, method: :post, local: true do |f|
 
+      - if @errors.present?
+        .alert
+          - @errors.each do |message|
+            li = message
+
+      = form_with url: quick_order_products_products_path, method: :post, local: true do |f|
         / hedder
-        .row.no-gutters.text-center.bg-success
+        .row.text-center.bg-success
           .col-1.border
             p No.
-          .col-4.border
+          .col-9.border
             p 商品コード／品番
           .col-2.pl-3.border
             p 数量
-          .col-4.border
-            p 商品名／メーカー
-          .col-1.border
-            p 削除
         / 登録フォーム
-        .row.no-gutters.text-center
+        .row.text-center
           / 1
           .col-1
             = f.label "1"
-          .col-4
-            = f.text_field "[order][id_1]product_code", class: 'form-control'
+          .col-9
+            = f.text_field "[order][id_1]product_number", class: 'form-control'
           .col-2.pl-3
             = f.text_field "[order][id_1]quantity", class: 'form-control'
-          .col-4
-            p 商品名のリンク出てくる
-          .col-1
-            p 削除
           / 2
           .col-1
             = f.label "2"
-          .col-4
-            = f.text_field "[order][id_2]product_code", class: 'form-control'
+          .col-9
+            = f.text_field "[order][id_2]product_number", class: 'form-control'
           .col-2.pl-3
             = f.text_field "[order][id_2]quantity", class: 'form-control'
-          .col-4
-            p 商品名のリンク出てくる
-          .col-1
-            p 削除
           / 3
           .col-1
             = f.label "3"
-          .col-4
-            = f.text_field "[order][id_3]product_code", class: 'form-control'
+          .col-9
+            = f.text_field "[order][id_3]product_number", class: 'form-control'
           .col-2.pl-3
             = f.text_field "[order][id_3]quantity", class: 'form-control'
-          .col-4
-            p 商品名のリンク出てくる
-          .col-1
-            p 削除
           / 4
           .col-1
             = f.label "4"
-          .col-4
-            = f.text_field "[order][id_4]product_code", class: 'form-control'
+          .col-9
+            = f.text_field "[order][id_4]product_number", class: 'form-control'
           .col-2.pl-3
             = f.text_field "[order][id_4]quantity", class: 'form-control'
-          .col-4
-            p 商品名のリンク出てくる
-          .col-1
-            p 削除
           / 5
           .col-1
             = f.label "5"
-          .col-4
-            = f.text_field "[order][id_5]product_code", class: 'form-control'
+          .col-9
+            = f.text_field "[order][id_5]product_number", class: 'form-control'
           .col-2.pl-3
             = f.text_field "[order][id_5]quantity", class: 'form-control'
-          .col-4
-            p 商品名のリンク出てくる
+          / 6
           .col-1
-            p 削除
-          / ボタン
+            = f.label "6"
+          .col-9
+            = f.text_field "[order][id_6]product_number", class: 'form-control'
+          .col-2.pl-3
+            = f.text_field "[order][id_6]quantity", class: 'form-control'
+          / 2
+          .col-1
+            = f.label "7"
+          .col-9
+            = f.text_field "[order][id_7]product_number", class: 'form-control'
+          .col-2.pl-3
+            = f.text_field "[order][id_7]quantity", class: 'form-control'
+          / 3
+          .col-1
+            = f.label "8"
+          .col-9
+            = f.text_field "[order][id_8]product_number", class: 'form-control'
+          .col-2.pl-3
+            = f.text_field "[order][id_8]quantity", class: 'form-control'
+          / 4
+          .col-1
+            = f.label "9"
+          .col-9
+            = f.text_field "[order][id_9]product_number", class: 'form-control'
+          .col-2.pl-3
+            = f.text_field "[order][id_9]quantity", class: 'form-control'
+          / 5
+          .col-1
+            = f.label "10"
+          .col-9
+            = f.text_field "[order][id_10]product_number", class: 'form-control'
+          .col-2.pl-3
+            = f.text_field "[order][id_10]quantity", class: 'form-control'
         br
         .row
           .col-4

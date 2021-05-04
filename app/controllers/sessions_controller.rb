@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
   before_action :login_user, only: [:login]
-  skip_before_action :require_sign_in!, only: [:index, :login, :password_reset, :complite_message]
+  before_action :back_root_path, only: [:index, :login, :password_reset, :complite_message, :reset_password, :reset_user_password]
+  skip_before_action :require_sign_in!, only: [:index, :login, :password_reset, :complite_message, :reset_password, :reset_user_password]
 
   def index
   end
@@ -13,11 +14,38 @@ class SessionsController < ApplicationController
   def password_reset
     @emails = User.where(admin: false).pluck(:e_mail)
     if @emails.include?(params[:session][:e_mail])
-      # todo ここにメール返信処理を追加すること
+      @user = User.find_by(e_mail: params[:session][:e_mail])
+      NotificationMailer.send_confirm_to_user(@user).deliver
       redirect_to complite_message_path
     else
       flash.now[:alert] = "メールアドレスを正しく入力してください。"
       render 'index'
+    end
+  end
+
+  def reset_password
+    @user = User.find_by(id: params[:user_id], e_mail: params[:e_mail])
+    unless params[:token] == true
+      @error = "権限がありません"
+      render 'index'
+    end
+  end
+
+  def reset_user_password
+    @user = User.find_by(id: params[:user_id], e_mail: params[:e_mail])
+    if params[:user][:password].blank? || params[:user][:password_confirmation].blank?
+      @error = "パスワードとパスワード確認を記載してください。"
+      render 'reset_password'
+    elsif params[:user][:password] != params[:user][:password_confirmation]
+      @error = "パスワードとパスワード確認が一致しません。"
+      render 'reset_password'
+    elsif @user.update_attributes(user_params)
+      # todo メッセージ出てこないのでトップ画面に出るように変更
+      flash[:success] = "パスワードを再設定が完了しました。再設定したパスワードでログインしてください。"
+      redirect_to login_path
+    else
+      @error = "システムエラーが発生しました。もう一度入力してください。"
+      render 'reset_password'
     end
   end
 
@@ -44,5 +72,14 @@ class SessionsController < ApplicationController
 
     def login_params
       params.require(:session).permit(:e_mail, :password)
+    end
+
+    # ログインしている場合はroot_pathに戻す
+    def back_root_path
+      redirect_to root_path if signed_in?
+    end
+
+    def user_params
+      params.require(:user).permit(:password, :password_confirmation)
     end
 end

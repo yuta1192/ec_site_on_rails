@@ -4,7 +4,7 @@ class Admin::AddressesController < ApplicationController
   end
 
   def new
-    @user = User.find(params[:user_id]) if params[:user_id].present?
+    @user = params[:user].present? ? User.find(params[:user]) : nil
     @address = Address.new
   end
 
@@ -25,7 +25,7 @@ class Admin::AddressesController < ApplicationController
 
   def update
     @address = Address.find(params[:id])
-    if @address.update!(update_params)
+    if @address.update(update_params)
       redirect_to admin_addresses_path
     else
       render 'show'
@@ -34,7 +34,15 @@ class Admin::AddressesController < ApplicationController
 
   def create
     @address.new(create_params)
-    if @address.save!
+    @user = params[:user].present? ? User.find(params[:user]) : nil
+
+    if @user.blank?
+      # todo era-bun
+      @error = "era-"
+      render 'new' and return
+    end
+
+    if @address.save
       redirect_to admin_address_path
     else
       render 'new'
@@ -57,10 +65,10 @@ class Admin::AddressesController < ApplicationController
   end
 
   def update_params
-    params.require(:address).permit(:company_name, :department_name, :name_sei, :name_mei, :name_sei_kana, :name_mei_kana, :zip_code_first, :zip_code_second, :prefectures, :municipation, :address_1, :address_2, :tel_first, :tel_second, :tel_third, :phone_number)
+    params.require(:address).permit(:company_name, :department_name, :name_sei, :name_mei, :name_sei_kana, :name_mei_kana, :zip_code, :prefectures, :municipation, :address_1, :address_2, :tel, :phone_number)
   end
 
   def create_params
-    params.require(:address).permit(:company_name, :department_name, :name_sei, :name_mei, :name_sei_kana, :name_mei_kana, :zip_code_first, :zip_code_second, :prefectures, :municipation, :address_1, :address_2, :tel_first, :tel_second, :tel_third, :phone_number).marge(user_id: params[:user_id])
+    params.require(:address).permit(:company_name, :department_name, :name_sei, :name_mei, :name_sei_kana, :name_mei_kana, :zip_code, :prefectures, :municipation, :address_1, :address_2, :tel, :phone_number).marge(user_id: params[:user_id])
   end
 end

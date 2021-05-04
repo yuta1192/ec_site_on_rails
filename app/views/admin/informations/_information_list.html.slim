@@ -37,19 +37,13 @@
         - @informations.each do |im|
           tr class="text-center align-middle release_#{im.release_flg}"
             td = im.date.to_s.gsub('-', '/')
-            - if im.published_start_yyyymmdd.present? || im.published_end_yyyymmdd.present?
+            - if im.published_start.present? || im.published_end.present?
               td
-                | #{im.published_start_yyyymmdd.to_s.gsub('-', '/')}
-                div
-                | #{im.published_start_hhmm}
-                / .insert(2, ":")}
+                = im.published_start.strftime('%Y/%m/%d %H:%m')
                 div
                 | ~
                 div
-                | #{im.published_end_yyyymmdd.to_s.gsub('-', '/')}
-                div
-                | #{im.published_end_hhmm}
-                / .insert(2, ":")}
+                = im.published_end.strftime('%Y/%m/%d %H:%m')
             - else
               td -
             td = simple_format(im.detail)

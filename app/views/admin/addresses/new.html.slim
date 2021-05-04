@@ -14,7 +14,8 @@
         tbody
           - if @user.present?
             tr
-              th[colspan="2"] 会員情報（必須）
+              th 会員情報（必須）
+              td = link_to '検索', user_search_admin_addresses_path
             tr
               th 会員ID
               td = @user.member_id
@@ -43,11 +44,11 @@
               td = @user.e_mail
           - else
             tr
-              th[colspan="2"] 会員情報（必須）
+              th 会員情報（必須）
+              td = link_to '検索', user_search_admin_addresses_path
             tr
               th 会員ID
-              td = link_to '検索', root_path
-              / todo ここで会員を検索する機能追加、会員選択したら@userに情報ぶち込んで表示させること
+              td
             tr
               th.max-width-30 会社名
               td.max-width-70
@@ -69,18 +70,18 @@
         tbody
           = form_with model: @address, url: admin_addresses_path, method: :post, local: true do |f|
             tr
-              th[colspan="2"] = f.label 'お届け先情報'
+              th[colspan="3"] = f.label 'お届け先情報'
             tr
-              th = f.label 'お届け先ID'
+              th[colspan="2"] = f.label 'お届け先ID'
               td = @address.id
             tr
-              th = f.label '会社名（必須）'
+              th[colspan="2"] = f.label '会社名（必須）'
               td = f.text_field :company_name
             tr
-              th = f.label '部署名'
+              th[colspan="2"] = f.label '部署名'
               td = f.text_field :department_name
             tr
-              th = f.label 'お名前'
+              th[colspan="2"] = f.label 'お名前'
               td
                 | 姓
                 = f.text_field :name_sei
@@ -89,7 +90,7 @@
                 div
                 | ※全角で入力してください。
             tr
-              th = f.label 'お名前（カナ）'
+              th[colspan="2"] = f.label 'お名前（カナ）'
               td
                 | 姓
                 = f.text_field :name_sei_kana
@@ -98,36 +99,34 @@
                 div
                 | ※全角カタカナで入力してください。
             tr
-              th = f.label '住所'
-              td
-                table.table-sm.table-bordered.bg-light.image-max-size
-                  tbody
-                    tr
-                      th = f.label '郵便番号（必須）'
-                      td
-                        = f.text_field :zip_code
-                        div
-                        | ※半角数字で入力してください。
-                    tr
-                      th = f.label '都道府県（必須）'
-                      td = f.select :prefectures, Address.prefectures.keys
-                    tr
-                      th = f.label '市区町村（必須）'
-                      td = f.text_field :municipation
-                    tr
-                      th = f.label '地番、番地（必須）'
-                      td = f.text_field :address_1
-                    tr
-                      th = f.label 'ビル、マンション、アパート名など'
-                      td = f.text_field :address_2
+              th[rowspan="6"] = f.label '住所'
             tr
-              th = f.label '電話番号（必須）'
+              th = f.label '郵便番号（必須）'
+              td
+                = f.text_field :zip_code
+                div
+                | ※半角数字で入力してください。
+            tr
+              th = f.label '都道府県（必須）'
+              td = f.select :prefectures, Address.prefectures.keys
+            tr
+              th = f.label '市区町村（必須）'
+              td = f.text_field :municipation
+            tr
+              th = f.label '地番、番地（必須）'
+              td = f.text_field :address_1
+            tr
+              th = f.label 'ビル、マンション、アパート名など'
+              td = f.text_field :address_2
+            tr
+              th[colspan="2"] = f.label '電話番号（必須）'
               td
                 = f.text_field :tel
                 div
                 | ※半角数字で入力してください。
             tr
-              th = f.label '携帯番号'
+              th[colspan="2"] = f.label '携帯番号'
               td = f.text_field :phone_number
             tr.text-center
-              th[colspan="2"] = f.submit '更新'
+              = f.hidden_field :user_id, value: @user.id
+              th[colspan="3"] = f.submit '更新'

@@ -77,62 +77,45 @@
                 div
                 | ※全角カタカナで入力してください。
             tr
-              th
+              th[rowspan="6"]
                 = f.label '住所'
                 div
                 | 必須
+            tr
               th = f.label '郵便番号'
               td
-                = f.text_field :zip_code_front
-                | -
-                = f.text_field :zip_code_back
+                = f.text_field :zip_code
                 / todo ボタンから住所検索できるようにすること
                 div
                 | ※半角数字で入力してください。
             tr
-              th
               th = f.label '都道府県'
               td = f.select :prefectures, User.prefectures.keys, value: @user.prefectures
             tr
-              th
               th = f.label '市区町村'
               td = f.text_field :municipation, value: @user.municipation
             tr
-              th
               th = f.label '地番、番地'
               td = f.text_field :address_1, value: @user.address_1
             tr
-              th
               th = f.label 'ビル、マンション、アパート名など'
               td = f.text_field :address_2, value: @user.address_2
             tr
               th[colspan="2"] = f.label '電話番号 （必須）'
               td
-                = f.text_field :tel_first
-                | -
-                = f.text_field :tel_second
-                | -
-                = f.text_field :tel_third
+                = f.text_field :tel
                 div
                 | ※半角数字で入力してください。
             tr
               th[colspan="2"] = f.label '携帯番号'
               td
-                = f.text_field :phone_number_first
-                | -
-                = f.text_field :phone_number_second
-                | -
-                = f.text_field :phone_number_third
+                = f.text_field :phone_number
                 div
                 | ※半角数字で入力してください。
             tr
               th[colspan="2"] = f.label 'FAX番号'
               td
-                = f.text_field :fax_first
-                | -
-                = f.text_field :fax_second
-                | -
-                = f.text_field :fax_third
+                = f.text_field :fax
                 div
                 | ※半角数字で入力してください。
             tr

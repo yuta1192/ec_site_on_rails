@@ -14,7 +14,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-light.border-bottom.border-5.border-m
               / todo 管理者編集ページが作成されていないため作成しリンク修正
               .nav-item
                 | USER：
-                = link_to "#{@current_user.name_sei + @current_user.name_mei}", admin_dashboard_path
+                = link_to "#{@current_user.name_sei + @current_user.name_mei}", edit_admin_user_path(@current_user)
                 | 様
           .navbar-nav
             .nav-item

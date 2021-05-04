@@ -17,6 +17,17 @@ class Admin::OrderManagementsController < ApplicationController
     @products = Product.where(id: session[:product_ids])
   end
 
+  def show
+    @order_history = OrderHistory.find(params[:id])
+    # 合計金額
+    @price = 0
+    @order_history.order_history_products.each do |p|
+      @price += (p.product.price * p.num)
+    end
+    @zei = (@price*0.1).ceil
+    @no_zei_price = (@price*0.9).ceil
+  end
+
   def order_history
   end
 

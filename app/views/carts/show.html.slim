@@ -82,9 +82,7 @@
                 td.border-bottom
                   | 郵便番号を入力して「郵便番号から住所入力」ボタンを押してください。
                   .form-inline
-                    = ff.number_field :zip_code_1, class: 'form-control', style: 'width:10%'
-                    | -
-                    = ff.number_field :zip_code_2, class: 'form-control', style: 'width:20%'
+                    = ff.number_field :zip_code, class: 'form-control'
                     = link_to '郵便番号から住所を入力', root_path, class: 'form-control ml-2'
                   = link_to '郵便番号を調べる（新しいウィンドウで表示）'
               tr
@@ -105,20 +103,12 @@
                 th.text-right.bg-info  = ff.label '電話番号[半角数字]'
                 td.border-bottom
                   .form-inline
-                    = ff.number_field :tel_1, class: 'form-control', style: 'width:20%'
-                    | -
-                    = ff.number_field :tel_2, class: 'form-control', style: 'width:20%'
-                    | -
-                    = ff.number_field :tel_3, class: 'form-control', style: 'width:20%'
+                    = ff.number_field :tel, class: 'form-control', style: 'width:50%'
               tr
                 th.text-right.bg-info  = ff.label '携帯番号[半角数字]'
                 td.border-bottom
                   .form-inline
-                    = ff.number_field :phone_number_1, class: 'form-control', style: 'width:20%'
-                    | -
-                    = ff.number_field :phone_number_2, class: 'form-control', style: 'width:20%'
-                    | -
-                    = ff.number_field :phone_number_3, class: 'form-control', style: 'width:20%'
+                    = ff.number_field :phone_number, class: 'form-control', style: 'width:50%'
               tr
                 th
                 td

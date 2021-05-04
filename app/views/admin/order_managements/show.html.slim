@@ -1,0 +1,65 @@
+.container
+  .row
+    = render 'layouts/admin_left_menu'
+    .col-10
+      br
+      p.border-bottom 注文履歴 詳細
+
+      table.table
+        thead.table-bordered.table-info
+          tr
+            th 商品番号
+            th 品名
+            th 税率
+            th 単価（税抜）
+            th 数量
+            th 金額（税抜）
+            th 出荷予定日
+            th
+              | 出荷日
+              div
+              | 送り状番号
+        tbody.border-bottom
+          - @order_history.order_history_products.each do |pro|
+            tr
+              td = pro.product.product_number
+              td
+                = link_to pro.product.name, edit_admin_product_path(pro.product)
+              td 10%
+              td
+                = pro.product.price
+                | 円
+              td = pro.num
+              td
+                = ((pro.num) * pro.product.price)
+                | 円
+              td = @order_history.shipment.expected_shipping_date
+              td
+                = @order_history.shipment.ship_date
+                div
+                = @order_history.invoice_number
+      br
+
+      .row
+        .col-md-5
+        .col-md-7
+          .row
+            .col-md-8.bg-info
+              | 商品金額（税抜）10%
+            .col-md-4
+              = @no_zei_price
+              | 円
+            .col-md-8.bg-info
+              | 送料
+            .col-md-4
+              | 無料
+            .col-md-8.border-bottom.bg-info
+              | 消費税 10%
+            .col-md-4.border-bottom
+              = @zei
+              | 円
+            .col-md-8.bg-info
+              | 合計金額（税込）
+            .col-md-4
+              = @price
+              | 円

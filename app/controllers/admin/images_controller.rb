@@ -38,17 +38,41 @@ class Admin::ImagesController < ApplicationController
     @images = Image.all
   end
 
+  def witch_new_or_edit
+    if params[:image][:image_name].present?
+      redirect_to admin_banner_edit_path(params[:image][:image_name])
+    else
+      redirect_to admin_banner_new_path
+    end
+  end
+
+  def banner_new
+    @images = Image.all
+    @banner = Banner.new
+  end
+
+  def banner_edit
+    @images = Image.all
+    @banner = Banner.find(params[:id])
+  end
+
   def banner_create
     Banner.create(image: params[:banner][:image], name: "banana1", hyoji_area: 2, comment: "バナー下")
     redirect_to root_path
   end
 
   def banner_update
-    banner = Banner.find_by(id: params[:banner][:banner_id])
-    if banner.update!(name: params[:banner][:banner_name])
+    @images = Image.all
+    @banner = Banner.find(params[:id])
+    image = Image.find_by(name: params[:banner][:image_name])
+    if image.blank?
+      image = Image.first
+    end
+
+    if @banner.update(name: params[:banner][:name], comment: params[:banner][:comment], hyoji_area: params[:banner][:hyoji_area], image_id: image.id)
       redirect_to admin_banner_index_path
     else
-      render admin_banner_index_path
+      render 'banner_edit'
     end
   end
 

@@ -4,8 +4,16 @@
       | 現在位置：
       = link_to 'トップ', root_path
       = "> #{@freepage.page_title}"
-    .col-3
+    = render 'layouts/side_menu'
     .col-9
-      - if @freepage.present?
-        h1 = @freepage.h1_tag
-        h2 = @freepage.page_title
+      br
+      h1 = @freepage.h1_tag
+      h2 = @freepage.page_title
+      br
+      - @freepage.page_contents.each do |pc|
+        .border
+          .m-3
+            h3 = pc.title
+            br
+            = simple_format(pc.sentence)
+        br

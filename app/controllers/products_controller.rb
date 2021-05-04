@@ -142,36 +142,90 @@ class ProductsController < ApplicationController
   end
 
   def quick_order
-    if params[:cart]
-      unless OrderHistory.where(cart_number: @current_user.cart.cart_number).present?
-        order_history_number = SecureRandom.alphanumeric()
-        order_history = OrderHistory.new(order_number: order_history_number, user_id: @current_user.id, cart_number: @current_user.cart.cart_number)
-        order_history.save!
+  end
+
+  def quick_order_products
+    @order_ids = params[:order].keys
+    check_product = []
+    @order_ids.each do |id|
+      check_product << [product_number: params[:order][id][:product_number], quantity: params[:order][id][:quantity]]
+    end
+    check_product.flatten!
+    # 両方ない場合は配列から削除
+    check_product.delete_if{|product| product[:product_number].blank? && product[:quantity].blank?}
+
+    @errors = []
+
+    # check_productが存在するか
+    unless check_product.present?
+      @errors << "１つ以上の商品コードと数量を記載してください。"
+      render 'quick_order' and return
+    end
+
+    # product_numberをセットしているか
+    check_product.each do |product|
+      if product[:product_number].blank? && product[:quantity].present?
+        @errors << "数量を記載した場合、商品コードを記入してください。"
+        break
       end
-      order = params[:order].keys
-      product_code = []
-      order.each do |id|
-        product_code << [product_code: params[:order][id][:product_code],quantity: params[:order][id][:quantity]] if (params[:order][id][:product_code] && params[:order][id][:quantity]).present?
+    end
+
+    # 数量をセットしているか
+    check_product.each do |product|
+      if product[:product_number].present? && product[:quantity].blank?
+        @errors << "商品コードを記載した場合、数量を記入してください。"
+        break
       end
-      render quick_order_products_path unless product_code.present?
-      product_code.flatten!
-      order_history_id = OrderHistory.where(cart_number: @current_user.cart.cart_number)
-      product_code.each do |pc|
-        if Product.where(product_number: pc[:product_code]).present?
-          product = Product.where(product_number: pc[:product_code])
-          unless CartItem.where(product_id: product.id, cart_number: @current_user.cart.cart_number)
-            cart_item = CartItem.new(quantity: pc[:quantity], product_id: product.id, cart_id: @current_user.cart.id, cart_number: @current_user.cart.cart_number, order_history_id: order_history_id)
-            cart_item.save!
-          end
-          redirect_to edit_user_cart_path(@current_user, @current_user.cart.id)
-        else
-          return redirect_to quick_order_products_path
+    end
+
+    # 数量が数値以外
+    check_product.each do |product|
+      if product[:quantity].present?
+        unless product[:quantity] =~ /^[0-9]+$/
+          @errors << "数量は数値を記入してください。"
+          break
         end
       end
+    end
+
+    # product_numberが存在しているか
+    check_product.each do |product|
+      unless product[:product_number].present? && Product.find_by(product_number: product[:product_number]).present?
+        @errors << "対象の商品コードが存在しませんでした。"
+        break
+      end
+    end
+
+    # エラーがある場合は戻す
+    if @errors.present?
+      render 'quick_order' and return
+    end
+
+    check_product.each do |product|
+      product_id = Product.find_by(product_number: product[:product_number]).id
+      product[:product_number] = product_id
+    end
+
+    # カートに追加の場合 todo これだとあれじゃね、数量以上をカートに入れられちゃうわ
+    begin
+      check_product.each do |product|
+        if CartItem.where(product_id: product[:product_number], cart_number: @current_user.cart.cart_number).present?
+          cart_item = CartItem.find_by(product_id: product[:product_number], cart_number: @current_user.cart.cart_number)
+          cart_item.update(quantity: product[:quantity])
+        else
+          cart_item = CartItem.new(quantity: product[:quantity], product_id: product[:product_number], cart_id: @current_user.cart.id, cart_number: @current_user.cart.cart_number)
+          cart_item.save!
+        end
+      end
+      redirect_to edit_user_cart_path(@current_user, @current_user.cart.id)
+    rescue => e
+      @errors << "システムエラーが発生しました。管理者に問い合わせしてください。"
+      render 'quick_order' and return
     end
   end
 
   def update
+    # todo update???
     binding.pry
     if Product.find(1).update!(image: params[:product][:image])
      redirect_to root_path

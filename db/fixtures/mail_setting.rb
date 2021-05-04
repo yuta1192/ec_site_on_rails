@@ -19,4 +19,6 @@ MailSetting.seed do |ms|
   ms.user_thank_you_change_sender = "string"
   ms.user_shipping_sender = "string"
   ms.user_cancel_sender = "string"
+  ms.base_mail_address = "base_email@base.com"
+  ms.ikiti = 100
 end

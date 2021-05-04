@@ -16,10 +16,10 @@
 
       br
       table.table-sm.table-bordered.bg-light.image-max-size
-        = form_with model: ShopHoliday, url: admin_shop_holiday_path(1), method: :patch, local: true do |f|
+        = form_with model: @shop_holiday, url: update_calender_display_admin_shop_holidays_path, method: :patch, local: true do |f|
           thead
             tr
-              th カレンダーの表示切替設定 ・・・ 現在の設定は 「表示する」 です。
+              th カレンダーの表示切替設定 ・・・ 現在の設定は 「#{@display}」 です。
           tbody
             tr
               td
@@ -27,34 +27,35 @@
                 div
                 | 「変更」ボタンを押すと、「表示する」と「表示しない」が切り替わります。
                 div
+                = f.hidden_field :calendar_display_flg, value: @shop_holiday.calendar_display_flg
                 = f.submit '変更'
 
       br
       table.table-sm.table-bordered.bg-light.image-max-size
-        = form_with model: ShopHoliday, url: admin_shop_holiday_path(1), method: :patch, local: true do |f|
+        = form_with model: @shop_holiday, url: admin_shop_holiday_path(1), method: :patch, local: true do |f|
           tr
             th[colspan="2"] = f.label '基本休業日設定'
           tr
             th = f.label '曜日選択'
             td
-              = f.check_box :sunday
+              = f.check_box :sunday_break
               | 日曜日
-              = f.check_box :sunday
+              = f.check_box :monday_break
               | 月曜日
-              = f.check_box :sunday
+              = f.check_box :tuesday_break
               | 火曜日
-              = f.check_box :sunday
+              = f.check_box :wednesday_break
               | 水曜日
-              = f.check_box :sunday
+              = f.check_box :thursday_break
               | 木曜日
-              = f.check_box :sunday
+              = f.check_box :friday_break
               | 金曜日
-              = f.check_box :sunday
+              = f.check_box :saturday_break
               | 土曜日
           tr
             th = f.label '祝日設定'
             td
-              = f.check_box :sunday
+              = f.check_box :holiday_setting
               |	祝日は休業日とする
           tr
             th = f.label 'コメント'
@@ -65,12 +66,16 @@
 
       br
       table.table-sm.table-bordered.bg-light.image-max-size
-        = form_with model: SetMonthlyHoliday, url: admin_shop_holiday_path(1), method: :patch, local: true do |f|
+        = form_with model: SetMonthlyHoliday, url: admin_shop_holidays_path, method: :get, local: true do |f|
           tr
-            th = f.label '月別休業日設定[?]'
+            th[colspan="2"] = f.label '月別休業日設定'
           tr
             th = f.label '月選択'
-            td = f.select :a, [['a',1]]
+            td
+              = f.select :month, @month, { selected: @set_month }
+              = f.submit '変更', class: 'ml-5'
+
+        = form_with model: SetMonthlyHoliday, url: admin_shop_holiday_update_set_shop_holiday_path(:id), method: :post, local: true do |f|
           tr
             th
               = f.label '2020年7月'
@@ -87,11 +92,69 @@
                   th 金曜日
                   th 土曜日
                 tr
-                  - select_day.each do |day|
-                    td
-                      = day
-                      = f.check_box :day, value: day
-                      - if (day % 7) == 0
+                  - select_day.each_with_index do |day|
+                    - if params[:set_monthly_holiday].present?
+                      - cwday = Date.new(Time.current.year,params[:set_monthly_holiday][:month].to_i,day).cwday
+                    - else
+                      - cwday = Date.new(Time.current.year,Time.current.month,day).cwday
+                    - if day < 7
+                      - if cwday == 1 && day == 1
                         td
-          tr
-            th = f.submit '保存'
+                        td
+                          = day
+                          = f.check_box "day[#{day}]", value: day
+                      - elsif cwday == 2 && day == 1
+                        td
+                        td
+                        td
+                          = day
+                          = f.check_box "day[#{day}]", value: day
+                      - elsif cwday == 3 && day == 1
+                        td
+                        td
+                        td
+                        td
+                          = day
+                          = f.check_box "day[#{day}]", value: day
+                      - elsif cwday == 4 && day == 1
+                        td
+                        td
+                        td
+                        td
+                        td
+                          = day
+                          = f.check_box "day[#{day}]", value: day
+                      - elsif cwday == 5 && day == 1
+                        td
+                        td
+                        td
+                        td
+                        td
+                        td
+                          = day
+                          = f.check_box "day[#{day}]", value: day
+                      - elsif cwday == 6 && day == 1
+                        td
+                        td
+                        td
+                        td
+                        td
+                        td
+                        td
+                          = day
+                          = f.check_box "day[#{day}]", value: day
+                          tr
+                      - else
+                        td
+                          = day
+                          = f.check_box "day[#{day}]", value: day
+                          - if cwday == 6
+                            tr
+                    - else
+                      td
+                        = day
+                        = f.check_box "day[#{day}]", value: day
+                        - if cwday == 6
+                          tr
+          tr.text-center
+            th[colspan="2"] = f.submit '保存'

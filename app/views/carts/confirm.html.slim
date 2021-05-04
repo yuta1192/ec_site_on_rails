@@ -94,11 +94,12 @@
                 tr
                   th.text-right.bg-info お名前
                   td.border-bottom = "#{@address_attribute[:name_sei] + @address_attribute[:name_mei]}"
-                  = ff.hidden_field :user_name, value: "#{@address_attribute[:name_sei]}#{@address_attribute[:name_mei]}"
+                  = ff.hidden_field :name_sei, value: @address_attribute[:name_sei]
+                  = ff.hidden_field :name_mei, value: @address_attribute[:name_mei]
                 tr
                   th.text-right.bg-info 郵便番号
-                  td.border-bottom = "#{@address_attribute[:zip_code_1] + "-" + @address_attribute[:zip_code_2]}"
-                  = ff.hidden_field :zip_code, value: "#{@address_attribute[:zip_code_1] + "-" + @address_attribute[:zip_code_2]}"
+                  td.border-bottom = @address_attribute[:zip_code]
+                  = ff.hidden_field :zip_code, value: @address_attribute[:zip_code]
                 tr
                   th.text-right.bg-info 住所
                   td.border-bottom = "#{@address_attribute[:prefectures] + @address_attribute[:municipation] + @address_attribute[:address_1] + @address_attribute[:address_2]}"
@@ -108,13 +109,13 @@
                   = ff.hidden_field :address_2, value: @address_attribute[:address_2]
                 tr
                   th.text-right.bg-info 電話番号
-                  td.border-bottom = "#{@address_attribute[:tel_1] + "-" + @address_attribute[:tel_2] + "-" + @address_attribute[:tel_3]}"
-                  = ff.hidden_field :tel, value: "#{@address_attribute[:tel_1] + "-" + @address_attribute[:tel_2] + "-" + @address_attribute[:tel_3]}"
+                  td.border-bottom = @address_attribute[:tel]
+                  = ff.hidden_field :tel, value: @address_attribute[:tel]
                 tr
                   th.text-right.bg-info 携帯番号
-                  td.border-bottom = "#{@address_attribute[:phone_number_1] + "-" + @address_attribute[:phone_number_2] + "-" + @address_attribute[:phone_number_3]}"
-                  = ff.hidden_field :phone_number, value: "#{@address_attribute[:phone_number_1] + "-" + @address_attribute[:phone_number_2] + "-" + @address_attribute[:phone_number_3]}"
-              = f.hidden_field :use_basic_email_flg, 2
+                  td.border-bottom = @address_attribute[:phone_number]
+                  = ff.hidden_field :phone_number, value: @address_attribute[:phone_number]
+              = f.hidden_field :use_basic_email_flg, value: 2
               = f.hidden_field :address_create, value: params[:address_create]
         - else
           .border.pt-3
@@ -122,7 +123,7 @@
               tr
                 th.text-right.bg-info(style="width:30%;") お届け先
                 td.border-bottom お客様情報と同じ住所に配送する
-                = hidden_field_tag :use_basic_email_flg, 1
+                = hidden_field_tag :use_basic_email_flg, value: 1
         br
         p.border-bottom お支払い方法
         .border.pt-3
@@ -165,5 +166,6 @@
           .col-3
             = link_to '訂正する', edit_user_cart_path(@current_user, @current_user.cart.id), class: "form-control text-center"
           .col-3
+            = f.hidden_field :companies, value: params[:companies]
             = f.submit 'この内容で注文する', class: "form-control"
           .col-3

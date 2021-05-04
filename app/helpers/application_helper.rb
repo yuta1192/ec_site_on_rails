@@ -35,4 +35,8 @@ module ApplicationHelper
   def footer_free_pages
     FreePage.where(place: [2,3])
   end
+
+  def ranking
+    OrderHistoryProduct.range_current_month.group(:product_id).order('count(product_id) desc').limit(10)
+  end
 end

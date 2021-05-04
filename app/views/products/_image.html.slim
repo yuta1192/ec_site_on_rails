@@ -3,31 +3,31 @@
 .row.bg-warning
   .col-8
     | 表示方法：
-    = link_to 'リスト形式（画像あり）', search_products_path(product: {category: session[:category]}, display: 'list_image', per: @per, page: @page, order: @order), class: 'mr-2'
-    = link_to 'リスト形式', search_products_path(product: {category: session[:category]}, display: 'list', per: @per, page: @page, order: @order), class: 'mr-2'
+    = link_to 'リスト形式（画像あり）', search_products_path(product: {category: session[:category]}, display: 'list_image', per: @per, page: 1, order: @order), class: 'mr-2'
+    = link_to 'リスト形式', search_products_path(product: {category: session[:category]}, display: 'list', per: @per, page: 1, order: @order), class: 'mr-2'
     | 大きい画像
   .col-4.text-right
     - if @per.to_i == 30
       | 表示件数：３０件
-      = link_to '６０件', search_products_path(product: {category: session[:category]}, per: 60, page: @page, display: @display, order: @order), class: 'ml-2'
+      = link_to '６０件', search_products_path(product: {category: session[:category]}, per: 60, page: 1, display: @display, order: @order), class: 'ml-2'
     - elsif @per.to_i == 60
       | 表示件数：
-      = link_to '３０件', search_products_path(product: {category: session[:category]}, per: 30, page: @page, display: @display, order: @order), class: 'mr-2'
+      = link_to '３０件', search_products_path(product: {category: session[:category]}, per: 30, page: 1, display: @display, order: @order), class: 'mr-2'
       | ６０件
   .col-12
     - if @order == "created_at desc"
       | 並び替え：新着
-      = link_to '価格安い順', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "price asc"), class: 'ml-2'
-      = link_to '価格高い順', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "price desc"), class: 'ml-2'
+      = link_to '価格安い順', search_products_path(product: {category: session[:category]}, per: @per, page: 1, display: @display, order: "price asc"), class: 'ml-2'
+      = link_to '価格高い順', search_products_path(product: {category: session[:category]}, per: @per, page: 1, display: @display, order: "price desc"), class: 'ml-2'
     - elsif @order == "price asc"
       | 並び替え：
-      = link_to '新着', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "created_at desc"), class: 'mr-2'
+      = link_to '新着', search_products_path(product: {category: session[:category]}, per: @per, page: 1, display: @display, order: "created_at desc"), class: 'mr-2'
       | 価格安い順
-      = link_to '価格高い順', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "price desc"), class: 'ml-2'
+      = link_to '価格高い順', search_products_path(product: {category: session[:category]}, per: @per, page: 1, display: @display, order: "price desc"), class: 'ml-2'
     - elsif @order == "price desc"
       | 並び替え：
-      = link_to '新着', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "created_at desc"), class: 'mr-2'
-      = link_to '価格安い順', search_products_path(product: {category: session[:category]}, per: @per, page: @page, display: @display, order: "price asc"), class: 'mr-2'
+      = link_to '新着', search_products_path(product: {category: session[:category]}, per: @per, page: 1, display: @display, order: "created_at desc"), class: 'mr-2'
+      = link_to '価格安い順', search_products_path(product: {category: session[:category]}, per: @per, page: 1, display: @display, order: "price asc"), class: 'mr-2'
       | 価格高い順
 br
 
@@ -50,5 +50,7 @@ br
                   = "参考価格:#{product.price}円/(税込)#{product.price}円"
                   br
                   = "会員価格:#{product.price}円"
-        br
-        = paginate @products
+      br
+      .col-md-4
+      .col-md-4.text-nowrap = paginate @products
+      .col-md-4
