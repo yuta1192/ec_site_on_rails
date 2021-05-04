@@ -1,5 +1,5 @@
 test:
-  adapter: sqlite3
+  adapter: mysql2
   encoding: utf8
   pool: 5
   username: ec_site_on_rails
