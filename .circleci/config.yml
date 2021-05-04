@@ -20,22 +20,20 @@ jobs:
       - image: circleci/ruby:2.7.3
     steps:
       - setup
-      - restore_cache:
-          keys:
-            - blog-bundle-v1-{{ checksum "Gemfile.lock" }}-{{ checksum "yarn.lock" }}
-            - blog-bundle-v1-
+      # Restore yarn cache
+      - type: cache-restore
+        name: Restore bundle cache
+        key: rails-demo-bundle-{{ checksum "yarn.lock" }}
+
       - run:
-          name: Bundler and Yarn
-          command: |
-            gem install bundler -v '2.1.4' -N
-            bundle -v
-            bundle install --jobs=3 --retry=3 --path vendor/bundle
-            yarn install
-      - save_cache:
-          paths:
-            - ./vendor/bundle
-            - ./node_modules
-          key: blog-bundle-v1-{{ checksum "Gemfile.lock" }}-{{ checksum "yarn.lock" }}
+          name: yarn Install
+          command: yarn install
+
+      # Store yarn cache
+      - type: cache-save
+        name: Save bundle cache
+        key: rails-demo-bundle-{{ checksum 'yarn.lock' }}
+        paths: .yarn-cache
   test:
     docker:
       - image: circleci/ruby:2.7.3
