@@ -2,9 +2,9 @@ version: 2.1
 jobs:
   build:
     docker:
-    - image: circleci/ruby:2.5.3-node-browsers
+    - image: circleci/ruby:2.7.3
       environment:
-        - BUNDLER_VERSION: 2.0.2
+        - BUNDLER_VERSION: 2.2.16
         - RAILS_ENV: 'test'
     - image: circleci/mysql:5.7
       environment:
@@ -25,7 +25,7 @@ jobs:
     - run:
         name: install dependencies
         command: |
-          gem install bundler -v 2.0.2
+          gem install bundler -v 2.2.16
           bundle install --jobs=4 --retry=3 --path vendor/bundle
 
     - save_cache:
