@@ -19,7 +19,6 @@ class Admin::ImagesController < ApplicationController
       is_banner_flg: params[:image][:is_banner_flg]
     )
     if @image.save
-      binding.pry
       url = @image.image.file.file
       if @image.update(url: url)
         redirect_to admin_images_path

@@ -23,7 +23,7 @@ class Admin::InqueriesController < ApplicationController
       end
       redirect_to edit_admin_inquery_path(params[:id])
     end
-  rescue => e
+  rescue
     @error = "システムエラーが発生しました。管理者に問い合わせください。"
     redirect_to edit_admin_inquery_path(params[:id])
   end

@@ -50,7 +50,7 @@ module OrderHistoriesHelper
   def params_cancel
     if params[:order_history][:cancel_flg] == "true"
       cancel_flg = "あり"
-    elsif params[:order_history][:cancel_flg] == "true"
+    elsif params[:order_history][:cancel_flg] == "false"
       cancel_flg = "なし"
     else
       cancel_flg = "指定なし"

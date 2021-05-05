@@ -91,7 +91,7 @@ class CartsController < ApplicationController
     @shouhi_zei = (@product_total_price * 0.1).ceil
     @total_price = @product_total_price + @shouhi_zei
     @address_attribute = params[:companies].to_i == 0 ? params[:address] : Address.find(params[:companies])
-    @date_array = date_select_box.select {|k,v| v == params[:date].to_i} if params[:date] != "99"
+    @date_array = date_select_box.select {|v| v == params[:date].to_i} if params[:date] != "99"
     @date = @date_array.flatten.first if @date_array != nil
   end
 
@@ -214,7 +214,7 @@ class CartsController < ApplicationController
     end
     # 成功時の処理(todo ユーザーにメールを送信する)
     redirect_to user_cart_complite_path(@current_user, @current_user.cart.id, order_history_id: @order_history.id)
-  rescue => e
+  rescue
     @cart_items = @current_user.cart.cart_items
     @error = "システムエラーが発生しました。管理者に問い合わせください。"
     render :confirm and return

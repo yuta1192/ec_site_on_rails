@@ -34,37 +34,31 @@ class MyListsController < ApplicationController
   end
 
   def update
-    begin
-      mylist = MyList.find_by(id: params[:id], user_id: @current_user.id)
-      mylist.update!(name: mylist_params[:name])
-      redirect_to user_my_list_path(@current_user.id, mylist.id)
-    rescue => e
-      @error = "システムエラーが発生しました。管理者に問い合わせしてください。"
-      render :index and return
-    end
+    mylist = MyList.find_by(id: params[:id], user_id: @current_user.id)
+    mylist.update!(name: mylist_params[:name])
+    redirect_to user_my_list_path(@current_user.id, mylist.id)
+  rescue
+    @error = "システムエラーが発生しました。管理者に問い合わせしてください。"
+    render :index and return
   end
 
   def destroy
-    begin
-      delete_mylist = MyList.find(params[:id])
-      delete_mylist.destroy!
-      redirect_to user_my_lists_path
-    rescue => e
-      @error = "システムエラーが発生しました。管理者に問い合わせしてください。"
-      render :index and return
-    end
+    delete_mylist = MyList.find(params[:id])
+    delete_mylist.destroy!
+    redirect_to user_my_lists_path
+  rescue
+    @error = "システムエラーが発生しました。管理者に問い合わせしてください。"
+    render :index and return
   end
 
   def product_delete
-    begin
-      mylist = MyList.find_by(user_id: params[:user_id], id: params[:my_list_id])
-      user_mylist_product = UserMyListProduct.find_by(my_list_id: mylist.id, product_id: params[:product_id])
-      user_mylist_product.destroy!
-      redirect_to user_my_list_path(params[:user_id], params[:my_list_id])
-    rescue => e
-      @error = "システムエラーが発生しました。管理者に問い合わせしてください。"
-      redirect_to user_my_list_path(@current_user.id, params[:my_list_id]), flash: { error: @error }
-    end
+    mylist = MyList.find_by(user_id: params[:user_id], id: params[:my_list_id])
+    user_mylist_product = UserMyListProduct.find_by(my_list_id: mylist.id, product_id: params[:product_id])
+    user_mylist_product.destroy!
+    redirect_to user_my_list_path(params[:user_id], params[:my_list_id])
+  rescue
+    @error = "システムエラーが発生しました。管理者に問い合わせしてください。"
+    redirect_to user_my_list_path(@current_user.id, params[:my_list_id]), flash: { error: @error }
   end
 
   # マイリストからカートに商品を移す機能
@@ -80,7 +74,6 @@ class MyListsController < ApplicationController
     unless check_product.present?
       @error = "チェックをしてください。"
       redirect_to user_my_list_path(@current_user.id, params[:my_list][:my_list_id]), flash: { error: @error }
-      return
     end
     check_product.flatten!
 
@@ -89,30 +82,25 @@ class MyListsController < ApplicationController
       unless product[:quantity].present?
         @error = "チェックした商品に数量を記入してください。"
         redirect_to user_my_list_path(@current_user.id, params[:my_list][:my_list_id]), flash: { error: @error }
-        return
       end
       # 数値バリデーション
       unless number?(product[:quantity])
         @error = "数値を入力してください。"
         redirect_to user_my_list_path(@current_user.id, params[:my_list][:my_list_id]), flash: { error: @error }
-        return
       end
     end
 
-    begin
-      check_product.each do |product|
-        next if CartItem.where(product_id: product[:product_id], cart_number: @current_user.cart.cart_number).present?
-        cart_item = CartItem.new(quantity: product[:quantity], product_id: product[:product_id], cart_id: @current_user.cart.id, cart_number: @current_user.cart.cart_number)
-        cart_item.save!
-      end
-      # 成功redirect
-      redirect_to edit_user_cart_path(@current_user, @current_user.cart.id)
-    rescue => e
-      # 失敗
-      @error = "システムエラーが発生しました。管理者に問い合わせしてください。"
-      redirect_to user_my_list_path(@current_user.id, params[:my_list][:my_list_id]), flash: { error: @error }
-      return
+    check_product.each do |product|
+      next if CartItem.where(product_id: product[:product_id], cart_number: @current_user.cart.cart_number).present?
+      cart_item = CartItem.new(quantity: product[:quantity], product_id: product[:product_id], cart_id: @current_user.cart.id, cart_number: @current_user.cart.cart_number)
+      cart_item.save!
     end
+    # 成功redirect
+    redirect_to edit_user_cart_path(@current_user, @current_user.cart.id)
+  rescue
+    # 失敗
+    @error = "システムエラーが発生しました。管理者に問い合わせしてください。"
+    redirect_to user_my_list_path(@current_user.id, params[:my_list][:my_list_id]), flash: { error: @error }
   end
 
   def side_menu_mylists

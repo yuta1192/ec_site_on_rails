@@ -29,7 +29,7 @@ class Admin::PageContentsController < ApplicationController
       end
     end
     redirect_to edit_admin_free_page_path(params[:id])
-  rescue => e
+  rescue
     @error = "error"
     redirect_to edit_admin_free_page_path(params[:id])
   end

@@ -70,9 +70,9 @@ class OrderHistoriesController < ApplicationController
       @error = "選択した商品は既にカートの中に商品が存在しています。"
       render :show and return
     end
-    rescue => e
-      @error = "システムエラーが発生しました。管理者に問い合わせしてください。"
-      render :show and return
+  rescue
+    @error = "システムエラーが発生しました。管理者に問い合わせしてください。"
+    render :show and return
   end
 
   def one_cart_add
@@ -101,9 +101,9 @@ class OrderHistoriesController < ApplicationController
       @error = "選択した商品は既にカートの中に商品が存在しています。"
       render 'show'
     end
-    rescue => e
-      @error = "システムエラーが発生しました。管理者に問い合わせしてください。"
-      render 'show'
+  rescue
+    @error = "システムエラーが発生しました。管理者に問い合わせしてください。"
+    render 'show'
   end
 
   def update

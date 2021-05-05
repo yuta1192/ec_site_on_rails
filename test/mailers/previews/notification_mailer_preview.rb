@@ -13,9 +13,9 @@ class NotificationMailerPreview < ActionMailer::Preview
 
   def send_purchase_complite
     user = User.new(id: 1, e_mail: 'hogehoge@hoge.hoge', name_sei: '菅田', name_mei: '将暉')
-    product = Product.new(id: 1, price: 1000)
+    # product = Product.new(id: 1, price: 1000)
     order_history = OrderHistory.new(id: 1, order_number: "aiuoeokaki20192")
-    order_history_products = OrderHistoryProduct.new(id: 1, order_history_id: 1, product_id: 1, num: 100)
+    # order_history_products = OrderHistoryProduct.new(id: 1, order_history_id: 1, product_id: 1, num: 100)
     NotificationMailer.send_purchase_complite(user, order_history)
   end
 end

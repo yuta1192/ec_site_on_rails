@@ -127,7 +127,7 @@ class Admin::OrderManagementsController < ApplicationController
       session[:product_ids] = nil
       redirect_to admin_order_managements_path
     end
-  rescue => e
+  rescue
     @error = "システムエラーが発生しました。管理者に問い合わせください。"
     render :index and return
   end

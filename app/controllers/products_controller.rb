@@ -88,7 +88,6 @@ class ProductsController < ApplicationController
       unless product[:quantity].present?
         @error = "チェックした商品に数量を記入してください。"
         redirect_to url, flash: { error: @error }
-        return
       end
     end
     # マイリストに追加の場合
@@ -115,7 +114,7 @@ class ProductsController < ApplicationController
       rescue RangeError => e
         redirect_to url, flash: { error: e }
         return
-      rescue => e
+      rescue
         @error = "システムエラーが発生しました。管理者に問い合わせしてください。"
         redirect_to url, flash: { error: @error }
         return
@@ -133,7 +132,7 @@ class ProductsController < ApplicationController
           end
         end
         redirect_to edit_user_cart_path(@current_user, @current_user.cart.id)
-      rescue => e
+      rescue
         @error = "システムエラーが発生しました。管理者に問い合わせしてください。"
         redirect_to url, flash: { error: @error }
         return
@@ -207,26 +206,23 @@ class ProductsController < ApplicationController
     end
 
     # カートに追加の場合 todo これだとあれじゃね、数量以上をカートに入れられちゃうわ
-    begin
-      check_product.each do |product|
-        if CartItem.where(product_id: product[:product_number], cart_number: @current_user.cart.cart_number).present?
-          cart_item = CartItem.find_by(product_id: product[:product_number], cart_number: @current_user.cart.cart_number)
-          cart_item.update(quantity: product[:quantity])
-        else
-          cart_item = CartItem.new(quantity: product[:quantity], product_id: product[:product_number], cart_id: @current_user.cart.id, cart_number: @current_user.cart.cart_number)
-          cart_item.save!
-        end
+    check_product.each do |product|
+      if CartItem.where(product_id: product[:product_number], cart_number: @current_user.cart.cart_number).present?
+        cart_item = CartItem.find_by(product_id: product[:product_number], cart_number: @current_user.cart.cart_number)
+        cart_item.update(quantity: product[:quantity])
+      else
+        cart_item = CartItem.new(quantity: product[:quantity], product_id: product[:product_number], cart_id: @current_user.cart.id, cart_number: @current_user.cart.cart_number)
+        cart_item.save!
       end
-      redirect_to edit_user_cart_path(@current_user, @current_user.cart.id)
-    rescue => e
-      @errors << "システムエラーが発生しました。管理者に問い合わせしてください。"
-      render 'quick_order' and return
     end
+    redirect_to edit_user_cart_path(@current_user, @current_user.cart.id)
+  rescue
+    @errors << "システムエラーが発生しました。管理者に問い合わせしてください。"
+    render 'quick_order' and return
   end
 
   def update
     # todo update???
-    binding.pry
     if Product.find(1).update!(image: params[:product][:image])
      redirect_to root_path
     else
@@ -257,7 +253,7 @@ class ProductsController < ApplicationController
         mylist_product.save!
 
         redirect_to user_my_list_path(@current_user.id, mylist)
-      rescue => e
+      rescue
         @error = "システムエラーが発生しました。管理者に連絡してください。"
         render action: :show and return
       end
@@ -272,10 +268,10 @@ class ProductsController < ApplicationController
             mylist_product.save!
         end
         redirect_to user_my_list_path(@current_user.id, mylist)
-      rescue StandardError => e
+      rescue StandardError
         @error = "マイリストが存在しません。"
         render action: :show and return
-      rescue => e
+      rescue
         @error = "システムエラーが発生しました。管理者に連絡してください。"
         render action: :show and return
       end

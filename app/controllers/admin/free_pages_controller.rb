@@ -76,9 +76,9 @@ class Admin::FreePagesController < ApplicationController
       @free_page.update!(is_release_flg: change_flg)
     end
       redirect_to admin_free_pages_path
-    rescue => e
-      @error = "システムエラーが発生しました。管理者に問い合わせてください。"
-      render 'index'
+  rescue
+    @error = "システムエラーが発生しました。管理者に問い合わせてください。"
+    render 'index'
   end
 
   def edit_change

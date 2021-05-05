@@ -118,7 +118,7 @@ end
     s.price = 10000
     s.excluding_tax_price = 9000
 
-    5.times do |f|
+    5.times do
       OrderHistoryProduct.seed do |ohp|
         ohp.order_history_id = i+1
         ohp.product_id = rand(1..100)

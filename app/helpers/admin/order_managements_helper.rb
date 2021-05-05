@@ -86,7 +86,7 @@ module Admin::OrderManagementsHelper
       end
     elsif params[:order_history][:preferred_date] == "2"
       "未入力のみ"
-    else params[:order_history][:preferred_date] == "3"
+    elsif params[:order_history][:preferred_date] == "3"
       "入力済みのみ"
     end
   end

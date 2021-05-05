@@ -8,7 +8,7 @@ class Admin::StockManagementsController < ApplicationController
 
   def bluk_edit
     if params[:previous_action] == "search"
-
+      @products = Product.all
     else
       @products = Product.all
     end

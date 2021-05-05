@@ -6,7 +6,4 @@ class SitemapsController < ApplicationController
     @freepages = FreePage.all
     @categories = Category.all
   end
-
-  private
-
 end

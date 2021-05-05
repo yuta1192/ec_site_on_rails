@@ -121,9 +121,9 @@ class Admin::InformationsController < ApplicationController
       info.update!(release_flg: change_flg)
     end
       redirect_to admin_informations_path
-    rescue => e
-      # todo エラーの場合をかく
-      render 'information/index'
+  rescue
+    # todo エラーの場合をかく
+    render 'information/index'
   end
 
   def download

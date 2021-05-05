@@ -82,7 +82,6 @@ class Admin::ProductsController < ApplicationController
   def category_update
     @category = Category.find(params[:category][:id])
     ActiveRecord::Base.transaction do
-      binding.pry
       @category.update(name: category_params[:name])
       if params[:category][:child_id].present?
         @child_category = @category.child_categories.find_by(id: params[:category][:child_id])
@@ -93,7 +92,7 @@ class Admin::ProductsController < ApplicationController
       end
     end
     redirect_to category_admin_products_path
-  rescue => e
+  rescue
     render 'child_category'
   end
 
@@ -125,13 +124,12 @@ class Admin::ProductsController < ApplicationController
       # release_flgがtrueならfalseに、falseならtrue
       change_flg = release_flg == true ? false : true
 
-      binding.pry
       @product.update(is_release_flg: change_flg)
     end
       redirect_to admin_products_path
-    rescue => e
-      @error = "システムエラーが発生しました。管理者に問い合わせてください。"
-      render 'index'
+  rescue
+    @error = "システムエラーが発生しました。管理者に問い合わせてください。"
+    render 'index'
   end
 
   private

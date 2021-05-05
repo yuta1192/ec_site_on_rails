@@ -146,7 +146,7 @@ module Admin::ShipmentsHelper
   def expected_shipping_date_result
     result = nil
     if params[:shipment][:expected_shipping_date] == "1" && (params[:shipment][:expected_shipping_start_date].present? || params[:shipment][:expected_shipping_end_date].present?)
-      result = "売上計上日 ： #{params[:shipment][:expected_shipping_start_date]} ~ #{params[:shipment][:expected_shipping_end_date]} #{params[:shipment][:expected_shipping_date_unspecified]=  "true" ? "※未入力を含む" : "" }"
+      result = "売上計上日 ： #{params[:shipment][:expected_shipping_start_date]} ~ #{params[:shipment][:expected_shipping_end_date]} #{params[:shipment][:expected_shipping_date_unspecified] ==  "true" ? "※未入力を含む" : "" }"
     elsif params[:shipment][:expected_shipping_date] == "2"
       result = "売上計上日 ： 未入力のみ"
     elsif params[:shipment][:expected_shipping_date] == "3"
