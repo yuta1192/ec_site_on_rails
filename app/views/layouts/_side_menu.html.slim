@@ -42,16 +42,16 @@
   p.text-danger この日(赤色)は休業日です。
 
   / todo 商品ランキング redisで取得予定
-  br
-  table.table-bordered.image-max-size
-    thead.bg-primary
-      tr
-        td.h4 ランキング
-    tbody.text-center
-      - ranking.each.with_index(1) do |bt, i|
-        tr
-          td.text-warning #{i}位
-        tr
-          td = image_tag(bt.product.image.to_s, :size => '200x200')
-        tr
-          td = bt.product.name
+  /br
+  /table.table-bordered.image-max-size
+  /  thead.bg-primary
+  /    tr
+  /      td.h4 ランキング
+  /  tbody.text-center
+  /    - ranking.each.with_index(1) do |bt, i|
+  /      tr
+  /        td.text-warning #{i}位
+  /      tr
+  /        td = image_tag(bt.product.image.to_s, :size => '200x200')
+  /      tr
+  /        td = bt.product.name

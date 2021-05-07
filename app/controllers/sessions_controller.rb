@@ -15,7 +15,7 @@ class SessionsController < ApplicationController
     @emails = User.where(admin: false).pluck(:e_mail)
     if @emails.include?(params[:session][:e_mail])
       @user = User.find_by(e_mail: params[:session][:e_mail])
-      NotificationMailer.send_confirm_to_user(@user).deliver
+      NotificationMailer.send_password_reset_to_user(@user).deliver
       redirect_to complite_message_path
     else
       flash.now[:alert] = "メールアドレスを正しく入力してください。"

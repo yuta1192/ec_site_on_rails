@@ -24,3 +24,5 @@ RUN bundle install
 CMD ["rails", "server", "-b", "0.0.0.0"]
 
 ADD . /ec_site_on_rails
+
+RUN mkdir -p tmp/sockets

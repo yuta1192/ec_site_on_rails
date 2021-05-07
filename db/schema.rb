@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2021_05_04_050043) do
 
-  create_table "addresses", force: :cascade do |t|
+  create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "company_name"
     t.string "department_name"
     t.string "name_sei"
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.string "address_2"
     t.string "tel"
     t.string "phone_number"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_select_flag", default: false, null: false
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
-  create_table "banners", force: :cascade do |t|
+  create_table "banners", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -46,10 +46,10 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.integer "image_id"
   end
 
-  create_table "cart_items", force: :cascade do |t|
+  create_table "cart_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "quantity"
-    t.integer "product_id"
-    t.integer "cart_id"
+    t.bigint "product_id"
+    t.bigint "cart_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "cart_number"
@@ -58,42 +58,42 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.index ["product_id"], name: "index_cart_items_on_product_id"
   end
 
-  create_table "cart_memos", force: :cascade do |t|
+  create_table "cart_memos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "memo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "position"
   end
 
-  create_table "carts", force: :cascade do |t|
+  create_table "carts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "cart_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
   end
 
-  create_table "categories", force: :cascade do |t|
+  create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "child_categories", force: :cascade do |t|
+  create_table "child_categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "category_id"
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "contacts", force: :cascade do |t|
+  create_table "contacts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "contact"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_contacts_on_user_id"
   end
 
-  create_table "delivery_infos", force: :cascade do |t|
+  create_table "delivery_infos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "company_name"
     t.string "user_name"
     t.string "address"
@@ -107,7 +107,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.string "zip_code"
   end
 
-  create_table "free_pages", force: :cascade do |t|
+  create_table "free_pages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "page_title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -119,20 +119,20 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.integer "display_order"
   end
 
-  create_table "group_addresses", force: :cascade do |t|
+  create_table "group_addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "group_id"
     t.integer "address_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "groups", force: :cascade do |t|
+  create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "holiday_settings", force: :cascade do |t|
+  create_table "holiday_settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.date "year"
     t.string "january_holiday"
     t.string "february_holiday"
@@ -150,7 +150,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "images", force: :cascade do |t|
+  create_table "images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "url"
     t.string "name"
     t.boolean "is_banner_flg", default: false, null: false
@@ -160,14 +160,14 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.binary "image"
   end
 
-  create_table "info_titles", force: :cascade do |t|
+  create_table "info_titles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.integer "hyoji_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "information", force: :cascade do |t|
+  create_table "information", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "detail"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -177,7 +177,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.datetime "published_end"
   end
 
-  create_table "information_attachment_files", force: :cascade do |t|
+  create_table "information_attachment_files", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "information_id"
     t.string "attachment_file"
     t.string "filename"
@@ -186,21 +186,21 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "inqueries", force: :cascade do |t|
+  create_table "inqueries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "title"
   end
 
-  create_table "items", force: :cascade do |t|
+  create_table "items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "item"
-    t.integer "sitemap_id"
+    t.bigint "sitemap_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["sitemap_id"], name: "index_items_on_sitemap_id"
   end
 
-  create_table "mail_settings", force: :cascade do |t|
+  create_table "mail_settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.boolean "use_basic_email_flg", default: true, null: false
     t.string "password_reissue_sender"
     t.string "password_reissue_destination"
@@ -225,7 +225,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.integer "ikiti"
   end
 
-  create_table "member_ranks", force: :cascade do |t|
+  create_table "member_ranks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.integer "multiplication_rate"
     t.integer "recalculation"
@@ -233,19 +233,19 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "my_lists", force: :cascade do |t|
+  create_table "my_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.string "name"
   end
 
-  create_table "order_histories", force: :cascade do |t|
+  create_table "order_histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "order_number"
     t.text "memo"
     t.integer "status"
-    t.integer "user_id"
-    t.integer "cart_id"
+    t.bigint "user_id"
+    t.bigint "cart_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "cart_number"
@@ -270,7 +270,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.index ["user_id"], name: "index_order_histories_on_user_id"
   end
 
-  create_table "order_history_products", force: :cascade do |t|
+  create_table "order_history_products", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "order_history_id"
     t.integer "product_id"
     t.integer "num"
@@ -278,7 +278,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "page_contents", force: :cascade do |t|
+  create_table "page_contents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.text "sentence"
     t.integer "free_page_id"
@@ -286,7 +286,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "payment_method_settings", force: :cascade do |t|
+  create_table "payment_method_settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "payment_method"
     t.text "payee_memo"
     t.boolean "cash_on_delivery_charge_flg", default: true, null: false
@@ -309,7 +309,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "postages", force: :cascade do |t|
+  create_table "postages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "hokkaido"
     t.string "aomori"
     t.string "iwate"
@@ -360,14 +360,14 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "product_pages", force: :cascade do |t|
+  create_table "product_pages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "up_page_text"
     t.text "bottom_page_text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "products", force: :cascade do |t|
+  create_table "products", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.text "detail"
     t.integer "category_id"
@@ -403,7 +403,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.string "image"
   end
 
-  create_table "purchase_histories", force: :cascade do |t|
+  create_table "purchase_histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "cart_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -412,7 +412,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.integer "stock"
   end
 
-  create_table "questions", force: :cascade do |t|
+  create_table "questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "question"
     t.text "answer"
     t.integer "display_order_number"
@@ -421,12 +421,12 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.integer "inquery_id"
   end
 
-  create_table "sessions", force: :cascade do |t|
+  create_table "sessions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "set_monthly_holidays", force: :cascade do |t|
+  create_table "set_monthly_holidays", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "set_holidays"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -434,7 +434,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.integer "month"
   end
 
-  create_table "shipment_products", force: :cascade do |t|
+  create_table "shipment_products", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "shipment_id"
     t.integer "product_id"
     t.integer "num"
@@ -450,7 +450,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.date "billing_date"
   end
 
-  create_table "shipments", force: :cascade do |t|
+  create_table "shipments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "shipping_status"
     t.integer "allocation_status"
     t.date "expected_shipping_date"
@@ -475,7 +475,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.boolean "sales_record_date_flg", default: false, null: false
   end
 
-  create_table "shipping_origins", force: :cascade do |t|
+  create_table "shipping_origins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "status"
     t.string "origin_id"
     t.string "password_digest"
@@ -485,7 +485,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "shipping_settings", force: :cascade do |t|
+  create_table "shipping_settings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "free_shipping_service"
     t.integer "basic_setting"
     t.string "nationwide_rate"
@@ -496,7 +496,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "shop_holidays", force: :cascade do |t|
+  create_table "shop_holidays", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.boolean "calendar_display_flg", default: true, null: false
     t.boolean "sunday_break", default: true, null: false
     t.boolean "monday_break", default: false, null: false
@@ -512,7 +512,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "shops", force: :cascade do |t|
+  create_table "shops", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.boolean "open_flg", default: true, null: false
     t.string "logo"
     t.string "name"
@@ -539,13 +539,13 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "sitemaps", force: :cascade do |t|
+  create_table "sitemaps", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "map_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "stock_fluctuations", force: :cascade do |t|
+  create_table "stock_fluctuations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "stock"
     t.integer "allocate"
     t.boolean "unlimited_flg", default: false, null: false
@@ -556,7 +556,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.integer "status"
   end
 
-  create_table "stock_managements", force: :cascade do |t|
+  create_table "stock_managements", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "stock"
     t.integer "allocate"
     t.boolean "unlimited_flg", default: false, null: false
@@ -565,7 +565,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_my_list_products", force: :cascade do |t|
+  create_table "user_my_list_products", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "my_list_id"
     t.integer "product_id"
     t.datetime "created_at", null: false
@@ -573,7 +573,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.integer "quantity"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "e_mail"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -607,4 +607,6 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.boolean "admin", default: false, null: false
   end
 
+  add_foreign_key "cart_items", "carts"
+  add_foreign_key "cart_items", "products"
 end
