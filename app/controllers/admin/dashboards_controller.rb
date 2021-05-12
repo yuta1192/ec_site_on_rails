@@ -35,5 +35,19 @@ class Admin::DashboardsController < ApplicationController
     # todo 受注金額どうしよう。。。
   end
 
+  def hazimeni
+    @test = Test.new
+  end
 
+  def mongo
+    test = Test.new(mongo_params)
+    test.save
+    redirect_to admin_hazimeni_path
+  end
+
+  private
+
+  def mongo_params
+    params.permit(:test).permit(:name, :test)
+  end
 end

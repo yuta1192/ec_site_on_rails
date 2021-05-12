@@ -13,12 +13,41 @@ services:
       - log-data:/ec_site_on_rails/log
     depends_on:
       - db
+      - mongodb
+    links:
+      - redis:redis
+    environment:
+      - RAILS_ENV=development
+      - REDIS_URL=redis://redis:6379
   db:
     image: mysql:5.7
     env_file:
       - ./environments/db.env
     volumes:
       - db-data:/var/lib/mysql
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    # restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - 27017:27017
+    volumes:
+      -  'mongodb-data:/data/db'
+    # command: mongod --smallfiles
+  mongo-express:
+    container_name: mongo-express
+    image: mongo-express
+    # restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+    links:
+      - 'mongodb:mongo'
   web:
     build:
       context: containers/nginx
@@ -29,8 +58,13 @@ services:
       - 3000:3000
     depends_on:
       - app
+  redis:
+    image: redis:2.8.13
+    ports:
+      - "6379:6379"
 volumes:
   public-data:
   tmp-data:
   log-data:
   db-data:
+  mongodb-data: {}

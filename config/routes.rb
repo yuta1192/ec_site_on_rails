@@ -57,6 +57,7 @@ Rails.application.routes.draw do
     get 'complite_message', to: 'sessions#complite_message'
     get 'dashboard', to: 'dashboards#index'
     get 'hazimeni', to: 'dashboards#hazimeni'
+    post 'mongo', to: 'dashboards#mongo'
     resources :informations do
       post 'change_release', on: :member
       post 'info_title', on: :collection

@@ -96,3 +96,10 @@
         p レコメンド登録
         p ページ管理・・・会社概要やプライバシーポリシーなどのページを自由に追加できます。
         p よくある質問
+
+    = form_with model: @test, url: admin_mongo_path, method: :post, local: true do |f|
+      = f.label :name
+      = f.text_field :name
+      = f.label :test
+      = f.text_field :test
+      = f.submit '送信'
