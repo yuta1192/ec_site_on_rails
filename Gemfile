@@ -65,6 +65,8 @@ gem 'mini_racer'
 # mongodb
 gem 'mongoid'
 gem 'bson_ext'
+# auth0
+gem 'jwt'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -74,6 +76,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem "rspec"
   gem "rspec_junit_formatter"
+  gem 'dotenv-rails'
 end
 
 group :development do

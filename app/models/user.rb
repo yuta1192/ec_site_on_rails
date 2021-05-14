@@ -8,6 +8,11 @@ class User < ApplicationRecord
   has_secure_password validations: true
   validates :e_mail, presence: true, uniqueness: true
 
+  # auth0
+  def self.from_token_payload(payload)
+    find_by(sub: payload['sub']) || create!(sub: payload['sub'])
+  end
+
   def self.new_remember_token
     SecureRandom.urlsafe_base64
   end

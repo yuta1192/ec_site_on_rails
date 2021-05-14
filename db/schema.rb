@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_04_050043) do
+ActiveRecord::Schema.define(version: 2021_05_12_092720) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "company_name"
@@ -605,6 +605,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_050043) do
     t.string "member_id"
     t.boolean "deadline", default: false, null: false
     t.boolean "admin", default: false, null: false
+    t.string "sub"
   end
 
   add_foreign_key "cart_items", "carts"

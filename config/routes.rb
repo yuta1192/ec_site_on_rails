@@ -49,6 +49,10 @@ Rails.application.routes.draw do
   get 'sitemap', to: 'sitemaps#sitemap'
   get 'mypage', to: 'mypages#mypage'
 
+  # Auth0 api
+  get 'api/private' => 'private#private'
+  get 'api/private-scoped' => 'private#private_scoped'
+
   namespace :admin do
     get 'login', to: 'sessions#index'
     post 'login', to: 'sessions#login'
