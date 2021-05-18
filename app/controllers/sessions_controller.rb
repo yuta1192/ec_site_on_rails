@@ -70,6 +70,8 @@ class SessionsController < ApplicationController
 
   def create
     user = User.from_omniauth(request.env["omniauth.auth"])
+    # has_secure_passwordでパスワード必須のため
+    user.password = SecureRandom.hex(9)
     if user.save
       session[:user_id] = user.id
       redirect_to root_path

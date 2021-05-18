@@ -30,7 +30,10 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-light.border-bottom.border-5.border-m
             .text-warning = shop_name
           ul.navbar-nav.mr-auto.mt-2.mt-lg-0
             li.nav-item
-              | #{@current_user.name_sei + @current_user.name_mei}
+              -if @current_user.name
+                | @current_user.name
+              - else
+                /| #{@current_user.name_sei + @current_user.name_mei}
               div
               | さま
           nav.flex-column
@@ -53,7 +56,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-light.border-bottom.border-5.border-m
               li.mr-2 = link_to '会員ページ', mypage_path
               li.mr-2 = link_to 'ログアウト', logout_path, method: :post
               - if @current_user
-                li.mr-2 = link_to "カートを見る(#{cart_product_count})", edit_user_cart_path(@current_user, @current_user.cart)
+                /li.mr-2 = link_to "カートを見る(#{cart_product_count})", edit_user_cart_path(@current_user, @current_user.cart)
       - else
         / ログインしてない場合、ロゴのみ表示
         a.navbar-brand[href="/"]

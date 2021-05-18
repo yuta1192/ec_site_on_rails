@@ -59,6 +59,8 @@ services:
   web:
     build:
       context: containers/nginx
+    stdin_open: true
+    tty: true
     volumes:
       - public-data:/ec_site_on_rails/public
       - tmp-data:/ec_site_on_rails/tmp

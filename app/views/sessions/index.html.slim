@@ -16,7 +16,7 @@
               tr
                 th = f.label "ログインID"
                 td
-                  = f.text_field :e_mail, class: 'form-control'
+                  = f.text_field :email, class: 'form-control'
                   .small.p ※メールアドレスまたは会員コード
               tr
                 th = f.label "パスワード"
@@ -52,6 +52,6 @@
             thead
               tr
                 th.text-center = f.label :メールアドレス
-                td = f.text_field :e_mail, class: 'image-max-size'
+                td = f.text_field :email, class: 'image-max-size'
                 td = f.submit '送信'
     .col-3
