@@ -76,7 +76,7 @@ class OrderHistory < ApplicationRecord
   scope :department_name_search, -> department_name { where('addresses.department_name LIKE ?', "%#{department_name}%") if department_name.present? }
   scope :member_code_search, -> member_code { where('users.member_code LIKE ?', "%#{member_code}%") if member_code.present? }
   scope :tel_search, -> tel { where('users.phone_number LIKE ?', "%#{tel}%") if tel.present? }
-  scope :mail_address_search, -> mail_address { where('users.e_mail LIKE ?', "%#{mail_address}%") if mail_address.present? }
+  scope :mail_address_search, -> mail_address { where('users.email LIKE ?', "%#{mail_address}%") if mail_address.present? }
   scope :payment_method_search, -> payment_method {
     if payment_method == "99"
       all

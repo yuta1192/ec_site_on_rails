@@ -11,8 +11,8 @@ class Admin::SessionsController < ApplicationController
 
   # パスワードの再設定をメールアドレスに送る機能
   def password_reset
-    @emails = User.where(admin: true).pluck(:e_mail)
-    if @emails.include?(params[:session][:e_mail])
+    @emails = User.where(admin: true).pluck(:email)
+    if @emails.include?(params[:session][:email])
       # todo ここにメール返信処理を追加すること
       redirect_to admin_complite_message_path
     else
@@ -39,10 +39,10 @@ class Admin::SessionsController < ApplicationController
   private
 
     def login_user
-      @user = User.find_by(e_mail: login_params[:e_mail], admin: true)
+      @user = User.find_by(email: login_params[:email], admin: true)
     end
 
     def login_params
-      params.require(:session).permit(:e_mail, :password)
+      params.require(:session).permit(:email, :password)
     end
 end

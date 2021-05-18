@@ -4,7 +4,7 @@ require 'securerandom'
 # userを10個作成
 10.times do |i|
   User.seed do |s|
-    s.e_mail = "sample#{i+1}@gmail.com"
+    s.email = "sample#{i+1}@gmail.com"
     s.password = "password"
     s.remember_token = SecureRandom.urlsafe_base64
     s.company_name = "company#{i+1}"
@@ -72,7 +72,7 @@ end
 
 # 管理者登録
 User.seed do |s|
-  s.e_mail = "admin@gmail.com"
+  s.email = "admin@gmail.com"
   s.password = "password"
   s.remember_token = SecureRandom.urlsafe_base64
   s.company_name = "company"

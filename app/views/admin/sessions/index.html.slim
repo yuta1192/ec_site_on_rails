@@ -14,7 +14,7 @@
             .col-sm-3.col-form-label.bg-info
               = f.label "ログインID"
             .col-sm-9
-              = f.text_field :e_mail, class: 'form-control'
+              = f.text_field :email, class: 'form-control'
               .text-left.small.p ※メールアドレスまたは会員コード
           .form-group.row
             .col-sm-3.col-form-label.align-middle.bg-info
@@ -41,7 +41,7 @@
               .col-sm-3.col-form-label.bg-info
                 = f.label :メールアドレス, class: 'small'
               .col-sm-8
-                = f.text_field :e_mail, class: 'form-control'
+                = f.text_field :email, class: 'form-control'
               .col-sm-1
                 = f.submit '送信'
     .col-3

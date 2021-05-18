@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  get 'auth/:provider/callback', to: 'sessions#create'
+  get 'auth/failure', to: redirect('/')
+  get 'signout', to: 'sessions#destroy', as: 'signout'
+  get 'sessions/new'
+  get 'sessions/create'
+  get 'sessions/destroy'
   root 'top_pages#index'
   get 'top_pages/:id/download', to: 'top_pages#download', as: 'top_pages'
   get 'login', to: 'sessions#index'

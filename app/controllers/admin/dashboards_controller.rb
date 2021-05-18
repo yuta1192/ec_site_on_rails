@@ -40,7 +40,6 @@ class Admin::DashboardsController < ApplicationController
   end
 
   def mongo
-    binding.pry
     Test.create!(mongo_params)
     redirect_to admin_hazimeni_path
   end

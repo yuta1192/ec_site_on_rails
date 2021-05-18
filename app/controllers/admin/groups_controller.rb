@@ -39,7 +39,7 @@ class Admin::GroupsController < ApplicationController
   private
 
   def search_params
-    params.require(:group).permit(:member_code, :company_name, :department_name, :name_sei, :name_mei, :zip_code_first, :zip_code_second, :e_mail, :tel_first, :tel_second, :tel_third)
+    params.require(:group).permit(:member_code, :company_name, :department_name, :name_sei, :name_mei, :zip_code_first, :zip_code_second, :email, :tel_first, :tel_second, :tel_third)
   end
 
   def new_params

@@ -39,7 +39,7 @@ class Admin::UsersController < ApplicationController
   private
 
     def update_params
-      params.require(:user).permit(:e_mail, :name_sei, :name_mei, :name_sei_kana, :name_mei_kana, :tel, :phone_number, :fax)
+      params.require(:user).permit(:email, :name_sei, :name_mei, :name_sei_kana, :name_mei_kana, :tel, :phone_number, :fax)
     end
 
     def password_params

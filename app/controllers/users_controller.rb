@@ -33,7 +33,7 @@ class UsersController < ApplicationController
   private
 
     def user_params
-      params.require(:user).permit(:name_sei, :e_mail, :password, :password_confirmation, :cart_id)
+      params.require(:user).permit(:name_sei, :email, :password, :password_confirmation, :cart_id)
     end
 
     # password_resetのストロングパラメータ

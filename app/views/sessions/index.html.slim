@@ -26,6 +26,15 @@
                   = f.submit 'ログイン', class: "btn btn-primary mt-3"
     .col-3
 
+  .row
+    .offset-md-3
+      = link_to "Sign in with Google", "/auth/google_oauth2", id: "sign_in", class: "mr-3"
+      = link_to "Sign in with Twitter", "/auth/twitter"
+      div
+      = link_to "Sign in with Github", "/auth/github", id: "sign_in", class: "mr-3"
+      = link_to "Sign in with Facebook", "/auth/facebook", id: "sign_in"
+
+  br
   / todo パスワード再設定機能作成
   .row
     .col-3

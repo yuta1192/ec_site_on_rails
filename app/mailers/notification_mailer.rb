@@ -5,7 +5,7 @@ class NotificationMailer < ApplicationMailer
     @user = user
     mail(
       subject: "パスワードの変更先リンクを送信しました。", #メールのタイトル
-      to: @user.e_mail #宛先
+      to: @user.email #宛先
     ) do |format|
       format.text
     end
@@ -16,8 +16,8 @@ class NotificationMailer < ApplicationMailer
     @contact = contact
     mail(
       subject: "#{@user.name_sei + @user.name_mei}様からお問い合わせがあります。",
-      from: @user.e_mail,
-      to: User.find_by(admin: true).e_mail
+      from: @user.email,
+      to: User.find_by(admin: true).email
     ) do |format|
       format.text
     end
@@ -28,7 +28,7 @@ class NotificationMailer < ApplicationMailer
     @order = order_history
     mail(
       subject: "商品を購入しました。",
-      to: @user.e_mail
+      to: @user.email
     ) do |format|
       format.text
     end

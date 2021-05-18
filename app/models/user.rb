@@ -6,19 +6,37 @@ class User < ApplicationRecord
 #  has_many :contact
 #  validates :password, presence: true, length: { minimum: 6 }
   has_secure_password validations: true
-  validates :e_mail, presence: true, uniqueness: true
+  validates :email, presence: true, uniqueness: true
 
-  # auth0
-  def self.from_token_payload(payload)
-    find_by(sub: payload['sub']) || create!(sub: payload['sub'])
+  # auth
+  def self.find_or_create_from_auth(auth)
+    provider = auth[:provider]
+    uid = auth[:uid]
+    nickname = auth[:info][:nickname]
+    image_url = auth[:info][:image]
+
+    self.find_or_create_by(provider: provider, uid: uid) do |user|
+      user.nickname = nickname
+      user.image_url = image_url
+    end
   end
 
-  def self.new_remember_token
-    SecureRandom.urlsafe_base64
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid).first_or_initialize.tap do |user|
+      user.provider = auth.provider
+      user.uid = auth.uid
+      user.name = auth.info.name
+      user.email = auth.info.email
+      user.image = auth.info.image
+      user.oauth_token = auth.credentials.token
+      user.oauth_expires_at = Time.at(auth.credentials.expires_at)
+      return user
+    end
   end
 
-  def self.encrypt(token)
-    Digest::SHA256.hexdigest(token.to_s)
+  has_many :social_profiles, dependent: :destroy
+  def social_profile(provider)
+    social_profiles.select{ |sp| sp.provider == provider.to_s }.first
   end
 
   scope :search, -> (user_params) do
@@ -49,7 +67,7 @@ class User < ApplicationRecord
       .name_sei_search(group_users_params[:name_sei])
       .name_mei_search(group_users_params[:name_mei])
       .zip_code_search(group_users_params[:zip_code_first], group_users_params[:zip_code_second])
-      .e_mail_search(group_users_params[:e_mail])
+      .e_mail_search(group_users_params[:email])
       .tel_search(group_users_params[:tel_first], group_users_params[:tel_second], group_users_params[:tel_third])
   end
 
@@ -59,7 +77,7 @@ class User < ApplicationRecord
   scope :name_sei_search, -> name_sei { where('name_sei LIKE ?', "%#{name_sei}%") if name_sei.present? }
   scope :name_mei_search, -> name_mei { where('name_mei LIKE ?', "%#{name_mei}%") if name_mei.present? }
   scope :zip_code_search, -> zip_code_first, zip_code_second { where('zip_code LIKE ?', "%#{%W(#{zip_code_first} #{zip_code_second}).join}%") if zip_code_first.present? && zip_code_second.present? }
-  scope :e_mail_search, -> e_mail { where('e_mail LIKE ?', "%#{e_mail}%") if e_mail.present? }
+  scope :e_mail_search, -> email { where('email LIKE ?', "%#{email}%") if email.present? }
   scope :tel_search, -> tel_first, tel_second, tel_third { where('tel LIKE ?', "%#{%W(#{tel_first} #{tel_second} #{tel_third}).join}%") if tel_first.present? && tel_second.present? && tel_third.present? }
 
   scope :address_search, -> (address_params) do

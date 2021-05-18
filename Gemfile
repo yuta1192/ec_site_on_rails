@@ -65,8 +65,15 @@ gem 'mini_racer'
 # mongodb
 gem 'mongoid'
 gem 'bson_ext'
-# auth0
-gem 'jwt'
+# oauth
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-github'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-hatena'
+gem 'omniauth-linkedin'
+gem 'omniauth-mixi'
+gem 'omniauth-twitter'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -87,7 +94,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'letter_opener'
-
+  # rubocop
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false

@@ -9,7 +9,7 @@ class NotificationMailerTest < ActionMailer::TestCase
     ActionMailer::Base.mail(
       subject: "パスワードの変更先リンクを送信しました。", #メールのタイトル
       from: "hogehoge@example.com",
-      to: @user.e_mail #宛先
+      to: @user.email #宛先
     ) do |format|
       format.text
     end

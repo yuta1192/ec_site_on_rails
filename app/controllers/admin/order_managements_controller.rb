@@ -162,7 +162,7 @@ class Admin::OrderManagementsController < ApplicationController
   def user_search
     @users = User.all
     if params[:user].present?
-      @users = @users.zip_code_search(params[:user][:zip_code_first], params[:user][:zip_code_second]).name_sei_search(params[:user][:name_sei]).name_mei_search(params[:user][:name_mei]).address_search(params[:user][:address]).e_mail_search(params[:user][:e_mail]).tel_search(params[:user][:tel_first], params[:user][:tel_second], params[:user][:tel_third]).company_name_search(params[:user][:company_name]).department_name_search(params[:user][:department_name])
+      @users = @users.zip_code_search(params[:user][:zip_code_first], params[:user][:zip_code_second]).name_sei_search(params[:user][:name_sei]).name_mei_search(params[:user][:name_mei]).address_search(params[:user][:address]).e_mail_search(params[:user][:email]).tel_search(params[:user][:tel_first], params[:user][:tel_second], params[:user][:tel_third]).company_name_search(params[:user][:company_name]).department_name_search(params[:user][:department_name])
     end
   end
 

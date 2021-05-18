@@ -12,9 +12,9 @@ class SessionsController < ApplicationController
 
   # パスワードの再設定をメールアドレスに送る機能
   def password_reset
-    @emails = User.where(admin: false).pluck(:e_mail)
-    if @emails.include?(params[:session][:e_mail])
-      @user = User.find_by(e_mail: params[:session][:e_mail])
+    @emails = User.where(admin: false).pluck(:email)
+    if @emails.include?(params[:session][:email])
+      @user = User.find_by(email: params[:session][:email])
       NotificationMailer.send_password_reset_to_user(@user).deliver
       redirect_to complite_message_path
     else
@@ -24,7 +24,7 @@ class SessionsController < ApplicationController
   end
 
   def reset_password
-    @user = User.find_by(id: params[:user_id], e_mail: params[:e_mail])
+    @user = User.find_by(id: params[:user_id], email: params[:email])
     unless params[:token] == true
       @error = "権限がありません"
       render 'index'
@@ -32,7 +32,7 @@ class SessionsController < ApplicationController
   end
 
   def reset_user_password
-    @user = User.find_by(id: params[:user_id], e_mail: params[:e_mail])
+    @user = User.find_by(id: params[:user_id], email: params[:email])
     if params[:user][:password].blank? || params[:user][:password_confirmation].blank?
       @error = "パスワードとパスワード確認を記載してください。"
       render 'reset_password'
@@ -64,14 +64,33 @@ class SessionsController < ApplicationController
     redirect_to login_path
   end
 
+  # oauth
+  def new
+  end
+
+  def create
+    user = User.from_omniauth(request.env["omniauth.auth"])
+    if user.save
+      session[:user_id] = user.id
+      redirect_to root_path
+    else
+      redirect_to login_path
+    end
+  end
+
+  def destroy
+    session[:user_id] = nil
+    redirect_to login_path
+  end
+
   private
 
     def login_user
-      @user = User.find_by(e_mail: login_params[:e_mail], admin: false)
+      @user = User.find_by(email: login_params[:email], admin: false)
     end
 
     def login_params
-      params.require(:session).permit(:e_mail, :password)
+      params.require(:session).permit(:email, :password)
     end
 
     # ログインしている場合はroot_pathに戻す
