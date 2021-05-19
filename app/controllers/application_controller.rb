@@ -13,8 +13,10 @@ class ApplicationController < ActionController::Base
   end
 
   def sign_out
+    @current_user.forget
     @current_user = nil
     session[:user_id] = nil
+    cookies.delete(:user_id)
     cookies.delete(:user_remember_token)
   end
 
@@ -23,7 +25,7 @@ class ApplicationController < ActionController::Base
       @current_user = User.find(session[:user_id])
       return @current_user
     end
-    remember_token = cookies[:user_remember_token].present? ? User.encrypt(cookies[:user_remember_token]) : nil
+    remember_token = cookies[:user_remember_token].present? ? User.encrypt(cookies[:user_remember_token]) : "no_remember_token"
     @current_user ||= User.find_by(remember_token: remember_token)
   end
 

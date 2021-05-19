@@ -16,30 +16,25 @@ class User < ApplicationRecord
     Digest::SHA256.hexdigest(token.to_s)
   end
 
-  # auth
-  def self.find_or_create_from_auth(auth)
-    provider = auth[:provider]
-    uid = auth[:uid]
-    nickname = auth[:info][:nickname]
-    image_url = auth[:info][:image]
-
-    self.find_or_create_by(provider: provider, uid: uid) do |user|
-      user.nickname = nickname
-      user.image_url = image_url
-    end
-  end
-
+  # oauth
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_initialize.tap do |user|
       user.provider = auth.provider
       user.uid = auth.uid
       user.name = auth.info.name
-      user.email = auth.info.email
+      user.email = SecureRandom.hex(9)
       user.image = auth.info.image
       user.oauth_token = auth.credentials.token
-      user.oauth_expires_at = Time.at(auth.credentials.expires_at)
+      # user.oauth_expires_at = Time.at(auth.credentials.expires_at)
+      # has_secure_passwordでパスワード必須のため
+      user.password = SecureRandom.hex(9)
       return user
     end
+  end
+
+  # ユーザーのログイン情報を破棄する
+  def forget
+    update_attribute(:remember_token, nil)
   end
 
   has_many :social_profiles, dependent: :destroy

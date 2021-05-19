@@ -6,6 +6,8 @@ services:
     env_file:
       - ./environments/db.env
     command: bundle exec puma -C config/puma.rb
+    stdin_open: true
+    tty: true
     volumes:
       - .:/ec_site_on_rails
       - public-data:/ec_site_on_rails/public

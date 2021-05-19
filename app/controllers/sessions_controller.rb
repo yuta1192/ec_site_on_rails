@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
   before_action :login_user, only: [:login]
   before_action :back_root_path, only: [:index, :login, :password_reset, :complite_message, :reset_password, :reset_user_password]
-  skip_before_action :require_sign_in!, only: [:index, :login, :password_reset, :complite_message, :reset_password, :reset_user_password]
+  skip_before_action :require_sign_in!, only: [:index, :login, :password_reset, :complite_message, :reset_password, :reset_user_password, :create]
 
   def index
   end
@@ -70,9 +70,8 @@ class SessionsController < ApplicationController
 
   def create
     user = User.from_omniauth(request.env["omniauth.auth"])
-    # has_secure_passwordでパスワード必須のため
-    user.password = SecureRandom.hex(9)
     if user.save
+      Cart.create(user_id: user.id) if user.cart.blank?
       session[:user_id] = user.id
       redirect_to root_path
     else
