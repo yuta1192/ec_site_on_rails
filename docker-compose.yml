@@ -18,6 +18,7 @@ services:
       - mongodb
     links:
       - redis:redis
+      - datadog:datadog
     environment:
       - REDIS_URL=redis://redis:6379
       - MYSQL_HOST=db
@@ -74,6 +75,17 @@ services:
     image: redis:2.8.13
     ports:
       - "6379:6379"
+  # datadog
+  datadog:
+    image: datadog/docker-dd-agent
+    environment:
+     - API_KEY=73f3bb547172c89be0bcdab01faff700
+     - DD_APM_ENABLED=true
+     - SD_BACKEND=docker
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock:ro
+     - /proc/:/host/proc/:ro
+     - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
 volumes:
   public-data:
   tmp-data:
