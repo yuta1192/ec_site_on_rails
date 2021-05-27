@@ -77,6 +77,9 @@ gem 'omniauth-twitter'
 #datadog
 gem 'ddtrace'
 gem 'dogstatsd-ruby'
+# fluentd
+gem 'act-fluent-logger-rails', git: 'https://github.com/actindi/act-fluent-logger-rails.git'
+gem 'lograge'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

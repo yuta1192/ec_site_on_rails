@@ -76,6 +76,11 @@ services:
       - app
     links:
       - fluentd
+    logging:
+      driver: fluentd
+      options:
+        tag: "nginx"
+        fluentd-async-connect: "true"
   redis:
     image: redis:2.8.13
     ports:

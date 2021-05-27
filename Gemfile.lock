@@ -1,4 +1,13 @@
 GIT
+  remote: https://github.com/actindi/act-fluent-logger-rails.git
+  revision: c150a893e44dd6e906667a17b9a15769f9c4859a
+  specs:
+    act-fluent-logger-rails (0.6.3)
+      activesupport (>= 4, < 6.2)
+      fluent-logger
+      railties (>= 4, < 6.2)
+
+GIT
   remote: https://github.com/rails/webpacker.git
   revision: 532eb2fa92ea3af21554d603e5b628809b4059cc
   specs:
@@ -123,6 +132,8 @@ GEM
     faraday-net_http (1.0.1)
     faraday-net_http_persistent (1.1.0)
     ffi (1.15.0)
+    fluent-logger (0.9.0)
+      msgpack (>= 1.0.0, < 2)
     fullcalendar-rails (3.9.0.0)
       jquery-rails (>= 4.0.5, < 5.0.0)
       jquery-ui-rails (>= 5.0.2)
@@ -167,11 +178,17 @@ GEM
       addressable (~> 2.7)
     letter_opener (1.7.0)
       launchy (~> 2.2)
+    libv8-node (15.14.0.1-x86_64-darwin-17)
     libv8-node (15.14.0.1-x86_64-linux)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
+    lograge (0.11.2)
+      actionpack (>= 4)
+      activesupport (>= 4)
+      railties (>= 4)
+      request_store (~> 1.0)
     loofah (2.9.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -197,6 +214,8 @@ GEM
     multipart-post (2.1.1)
     mysql2 (0.5.3)
     nio4r (2.5.7)
+    nokogiri (1.11.3-x86_64-darwin)
+      racc (~> 1.4)
     nokogiri (1.11.3-x86_64-linux)
       racc (~> 1.4)
     oauth (0.5.6)
@@ -287,6 +306,8 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     regexp_parser (2.1.1)
+    request_store (1.5.0)
+      rack (>= 1.4)
     rexml (3.2.5)
     rmagick (4.2.2)
     rspec (3.10.0)
@@ -408,6 +429,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  act-fluent-logger-rails!
   actionpack (>= 5.2.4.3)
   activestorage (>= 5.2.4.3)
   activesupport (>= 5.2.4.3)
@@ -431,6 +453,7 @@ DEPENDENCIES
   kaminari-bootstrap
   letter_opener
   listen (>= 3.0.5, < 3.2)
+  lograge
   mini_racer
   momentjs-rails
   mongoid
