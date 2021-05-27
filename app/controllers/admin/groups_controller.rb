@@ -1,6 +1,11 @@
 class Admin::GroupsController < ApplicationController
   def index
-    @groups = Group.all
+    @groups =
+      if query.present?
+        Group.search(query).records
+      else
+        Group.all
+      end
   end
 
   def new
@@ -44,5 +49,9 @@ class Admin::GroupsController < ApplicationController
 
   def new_params
     params.require(:group).permit(:name)
+  end
+
+  def query
+    @query ||= params[:query]
   end
 end

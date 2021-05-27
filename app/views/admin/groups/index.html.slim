@@ -38,3 +38,12 @@
               td 0
               td = link_to '詳細', admin_group_path(group)
               td = link_to '削除', admin_group_path(group), method: :delete
+
+
+      / elasticsearch適応番
+      .container[style="margin-top: 30px"]
+        = form_tag(admin_groups_path, method: :get, class: "field has-addons has-addons-centered") do
+          .control
+            = text_field_tag :query, @query, class: "input", placeholder: "漫画を検索する"
+          .control
+            = submit_tag "検索", class: "button is-info"
