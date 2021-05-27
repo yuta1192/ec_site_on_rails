@@ -1,0 +1,6 @@
+172.19.0.1 - - [27/May/2021:00:33:35 +0000] "GET / HTTP/1.1" 200 20519 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"
+172.19.0.1 - - [27/May/2021:00:34:10 +0000] "GET /sitemap HTTP/1.1" 200 19451 "http://localhost:3000/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"
+172.19.0.1 - - [27/May/2021:00:34:12 +0000] "POST /logout HTTP/1.1" 302 104 "http://localhost:3000/sitemap" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"
+172.19.0.1 - - [27/May/2021:00:34:13 +0000] "GET /login HTTP/1.1" 200 15494 "http://localhost:3000/sitemap" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"
+172.19.0.1 - - [27/May/2021:00:34:18 +0000] "POST /login HTTP/1.1" 302 99 "http://localhost:3000/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"
+172.19.0.1 - - [27/May/2021:00:34:19 +0000] "GET / HTTP/1.1" 200 20521 "http://localhost:3000/login" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"
