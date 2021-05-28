@@ -7,14 +7,14 @@ setup:
 build:
   docker:
     web: Dockerfile
-    worker: worker/Dockerfile
+    worker: ./Dockerfile
   config:
     RAILS_ENV: development
     FOO: bar
 release:
-  image: worker
   command:
     - ./deployment-tasks.sh
+  image: worker
 run:
   web: bundle exec puma -C config/puma.rb
   worker: python myworker.py
