@@ -41,3 +41,4 @@
 yarn-debug.log*
 .yarn-integrity
 /config/omniauth.yml
+/config/initializers/carrierwave.rb

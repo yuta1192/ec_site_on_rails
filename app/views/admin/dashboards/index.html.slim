@@ -73,45 +73,47 @@
             th.text-left 在庫切れ商品数
             td.bg-white
               = @out_of_stock
-      .row
-        .col-sm-6
-          / 2021/2受注個数ベスト5
-          table.table.table-bordered.bg-light
-            thead.text-left
-              tr
-                th[colspan="4"] □ 2021/2受注個数ベスト5
-            tbody
-              tr
-                th.text-center 順位
-                th.text-center 商品名(商品No.)
-                th.text-center 単価（税別）
-                th.text-center 数量
-              - @best_five.each.with_index(1) do |bf, i|
-                tr.bg-white
-                  td
-                    | #{i}位
-                  td
-                    = bf.product.name
-                    div
-                    = "(#{bf.product.product_number})"
-                  td = bf.product.price
-                  td = OrderHistoryProduct.where(product_id: bf.product_id).sum(:num)
-                    / todo 直接書くのダメダメだめダメ
-        .col-sm-6
-          / 2021/2受注金額ベスト5
-          table.table.table-bordered.bg-light
-            thead.text-left
-              tr
-                th[colspan="4"] □ 2021/2受注金額ベスト5
-            tbody
-              tr
-                th.text-center 順位
-                th.text-center 商品名(商品No.)
-                th.text-center 単価（税別）
-                th.text-center 数量
-              / todo ここは受注個数ベスト順で5個まで表示するように処理する。なければある個数までにする。わかんねえええええ
-              tr.bg-white
-                td
-                td
-                td
-                td
+              
+    / 一旦コメントアウト
+    /  .row
+    /    .col-sm-6
+    /      / 2021/2受注個数ベスト5
+    /      table.table.table-bordered.bg-light
+    /        thead.text-left
+    /          tr
+    /            th[colspan="4"] □ 2021/2受注個数ベスト5
+    /        tbody
+    /          tr
+    /            th.text-center 順位
+    /            th.text-center 商品名(商品No.)
+    /            th.text-center 単価（税別）
+    /            th.text-center 数量
+    /          - @best_five.each.with_index(1) do |bf, i|
+    /            tr.bg-white
+    /              td
+    /                | #{i}位
+    /              td
+    /                = bf.product.name
+    /                div
+    /                = "(#{bf.product.product_number})"
+    /              td = bf.product.price
+    /              td = OrderHistoryProduct.where(product_id: bf.product_id).sum(:num)
+    /                / todo 直接書くのダメダメだめダメ
+    /    .col-sm-6
+    /      / 2021/2受注金額ベスト5
+    /      table.table.table-bordered.bg-light
+    /        thead.text-left
+    /          tr
+    /            th[colspan="4"] □ 2021/2受注金額ベスト5
+    /        tbody
+    /          tr
+    /            th.text-center 順位
+    /            th.text-center 商品名(商品No.)
+    /            th.text-center 単価（税別）
+    /            th.text-center 数量
+    /          / todo ここは受注個数ベスト順で5個まで表示するように処理する。なければある個数までにする。わかんねえええええ
+    /          tr.bg-white
+    /            td
+    /            td
+    /            td
+    /            td
