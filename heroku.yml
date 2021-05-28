@@ -6,8 +6,9 @@ setup:
     S3_BUCKET: my-example-bucket
 build:
   docker:
+    app: Dockerfile
     web: Dockerfile
-    worker: containers/nginx
+    worker: ./Dockerfile
   config:
     RAILS_ENV: development
     FOO: bar
@@ -16,7 +17,7 @@ release:
     - ./deployment-tasks.sh
   image: worker
 run:
-  web: bundle exec puma -C config/puma.rb
+  app: bundle exec puma -C config/puma.rb
   worker: python myworker.py
   asset-syncer:
     command:
