@@ -74,13 +74,13 @@ services:
       - 3000:3000
     depends_on:
       - app
-    links:
-      - fluentd
-    logging:
-      driver: fluentd
-      options:
-        tag: "nginx"
-        fluentd-async-connect: "true"
+    # links:
+    #   - fluentd
+    # logging:
+    #   driver: fluentd
+    #   options:
+    #     tag: "nginx"
+    #     fluentd-async-connect: "true"
   redis:
     image: redis:2.8.13
     ports:
@@ -97,17 +97,17 @@ services:
      - /proc/:/host/proc/:ro
      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
   # fluentd
-  fluentd:
-    build: ./fluentd
-    volumes:
-      - ./fluentd/config:/fluentd/etc
-      - ./nginx/log:/var/log/nginx
-    links:
-      - elasticsearch
-    ports:
-      - "24224:24224"
-    depends_on:
-      - elasticsearch
+  # fluentd:
+  #   build: ./fluentd
+  #   volumes:
+  #     - ./fluentd/config:/fluentd/etc
+  #     - ./nginx/log:/var/log/nginx
+  #   links:
+  #     - elasticsearch
+  #   ports:
+  #     - "24224:24224"
+  #   depends_on:
+  #     - elasticsearch
   # elasticsearch
   elasticsearch:
     build: elasticsearch
