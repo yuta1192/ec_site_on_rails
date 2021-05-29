@@ -7,8 +7,7 @@ setup:
 build:
   docker:
     app: Dockerfile
-    web: Dockerfile
-    worker: ./Dockerfile
+    worker: .
   config:
     RAILS_ENV: development
     FOO: bar
