@@ -8,7 +8,7 @@ build:
   docker:
     app: Dockerfile
     web: containers/nginx/Dockerfile
-    worker: ./Dockerfile
+    worker: containers/nginx/Dockerfile
   config:
     RAILS_ENV: development
     FOO: bar
