@@ -12,10 +12,6 @@ build:
   config:
     RAILS_ENV: development
     FOO: bar
-release:
-  command:
-    - ./deployment-tasks.sh
-  image: worker
 run:
   app: bundle exec puma -C config/puma.rb
   worker: python myworker.py
