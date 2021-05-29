@@ -14,7 +14,7 @@ build:
     FOO: bar
 release:
   command:
-    - ./deployment-tasks.sh
+    - sudo ./deployment-tasks.sh
   image: worker
 run:
   app: bundle exec puma -C config/puma.rb
