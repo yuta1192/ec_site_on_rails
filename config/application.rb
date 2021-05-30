@@ -20,9 +20,9 @@ module EcSiteOnRails
       g.orm :active_record
     end
     # fluentdのため設定
-    # config.log_level = :info
-    # config.logger = ActFluentLoggerRails::Logger.new
-    # config.lograge.enabled = true
-    # config.lograge.formatter = Lograge::Formatters::Json.new
+    config.log_level = :info
+    config.logger = ActFluentLoggerRails::Logger.new
+    config.lograge.enabled = true
+    config.lograge.formatter = Lograge::Formatters::Json.new
   end
 end
