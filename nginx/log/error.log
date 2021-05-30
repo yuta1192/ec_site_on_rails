@@ -7,3 +7,4 @@
 2021/05/29 13:58:50 [warn] 7#7: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /etc/nginx/nginx.conf:1
 2021/05/30 01:44:39 [warn] 7#7: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /etc/nginx/nginx.conf:1
 2021/05/30 01:50:53 [warn] 7#7: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /etc/nginx/nginx.conf:1
+2021/05/30 03:24:48 [warn] 7#7: the "user" directive makes sense only if the master process runs with super-user privileges, ignored in /etc/nginx/nginx.conf:1
