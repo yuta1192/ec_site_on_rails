@@ -1,2 +1,2 @@
-import "bootstrap"
-import "../stylesheets/application"
+import 'bootstrap';
+import '../stylesheets/application';
