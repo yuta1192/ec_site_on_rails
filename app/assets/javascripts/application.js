@@ -17,6 +17,7 @@
 //= require popper
 //= require bootstrap-sprockets
 //= require bootstrap
+//= require turbolinks
 //= require jquery
 //= require moment
 //= require fullcalendar
