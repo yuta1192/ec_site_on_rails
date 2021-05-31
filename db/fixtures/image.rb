@@ -2,7 +2,7 @@
 
 3.times do |p|
   Image.seed do |i|
-    i.image = File.open(["./db/fixtures/image_file/014.jpg","./db/fixtures/image_file/5503321i.jpeg","./db/fixtures/image_file/arm_tablet (1).png","./db/fixtures/image_file/karaoke.png","./db/fixtures/image_file/shopping_supermarket_man.png","./db/fixtures/image_file/shopping_supermarket_family_mother.png","./db/fixtures/image_file/yusyou_champagne_fight.png"].sample)
+    # i.image = File.open(["./db/fixtures/image_file/014.jpg","./db/fixtures/image_file/5503321i.jpeg","./db/fixtures/image_file/arm_tablet (1).png","./db/fixtures/image_file/karaoke.png","./db/fixtures/image_file/shopping_supermarket_man.png","./db/fixtures/image_file/shopping_supermarket_family_mother.png","./db/fixtures/image_file/yusyou_champagne_fight.png"].sample)
     i.url = "url_#{p}"
     i.name = "name_#{p}"
     i.is_banner_flg = [true,false].sample
