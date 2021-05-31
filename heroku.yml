@@ -8,13 +8,13 @@ build:
   docker:
     app: Dockerfile
     web: containers/nginx/Dockerfile
-    worker: ./containers/nginx/Dockerfile
+    worker: .
   config:
     RAILS_ENV: development
     FOO: bar
 release:
   command:
-    - sudo ./deployment-tasks.sh
+    - ./deployment-tasks.sh
   image: worker
 run:
   app: bundle exec puma -C config/puma.rb
