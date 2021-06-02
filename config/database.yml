@@ -14,3 +14,7 @@ development:
 test:
   <<: *default
   database: ec_site_on_rails_test
+
+production:
+  <<: *default
+  database: ec_site_on_rails_production
