@@ -16,5 +16,9 @@ test:
   database: ec_site_on_rails_test
 
 production:
-  <<: *default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
   database: ec_site_on_rails_production
+  username: user
+  password: <%= ENV['DATABASE_PASSWORD'] %>
