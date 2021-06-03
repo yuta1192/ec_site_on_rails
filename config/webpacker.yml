@@ -58,6 +58,8 @@ test:
 
 production:
   <<: *default
+  resolved_paths: ['app/assets']
+  extract_css: false
 
   # Production depends on precompilation of packs prior to booting for performance.
   compile: false
