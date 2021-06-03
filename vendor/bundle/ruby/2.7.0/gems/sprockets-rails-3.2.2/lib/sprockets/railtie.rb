@@ -97,7 +97,7 @@ module Sprockets
     config.assets._blocks     = []
     config.assets.paths       = []
     config.assets.precompile  = []
-    config.assets.prefix      = "/assets"
+    config.assets.prefix      = "/assets/stylesheets"
     config.assets.manifest    = nil
     config.assets.quiet       = false
 
