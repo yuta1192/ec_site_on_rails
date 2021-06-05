@@ -290,6 +290,10 @@ ActiveRecord::Schema.define(version: 2021_05_15_075548) do
     t.integer "payment_method"
     t.text "payee_memo"
     t.boolean "cash_on_delivery_charge_flg", default: true, null: false
+    t.text "cash_on_delivery_charge_memo"
+    t.text "deadline_memo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "amount_collected_1"
     t.integer "cash_on_delivery_charge_1"
     t.integer "amount_collected_2"
@@ -303,10 +307,6 @@ ActiveRecord::Schema.define(version: 2021_05_15_075548) do
     t.integer "amount_collected_6"
     t.integer "cash_on_delivery_charge_6"
     t.integer "cash_on_delivery_charge_7"
-    t.text "cash_on_delivery_charge_memo"
-    t.text "deadline_memo"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "postages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
