@@ -86,6 +86,7 @@ gem 'elasticsearch-model', git: 'git://github.com/elastic/elasticsearch-rails.gi
 # for image uploader with AWS S3
 gem 'carrierwave'
 gem 'fog-aws'
+gem "aws-sdk-s3", require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

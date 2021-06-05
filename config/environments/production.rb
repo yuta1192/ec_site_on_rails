@@ -95,6 +95,9 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  # amazon s3
+  config.active_storage.service = :amazon
+
   # todo herokuのurlに差し替えすること。
   # config.action_controller.asset_host = 'http://yourhostname.com'
   # config.action_mailer.asset_host = config.action_controller.asset_host
