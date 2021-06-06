@@ -6,7 +6,7 @@ CarrierWave.configure do |config|
   config.storage :fog
   config.fog_provider = 'fog/aws'
   config.fog_directory  = 'superecsite1'
-  config.asset_host = 'https://s3.amazonaws.com/superecsite1'
+  config.asset_host = ENV['AWS_S3_HOST']
 
   config.fog_public = false # ←コレ
   config.fog_credentials = {
