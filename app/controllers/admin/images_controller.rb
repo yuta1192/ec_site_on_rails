@@ -19,7 +19,7 @@ class Admin::ImagesController < ApplicationController
       is_banner_flg: params[:image][:is_banner_flg]
     )
     if @image.save
-      url = @image.image.file.file
+      url = "aタグで括るためhttps://から始まるurl指定"
       if @image.update(url: url)
         redirect_to admin_images_path
       else
